@@ -3,9 +3,9 @@
 ## 👥 Miembros del Equipo
 | Nombre y Apellidos | Correo URJC | Usuario GitHub |
 |:--- |:--- |:--- |
-| [Nombre 1] | [email1]@alumnos.urjc.es | [User1] |
-| [Nombre 2] | [email2]@alumnos.urjc.es | [User2] |
-| [Nombre 3] | [email3]@alumnos.urjc.es | [User3] |
+| Jaime Tejero Fernández | j.tejero.2024@alumnos.urjc.es | Jaime2006cib |
+| Rubén Sánchez López | [email2]@alumnos.urjc.es | [User2] |
+| Sergio Sánchez López | [email3]@alumnos.urjc.es | [User3] |
 | [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
 
 ---
@@ -13,21 +13,27 @@
 ## 🎭 **Preparación: Definición del Proyecto**
 
 ### **Descripción del Tema**
-[Escribe aquí una descripción breve y concisa de qué trata tu aplicación, el sector al que pertenece y qué valor aporta al usuario].
+Está aplicación tendrá como objetivo funcionar como una aplicación de visualización de resultados de partidos de fútbol. 
+Inicialmente está app estará diseñada para una (como mucho 2) Ligas/Torneos en el cual representaremos a cada equipo con un Nombre (ejemplo: Parla FC) y un Estandarte/Escudo asociado y en donde el usuario podrá ver los resultados por jornada de los equipos que compiten en esa liga, sus alineaciones, los jugadores y cuerpo técnico presente en su plantilla, además se incluirá la capacidad del usuario de hacer login y elegir su equipo favorito (para no perderse las últimas novedades de este), de poder reseñar a jugadores en cada jornada (siempre y cuando tengan un usuario) y la capacidad de ver que ocurrió en el partido X de su equipo favorito (resultado, formacion inicial, Temporal, Campo en el que se jugó, Goles con el minuto en que se marcó y el dorsal y nombre el jugador goleador asociado, Tarjetas (Rojas o amarillas) con un formato similar al de los goles). Por último incluiremos varias funcionalidades extra como un panel de Novedades (donde podremos mostrar algunas novedades importantes de la Liga/Torneo como expulsiones, cesiones, incorporaciones etc) y una tabla de Goleadores y lso partidos ganados, empatados y perdidos de cada equipo al lado de su escudo en la tabla de liga junto a su posición en esta (que será dinámica conforme a los puntos obtenidos) y el Gol Average/ Diferencia de Goles. 
+Está aplicación estará diseñada con la finalidad de ayudar a aficionados, entrenadores, árbitros, jugadores etc a poder ver los resultados de su Liga preferida y tener un mejor control de los resultados de está y poder así seguir a su equipo favorito pudiendo estar informados de las últimas noticias de este
 
 ### **Entidades**
 Indicar las entidades principales que gestionará la aplicación y las relaciones entre ellas:
 
-1. **[Entidad 1]**: [Ej: Usuario]
-2. **[Entidad 2]**: [Ej: Producto]
-3. **[Entidad 3]**: [Ej: Pedido]
-4. **[Entidad 4]**: [Ej: Categoría]
+1. **[Entidad 1]**  Usuario: Almacena el perfil (email, contraseña), el Rol que desempeña (entrenador, jugador, árbitro, aficionado etc) y la preferencia del Equipo Favorito.
+2. **[Entidad 2]**: Equipo: Información del club (Nombre, Escudo, Estadio) y sus estadísticas acumuladas (puntos, goles).
+3. **[Entidad 3]**: Jugador / Cuerpo Técnico: Ficha técnica de los integrantes (Nombre, Dorsal, Posición, Equipo al que pertenecen).
+4. **[Entidad 4]**: Partido: El evento central que une a dos equipos, con fecha, jornada, marcador final y campo, además incluiremos la funcionalidad de reseñar partidos en donde los usuarios logueados podrán dar puntuaciones a los Jugadores en un partido X así como incluir reseñas escritas de cada jugador para ese partido.
+5. **[Entidad 5]**: Evento de Partido: Registro de cada hito (Gol, Tarjeta Roja/Amarilla, Cambio) vinculado a un minuto y a un jugador.
+6. **[Entidad 6]**: Noticia / Novedad: Entradas de texto e imagen para el panel de novedades (fichajes, sanciones).  
 
 **Relaciones entre entidades:**
-- [Ej: Usuario - Pedido: Un usuario puede tener múltiples pedidos (1:N)]
-- [Ej: Pedido - Producto: Un pedido puede contener múltiples productos y un producto puede estar en múltiples pedidos (N:M)]
-- [Ej: Producto - Categoría: Un producto pertenece a una categoría (N:1)]
-- [Descripción de otras relaciones relevantes]
+- Usuario - Equipo (N:1): Muchos usuarios pueden tener el mismo "Equipo Favorito".
+- Jugador - Evento (1:N): Un jugador puede marcar varios goles o recibir tarjetas en diferentes partidos.
+- Jugador - Usuario (1:N): Un jugador puede tener varias reseñas de muchos Usuarios.
+- Partido - Evento (1:N): Un solo partido puede generar múltiples eventos (ej: 3 goles y 2 tarjetas).
+- Equipo - Partido (1:N): Un equipo participa en muchos partidos a lo largo del torneo (ya sea como local o visitante).
+- Equipo - Jugador (1:N): Un equipo tiene muchos jugadores, pero un jugador (en el momento actual de la liga) solo pertenece a un equipo.
 
 ### **Permisos de los Usuarios**
 Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:

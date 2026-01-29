@@ -30,7 +30,7 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 **Relaciones entre entidades:**
 - Usuario - Equipo (N:1): Muchos usuarios pueden tener el mismo "Equipo Favorito".
 - Jugador - Evento (1:N): Un jugador puede marcar varios goles o recibir tarjetas en diferentes partidos.
-- Jugador - Usuario (1:N): Un jugador puede tener varias reseñas de muchos Usuarios.
+- Usuario - Jugador (N:M): Un usuario puede valorar a varios jugadores y un jugador puede recibir valoraciones de múltiples usuarios en distintos partidos.
 - Partido - Evento (1:N): Un solo partido puede generar múltiples eventos (ej: 3 goles y 2 tarjetas).
 - Equipo - Partido (1:N): Un equipo participa en muchos partidos a lo largo del torneo (ya sea como local o visitante).
 - Equipo - Jugador (1:N): Un equipo tiene muchos jugadores, pero un jugador (en el momento actual de la liga) solo pertenece a un equipo.

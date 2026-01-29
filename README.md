@@ -4,7 +4,7 @@
 | Nombre y Apellidos | Correo URJC | Usuario GitHub |
 |:--- |:--- |:--- |
 | Jaime Tejero Fernández | j.tejero.2024@alumnos.urjc.es | Jaime2006cib |
-| Rubén Sánchez López | [email2]@alumnos.urjc.es | [User2] |
+| Rubén Sánchez López | r.sanchezl.2024@alumnos.urjc.es | ruben2393 |
 | Sergio Sánchez López | [email3]@alumnos.urjc.es | [User3] |
 | [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
 

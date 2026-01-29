@@ -39,16 +39,31 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:
 
 * **Usuario Anónimo**: 
-  - Permisos: [Ej: Visualización de catálogo, búsqueda de productos, registro]
+  - Permisos:
+      - Visualizar resultados, partidos y clasificaciones
+      - Consultar equipos, jugadores y estadísticas
+      - Acceder al panel de novedades
+      - Registrarse en la aplicación
   - No es dueño de ninguna entidad
 
 * **Usuario Registrado**: 
-  - Permisos: [Ej: Gestión de perfil, realizar pedidos, crear valoraciones]
-  - Es dueño de: [Ej: Sus propios Pedidos, su Perfil de Usuario, sus Valoraciones]
+  - Permisos:
+      - Todas las funcionalidades del usuario anónimo
+      - Gestión de su perfil y selección de equipo favorito
+      - Valorar jugadores en partidos
+      - Escribir reseñas asociadas a partidos
+  - Es dueño de:
+      - Su perfil de usuario
+      - Sus valoraciones y reseñas
 
 * **Administrador**: 
-  - Permisos: [Ej: Gestión completa de productos (CRUD), visualización de estadísticas, moderación de contenido]
-  - Es dueño de: [Ej: Productos, Categorías, puede gestionar todos los Pedidos y Usuarios]
+  - Permisos:
+      - Gestión completa (CRUD) de equipos, jugadores y cuerpo técnico
+      - Creación y edición de partidos y eventos
+      - Publicación y moderación de noticias
+      - Gestión de usuarios
+  - Es dueño de:
+      - Todas las entidades del sistema
 
 ### **Imágenes**
 Indicar qué entidades tendrán asociadas una o varias imágenes:

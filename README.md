@@ -1,4 +1,4 @@
-# [Nombre de la Aplicación]
+# FootLeague
 
 ## 👥 Miembros del Equipo
 | Nombre y Apellidos | Correo URJC | Usuario GitHub |

@@ -74,9 +74,10 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
 ### **Imágenes**
 Indicar qué entidades tendrán asociadas una o varias imágenes:
 
-- **[Entidad 2]**: Partido : Una imagen para el Escudo o Estandarte oficial del club, que se mostrará en la clasificación, en las fichas de partido y junto a las noticias relacionadas.
+- **[Entidad 2]**: Equipo : Una imagen para el Escudo o Estandarte oficial del club, que se mostrará en la clasificación, en las fichas de partido y junto a las noticias relacionadas.
 - **[Entidad 3]**: Jugador/Cuerpo tecnico: Una imagen de Ficha/Retrato para cada integrante, que se visualizará en la plantilla del equipo, en la tabla de goleadores y en el panel de valoraciones.
 - **[Entidad 6]**: Noticia / Novedad: Una imagen de Cabecera o Portada para ilustrar la noticia en el panel de novedades (ej: foto de un fichaje, una rueda de prensa o un evento de la liga).
+- **[Entidad 1]**: Usuario: Una imagen de Avatar para el perfil del usuario, que aparecerá junto a sus reseñas y valoraciones de los partidos.
 
 ---
 

@@ -11,7 +11,7 @@
 <body class="bg-light">
     <div class="container py-5">
         <div class="mb-4">
-            <h1 class="h4 mb-0 text-white">Admin Panel</h1>
+            <h1 class="h4 mb-0 text-white">Panel de Administración</h1>
             <small class="text-white-50">Selecciona una tarjeta para gestionar</small>
         </div>
 
@@ -29,7 +29,7 @@
             </div>
 
             <div class="col-md-6">
-                <div class="card option-card p-3" data-option="manage-matchs" role="button">
+                <div class="card option-card p-3" data-option="manage-matches" role="button">
                     <div class="d-flex align-items-center">
                         <div class="me-3 option-icon">📅</div>
                         <div>
@@ -67,20 +67,20 @@
     </div>
 
     <script>
-        // Diccionario de rutas para navegación directa
+        //Navegation Paths
         const paths = {
-            'manage-users': 'Pantalla_Gestion_Cuentas.html',
-            'manage-matchs': 'Pantalla_Gestion_Partidos.html',
-            'manage-teams': 'Pantalla_Gestion_Equipos.html',
-            'return-home': '../index.html'
+            'manage-users': 'Account_Management_Screen.html',
+            'manage-matches': 'Match_Management_Screen.html',
+            'manage-teams': 'Team_Management_Screen.html',
+            'return-home': 'index.html'
         };
 
-        // Evento de clic directo sin alertas
+        // Listener and events
         document.querySelectorAll('.option-card').forEach(card => {
             card.addEventListener('click', () => {
                 const option = card.getAttribute('data-option');
                 
-                // Redirección inmediata
+                // Redirection based on option
                 if (paths[option]) {
                     window.location.href = paths[option];
                 }

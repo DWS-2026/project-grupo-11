@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gestión de Cuentas - FootLeague</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-light"> 
+    <div class="container py-5">
+        <h1 class="mb-4 text-white">Gestión de Cuentas</h1>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card option-card h-100 p-3"> 
+                    <div class="card-body text-center">
+                        <div class="option-icon mb-3" style="background: linear-gradient(180deg,#bbf7d0,#10b981); color: #04201a;">➕</div>
+                        <h5 class="card-title">Crear Cuenta</h5>
+                        <p class="card-text">Añade una nueva cuenta al sistema</p>
+                        <button class="btn btn-primary w-100 mt-3" onclick="crearCuenta()">Crear</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card option-card h-100 p-3">
+                    <div class="card-body text-center">
+                        <div class="option-icon mb-3" style="background: linear-gradient(180deg,#fef08a,#f59e0b); color: #2b1500;">✏️</div>
+                        <h5 class="card-title">Modificar Cuenta</h5>
+                        <p class="card-text">Edita la información de una cuenta</p>
+                        <button class="btn btn-warning w-100 mt-3" onclick="modificarCuenta()">Modificar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card option-card h-100 p-3">
+                    <div class="card-body text-center">
+                        <div class="option-icon mb-3" style="background: linear-gradient(180deg,#fecaca,#ef4444); color: #ffffff;">🗑️</div>
+                        <h5 class="card-title">Eliminar Cuenta</h5>
+                        <p class="card-text">Elimina una cuenta del sistema</p>
+                        <button class="btn btn-danger w-100 mt-3" onclick="eliminarCuenta()">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <a href="Pagina_Admin.html" class="btn btn-outline-secondary">Volver al Panel</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navegación directa para Cuentas
+        function crearCuenta() {
+            window.location.href = "Creacion_Cuenta.html";
+        }
+        function modificarCuenta() {
+            window.location.href = "Modificacion_Cuenta.html";
+        }
+        function eliminarCuenta() {
+            window.location.href = "Eliminacion_Cuenta.html";
+        }
+    </script>
+</body>
+</html>

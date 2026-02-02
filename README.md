@@ -61,7 +61,6 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
   - Permisos:
       - Gestión completa (CRUD) de equipos, jugadores y cuerpo técnico
       - Creación y edición de partidos y eventos
-      - Publicación y moderación de noticias
       - Gestión de usuarios
   - Es dueño de:
       - Todas las entidades del sistema

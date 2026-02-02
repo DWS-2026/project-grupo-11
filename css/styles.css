@@ -1,0 +1,103 @@
+/* Variables de color y diseño */
+:root {
+    --bg-1: #0f172a; /* deep navy */
+    --bg-2: #0b2545; /* darker blue */
+    --card-bg: rgba(255,255,255,0.06);
+    --card-glow: rgba(59,130,246,0.16);
+    --accent: #3b82f6; /* blue */
+    --accent-2: #06b6d4; /* teal */
+    --muted: rgba(255,255,255,0.75);
+    --glass: rgba(255,255,255,0.04);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+}
+/* Esto cambiará el título de cada opción a blanco */
+.option-card h5 {
+    color: #ffffff !important; 
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+/* También cambiaremos el texto descriptivo para que se lea mejor */
+.option-card p {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+/* Estilos globales del cuerpo */
+body.bg-light {
+    background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    color: #e6eef8;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Contenedor principal con efecto de cristal (Glassmorphism) */
+.container.py-5 {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    backdrop-filter: blur(6px);
+}
+
+/* Estilos de las tarjetas de opción */
+.card.option-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+}
+
+.option-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 40px rgba(11,37,85,0.55);
+    border-color: rgba(59,130,246,0.18);
+}
+
+.option-card.selected {
+    border: 2px solid var(--accent);
+    box-shadow: 0 20px 50px rgba(59,130,246,0.18), 0 6px 20px rgba(11,37,85,0.45);
+    transform: translateY(-8px);
+    background: linear-gradient(180deg, rgba(59,130,246,0.06), rgba(6,182,212,0.03));
+}
+
+/* Iconos dentro de las tarjetas */
+.option-icon {
+    font-size: 1.5rem;
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(2,6,23,0.4);
+}
+
+/* Colores específicos para los iconos */
+/* Colores corregidos para que coincidan con tu HTML */
+.option-card[data-option="manage-users"] .option-icon { background: linear-gradient(180deg,#93c5fd,#3b82f6); color: white; }
+.option-card[data-option="manage-matchs"] .option-icon { background: linear-gradient(180deg,#fef08a,#f59e0b); color: #2b1500; }
+.option-card[data-option="manage-teams"] .option-icon { background: linear-gradient(180deg,#bbf7d0,#10b981); color: #04201a; }
+.option-card[data-option="return-home"] .option-icon { background: linear-gradient(180deg,#fde68a,#f97316); color: #2b1500; }
+/* Botones personalizados */
+#continueBtn.btn-primary {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border: none;
+    box-shadow: 0 10px 30px rgba(59,130,246,0.18);
+    transition: transform .12s, box-shadow .12s, opacity .12s;
+}
+
+#resetBtn {
+    border-color: rgba(255,255,255,0.08);
+    color: #e6eef8;
+}
+
+/* Modales con estilo oscuro */
+.modal-content {
+    background: linear-gradient(180deg, #1e293b, #0f172a);
+    color: #eaf6ff;
+    border: 1px solid rgba(255,255,255,0.04);
+}

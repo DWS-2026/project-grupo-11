@@ -1,123 +1,111 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin Options</title>
+    <title>Admin Options - FootLeague</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
-        .option-card { cursor: pointer; transition: transform .12s, box-shadow .12s; }
-        .option-card.selected { border: 2px solid #0d6efd; box-shadow: 0 4px 18px rgba(13,110,253,.15); transform: translateY(-4px); }
-        .option-icon { font-size: 2.2rem; }
+        .option-card h5 { color: #ffffff !important; font-weight: 600; }
+        .option-card p.text-muted { color: rgba(255, 255, 255, 0.7) !important; }
     </style>
 </head>
 <body class="bg-light">
     <div class="container py-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h4 mb-0">Admin Panel</h1>
-            <small class="text-muted">Choose one action</small>
+        <div class="mb-4">
+            <h1 class="h4 mb-0 text-white">Admin Panel</h1>
+            <small class="text-white-50">Selecciona una tarjeta para gestionar</small>
         </div>
 
         <div class="row g-3">
             <div class="col-md-6">
-                <div class="card option-card p-3" data-option="manage-users" tabindex="0" role="button" aria-pressed="false">
+                <div class="card option-card p-3" data-option="manage-users" role="button">
                     <div class="d-flex align-items-center">
-                        <div class="me-3 option-icon text-primary">👥</div>
+                        <div class="me-3 option-icon">👥</div>
                         <div>
-                            <h5 class="mb-1">Manage Users</h5>
-                            <p class="mb-0 text-muted">View, add, edit or remove users.</p>
+                            <h5 class="mb-1">Modificar Cuentas</h5>
+                            <p class="mb-0 text-muted">Gestión de usuarios.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <div class="card option-card p-3" data-option="manage-content" tabindex="0" role="button" aria-pressed="false">
+                <div class="card option-card p-3" data-option="manage-matchs" role="button">
                     <div class="d-flex align-items-center">
-                        <div class="me-3 option-icon text-success">📝</div>
+                        <div class="me-3 option-icon">📅</div>
                         <div>
-                            <h5 class="mb-1">Manage Content</h5>
-                            <p class="mb-0 text-muted">Create and edit pages, posts and media.</p>
+                            <h5 class="mb-1">Modificar Partidos</h5>
+                            <p class="mb-0 text-muted">Resultados y jornadas.</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mt-4 d-flex gap-2">
-            <button id="continueBtn" class="btn btn-primary" disabled>Continue</button>
-            <button id="resetBtn" class="btn btn-outline-secondary">Reset</button>
-        </div>
+            <div class="col-md-6">
+                <div class="card option-card p-3" data-option="manage-teams" role="button">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3 option-icon">⚽</div>
+                        <div>
+                            <h5 class="mb-1">Modificar Equipos</h5>
+                            <p class="mb-0 text-muted">Plantillas y escudos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Confirmation modal -->
-        <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Confirm Action</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p id="confirmText" class="mb-0"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="cancelModalBtn" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button id="confirmModalBtn" type="button" class="btn btn-primary">Proceed</button>
+            <div class="col-md-6">
+                <div class="card option-card p-3" data-option="return-home" role="button">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3 option-icon">🏠</div>
+                        <div>
+                            <h5 class="mb-1">Regresar</h5>
+                            <p class="mb-0 text-muted">Volver al inicio.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Simple selection logic
-        const optionCards = document.querySelectorAll('.option-card');
-        const continueBtn = document.getElementById('continueBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const confirmText = document.getElementById('confirmText');
-        const confirmModalEl = document.getElementById('confirmModal');
-        const confirmModal = new bootstrap.Modal(confirmModalEl);
-        const confirmModalBtn = document.getElementById('confirmModalBtn');
+        // Configuración de la alerta simple (Toast)
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            background: '#1e293b',
+            color: '#ffffff'
+        });
 
-        let selected = null;
+        const paths = {
+            'manage-users': 'modificar_cuentas.html',
+            'manage-matchs': 'modificar_partidos.html',
+            'manage-teams': 'modificar_equipos.html',
+            'return-home': '../index.html'
+        };
 
-        function updateSelection(card) {
-            optionCards.forEach(c => {
-                c.classList.toggle('selected', c === card);
-                c.setAttribute('aria-pressed', c === card ? 'true' : 'false');
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const option = card.getAttribute('data-option');
+                const nombre = card.querySelector('h5').innerText;
+
+                // Lanzar alerta simple y luego redirigir
+                Toast.fire({
+                    icon: 'success',
+                    title: `Abriendo: ${nombre}`
+                }).then(() => {
+                    window.location.href = paths[option];
+                });
             });
-            selected = card ? card.getAttribute('data-option') : null;
-            continueBtn.disabled = !selected;
-        }
-
-        optionCards.forEach(card => {
-            card.addEventListener('click', () => updateSelection(card));
-            card.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); updateSelection(card); }
-            });
         });
-
-        continueBtn.addEventListener('click', () => {
-            if (!selected) return;
-            const label = selected === 'manage-users' ? 'Manage Users' : 'Manage Content';
-            confirmText.textContent = `You selected "${label}". Do you want to proceed to the ${label.toLowerCase()} screen?`;
-            confirmModal.show();
-        });
-
-        confirmModalBtn.addEventListener('click', () => {
-            confirmModal.hide();
-            // Replace these actions with real navigation / function calls
-            if (selected === 'manage-users') {
-                // Example: window.location.href = '/admin/users.html';
-                alert('Proceeding to Manage Users (replace with real navigation).');
-            } else if (selected === 'manage-content') {
-                // Example: window.location.href = '/admin/content.html';
-                alert('Proceeding to Manage Content (replace with real navigation).');
-            }
-        });
-
-        resetBtn.addEventListener('click', () => updateSelection(null));
     </script>
 </body>
 </html>

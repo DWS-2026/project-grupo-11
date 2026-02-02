@@ -8,9 +8,19 @@
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body class="bg-light">
-    <div class="container py-5">
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container justify-content-end">
+            <div class="d-flex gap-2">
+                <a href="login.html" class="btn btn-outline-light btn-sm">Iniciar Sesión</a>
+                <a href="registration.html" class="btn btn-primary btn-sm" id="continueBtn">Registrarse</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
         <div class="mb-4 text-center">
-            <h1 class="h2 mb-0 text-white">Próximos Partidos</h1>
+            <h1 class="h2 mb-0 text-white fw-bold">Próximos Partidos</h1>
             <small class="text-white-50">Temporada 2026</small>
         </div>
 
@@ -29,8 +39,22 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="row g-3 mt-4">
+            <div class="col-6">
+                <div class="card option-card p-3 text-center" data-option="go-login">
+                    <h6 class="text-white mb-0">¿Ya tienes cuenta?</h6>
+                    <small class="text-muted">Login</small>
+                </div>
             </div>
+            <div class="col-6">
+                <div class="card option-card p-3 text-center" data-option="go-register">
+                    <h6 class="text-white mb-0">¿Eres nuevo?</h6>
+                    <small class="text-muted">Registro</small>
+                </div>
+            </div>
+        </div>
 
         <div class="mt-5 text-center">
             <a href="player-ratings.html" class="btn btn-primary" id="continueBtn">Valorar Jugadores</a>
@@ -38,10 +62,19 @@
     </div>
 
     <script>
-        // Interaction logic for match details
+        // Updated paths for navigation
+        const navigationPaths = {
+            'match-1': 'match-details.html',
+            'go-login': 'login.html',
+            'go-register': 'registration.html'
+        };
+
         document.querySelectorAll('.option-card').forEach(card => {
             card.addEventListener('click', () => {
-                window.location.href = 'match-details.html';
+                const option = card.getAttribute('data-option');
+                if (navigationPaths[option]) {
+                    window.location.href = navigationPaths[option];
+                }
             });
         });
     </script>

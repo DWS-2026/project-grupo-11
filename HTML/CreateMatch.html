@@ -13,20 +13,42 @@
             <h2 class="text-center mb-4 text-white">Registrar Partido y Sucesos</h2>
             
             <form id="createMatchForm">
-                <div class="row mb-4">
+                <div class="row mb-3">
                     <div class="col-md-6 mb-3">
                         <label class="form-label text-info">Equipo Local</label>
-                        <input type="text" class="form-control" id="homeTeam" placeholder="Ej: Real Madrid" required oninput="updateLabels()">
+                        <input type="text" class="form-control" id="homeTeam" placeholder="Ej: Real Madrid" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label text-info">Equipo Visitante</label>
-                        <input type="text" class="form-control" id="awayTeam" placeholder="Ej: FC Barcelona" required oninput="updateLabels()">
+                        <input type="text" class="form-control" id="awayTeam" placeholder="Ej: FC Barcelona" required>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-info">Fecha</label>
+                        <input type="date" class="form-control" id="matchDate" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-info">Hora de inicio</label>
+                        <input type="time" class="form-control" id="matchTime" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-info">Temporal (Clima)</label>
+                        <select class="form-select" id="weather" required>
+                            <option value="" disabled selected>Selecciona...</option>
+                            <option value="Despejado">☀️ Despejado</option>
+                            <option value="Nublado">☁️ Nublado</option>
+                            <option value="Lluvia">🌧️ Lluvia</option>
+                            <option value="Nieve">❄️ Nieve</option>
+                            <option value="Viento">💨 Viento</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="text-center mb-4 p-3 rounded" style="background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8;">
-                    <h5 class="text-white mb-2">Marcador en Vivo</h5>
-                    <div class="h2 text-info fw-bold">
+                    <h5 class="text-white mb-2 small text-uppercase">Marcador en Vivo</h5>
+                    <div class="h2 text-info fw-bold mb-0">
                         <span id="displayHomeScore">0</span> - <span id="displayAwayScore">0</span>
                     </div>
                 </div>
@@ -41,7 +63,7 @@
 
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary p-3 fw-bold">Guardar Partido y Sucesos</button>
-                    <a href="index.html" class="btn btn-return text-center py-2">Cancelar</a>
+                    <a href="Match_Management_Screen.html" class="btn btn-return text-center py-2">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -62,26 +84,25 @@
                     <option value="⚽">⚽ Gol</option>
                     <option value="🟨">🟨 Tarjeta Amarilla</option>
                     <option value="🟥">🟥 Tarjeta Roja</option>
-                    <option value="🟢">🟢 ➡️ Entra Jugador</option>
-                    <option value="🔴">⬅️ 🔴 Sale Jugador</option>
+                    <option value="🟢">🟢 ➡️ Entra</option>
+                    <option value="🔴">🔴 ⬅️ Sale</option>
                 </select>
             </div>
             <div class="col-md-2">
                 <label class="form-label text-white-50 small">Minuto</label>
-                <input type="number" class="form-control form-control-sm" placeholder="45" min="1" max="120">
+                <input type="number" class="form-control form-control-sm" placeholder="min" min="1" max="120">
             </div>
             <div class="col-md-4">
                 <label class="form-label text-white-50 small">Jugador (Nombre y Dorsal)</label>
-                <input type="text" class="form-control form-control-sm" placeholder="Vinícius Jr (7)">
+                <input type="text" class="form-control form-control-sm" placeholder="Nombre (00)">
             </div>
             <div class="col-md-2">
-                <button type="button" class="btn btn-danger btn-sm w-100" onclick="this.parentElement.parentElement.remove(); calculateScore();">Eliminar</button>
+                <button type="button" class="btn btn-danger btn-sm w-100" onclick="this.parentElement.parentElement.remove(); calculateScore();">X</button>
             </div>
         </div>
     </template>
 
     <script>
-        // Añade un nuevo evento
         function addEventField() {
             const container = document.getElementById('eventsContainer');
             const template = document.getElementById('eventTemplate');
@@ -90,29 +111,20 @@
             calculateScore();
         }
 
-        // Calcula el marcador basándose en los eventos de tipo "Gol"
         function calculateScore() {
             let homeScore = 0;
             let awayScore = 0;
-            
             const events = document.querySelectorAll('.event-row');
             events.forEach(row => {
                 const type = row.querySelector('.event-type').value;
                 const team = row.querySelector('.team-selector').value;
-
                 if (type === "⚽") {
                     if (team === "local") homeScore++;
                     else awayScore++;
                 }
             });
-
             document.getElementById('displayHomeScore').innerText = homeScore;
             document.getElementById('displayAwayScore').innerText = awayScore;
-        }
-
-        // (Opcional) Actualiza nombres visuales si quieres que el select diga el nombre del equipo
-        function updateLabels() {
-            // Esta función podría mejorar la UI cambiando "Local" por el nombre real escrito arriba
         }
 
         window.onload = addEventField;
@@ -120,19 +132,18 @@
         document.getElementById('createMatchForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const finalScore = document.getElementById('displayHomeScore').innerText + " - " + document.getElementById('displayAwayScore').innerText;
+            const weather = document.getElementById('weather').value;
             
-            console.log("Saving Match. Final Score: " + finalScore);
-
             Swal.fire({
                 title: '¡Partido Guardado!',
-                text: 'Resultado final: ' + finalScore,
+                text: `Resultado: ${finalScore}. Clima: ${weather}`,
                 icon: 'success',
                 background: '#1e293b',
                 color: '#ffffff',
                 timer: 2000,
                 showConfirmButton: false
             }).then(() => {
-                window.location.href = 'match-details.html';
+                window.location.href = 'ModifyMatch.html';
             });
         });
     </script>

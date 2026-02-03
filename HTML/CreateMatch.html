@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Partido y Eventos - FootLeague</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="form-container">
+            <h2 class="text-center mb-4 text-white">Registrar Partido y Sucesos</h2>
+            
+            <form id="createMatchForm">
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-info">Equipo Local</label>
+                        <input type="text" class="form-control" id="homeTeam" placeholder="Ej: Real Madrid" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-info">Equipo Visitante</label>
+                        <input type="text" class="form-control" id="awayTeam" placeholder="Ej: FC Barcelona" required>
+                    </div>
+                </div>
+
+                <div class="p-3 mb-4 rounded" style="background: rgba(255,255,255,0.05)">
+                    <h6 class="text-white border-bottom border-secondary pb-2 mb-3">Añadir Sucesos del Partido</h6>
+                    
+                    <div id="eventsContainer">
+                        </div>
+
+                    <button type="button" class="btn btn-outline-info btn-sm mt-2" onclick="addEventField()">
+                        + Añadir Suceso (Gol, Tarjeta...)
+                    </button>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary p-3 fw-bold">Guardar Partido y Sucesos</button>
+                    <a href="index.html" class="btn btn-return text-center py-2">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <template id="eventTemplate">
+        <div class="event-row row g-2 mb-3 align-items-end border-start border-info ps-2">
+            <div class="col-md-3">
+                <label class="form-label text-white-50 small">Tipo</label>
+                <select class="form-select form-select-sm">
+                    <option value="⚽">⚽ Gol</option>
+                    <option value="🟨">🟨 Tarjeta Amarilla</option>
+                    <option value="🟥">🟥 Tarjeta Roja</option>
+                    <option value="🔄">🔄 Cambio</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label text-white-50 small">Minuto</label>
+                <input type="number" class="form-control form-control-sm" placeholder="45" min="1" max="120">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label text-white-50 small">Jugador (Nombre y Dorsal)</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Vinícius Jr (7)">
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-danger btn-sm w-100" onclick="this.parentElement.parentElement.remove()">Eliminar</button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // Function to add a new event field dynamically
+        function addEventField() {
+            const container = document.getElementById('eventsContainer');
+            const template = document.getElementById('eventTemplate');
+            const clone = template.content.cloneNode(true);
+            container.appendChild(clone);
+        }
+
+        // Add first event field by default
+        window.onload = addEventField;
+
+        document.getElementById('createMatchForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log("Saving Match with Events (Entity 4 & 5)");
+
+            Swal.fire({
+                title: '¡Partido y Sucesos Creados!',
+                text: 'Los datos se han vinculado correctamente.',
+                icon: 'success',
+                background: '#1e293b',
+                color: '#ffffff',
+                timer: 1500,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = 'match-details.html';
+            });
+        });
+    </script>
+</body>
+</html>

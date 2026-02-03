@@ -22,7 +22,7 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 
 1. **[Entidad 1]**  Usuario (Periodista): Almacena la información del perfil del usuario (email, contraseña) y el equipo favorito sobre el que ejerce como periodista, pudiendo valorar la actuación de los jugadores en los partidos de dicho equipo.
 2. **[Entidad 2]**: Equipo: Información del club (Nombre, Escudo, Estadio) y sus estadísticas acumuladas (puntos, goles).
-3. **[Entidad 3]**: Partido: El evento central que une a dos equipos, con fecha, jornada, marcador final, campo y las alineaciones iniciales de ambos equipos.
+3. **[Entidad 3]**: Partido: El evento central que une a dos equipos, con fecha, marcador final y estadio.
 4. **[Entidad 4]**: Evento de Partido: Registro de cada hito (Gol, Tarjeta Roja/Amarilla, Cambio) vinculado a un minuto y a un jugador (Nombre + Dorsal).
 5. **[Entidad 5]**: Valoración: Almacena los comentarios y puntuaciones que los usuarios registrados otorgan a los jugadores. Incluye el texto de la opinión y la calificación numérica.
 
@@ -30,10 +30,8 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 - Usuario - Equipo (N:1): Muchos usuarios pueden tener el mismo "Equipo Favorito".
 - Partido - Evento (1:N): Un solo partido puede generar múltiples eventos (ej: 3 goles y 2 tarjetas).
 - Equipo - Partido (1:N): Un equipo participa en muchos partidos a lo largo del torneo (ya sea como local o visitante).
-- Equipo - Jugador (1:N): Un equipo tiene muchos jugadores, pero un jugador (en el momento actual de la liga) solo pertenece a un equipo.
 - Usuario - Valoración (1:N): Un usuario puede escribir muchas valoraciones, pero cada valoración pertenece a un único autor.
-- XXXX - Valoración (1:N): Un XXXX puede recibir muchas valoraciones de distintos usuarios a lo largo del XXXX.
-- Partido - Valoración (1:N): Una valoración está asociada a la actuación de un jugador en un partido determinado.
+- Evento - Valoración (1:N): Un evento puede recibir muchas valoraciones de distintos usuarios.
 
 ### **Permisos de los Usuarios**
 Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:

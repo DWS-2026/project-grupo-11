@@ -10,21 +10,27 @@
 <body class="bg-light">
     <div class="container py-5">
         <div class="form-container">
-            <h1 class="h4 text-white text-center mb-4">Valorar Jugador</h1>
+            <h1 class="h4 text-white text-center mb-4">Valorar Evento del Partido</h1>
             
             <form>
                 <div class="mb-3">
-                    <label class="form-label">Seleccionar Jugador</label>
-                    <select class="form-control search-box">
-                        <option>Vinícius Jr.</option>
-                        <option>Jude Bellingham</option>
-                        <option>Lewandowski</option>
+                    <label class="form-label">Seleccionar Evento</label>
+                    <select class="form-control search-box text-white bg-dark">
+                        <option>⚽ Gol - Real Madrid (Min 24)</option>
+                        <option>🟨 Tarjeta Amarilla - FC Barcelona (Min 40)</option>
+                        <option>⚽ Gol - FC Barcelona (Min 67)</option>
+                        <option>🟢 Cambio - FC Barcelona (Min 60)</option>
                     </select>
+                    <small class="text-white-50 mt-1 d-block">Solo aparecen eventos del partido seleccionado</small>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Puntuación (1-5)</label>
-                    <input type="range" class="form-range" min="1" max="5" id="playerRating">
+                    <label class="form-label">Tu Puntuación (1-5)</label>
+                    <input type="range" class="form-range" min="1" max="5" id="eventRating">
+                    <div class="d-flex justify-content-between text-white-50 small">
+                        <span>Muy mal</span>
+                        <span>Excelente</span>
+                    </div>
                 </div>
 
                 <div class="mb-4">
@@ -34,6 +40,7 @@
 
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary" id="continueBtn">Enviar Valoración</button>
+                    <a href="my-ratings.html" class="btn btn-outline-info btn-sm py-2">Ver mis valoraciones anteriores</a>
                     <a href="index.html" class="btn btn-return text-center py-2">Cancelar</a>
                 </div>
             </form>

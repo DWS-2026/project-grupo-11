@@ -25,7 +25,7 @@
                     <form id="searchForm">
                         <div class="mb-4">
                             <label class="form-label text-info">Correo Electrónico</label>
-                            <input type="email" class="form-control form-control-lg" id="searchEmail" placeholder="ejemplo@prensa.com" required>
+                            <input type="email" class="form-control form-control-lg" id="searchEmail" placeholder="juan.perez@prensa.com" required>
                         </div>
 
                         <div class="d-grid gap-2">
@@ -55,9 +55,9 @@
             const emailInput = document.getElementById('searchEmail').value.toLowerCase();
             
             // Simulation of a database (Mock Data)
+            // FIXED: Added missing bracket and corrected the page destination
             const registeredUsers = [
-                { email: "juan.perez@prensa.com", page: "EditarPerfilJuan.html" },
-                { email: "admin@footleague.com", page: "AdminProfile.html" }
+                { email: "juan.perez@prensa.com", page: "edit-profile.html" }
             ];
 
             // Internal log in English
@@ -76,7 +76,7 @@
                     timer: 1500,
                     showConfirmButton: false
                 }).then(() => {
-                    // Redirect based on the found email
+                    // Redirect to edit-profile.html
                     window.location.href = foundUser.page;
                 });
             } else {

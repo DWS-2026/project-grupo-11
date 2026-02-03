@@ -3,108 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Usuarios - FootLeague</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Mi Perfil - Periodista Liga Pro</title>
+
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="../css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-light">
 
-    <div class="container py-5">
-        <div class="form-container" style="max-width: 900px;">
-            <div class="text-center mb-4">
-                <h2 class="text-white fw-bold">Gestión de Usuarios</h2>
-                <p class="text-white-50">Lista de periodistas registrados en el sistema</p>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">⚽ Liga Pro</a>
+            <div class="navbar-nav ms-auto d-flex align-items-center">
+                <span class="navbar-text me-3">Hola, Juan Pérez</span>
+                <a href="index.html" class="btn btn-outline-light btn-sm">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0 text-center p-4">
+                    <div class="mb-3">
+                        <img src="../images/Juan_Perez_Avatar.PNG" class="rounded-circle img-thumbnail" alt="Avatar de Juan Pérez" style="width: 150px; height: 150px; object-fit: cover;">
+                    </div>
+                    <h3 class="card-title h4">Juan Pérez</h3>
+                    <p class="text-muted">Periodista Deportivo</p>
+                    <hr>
+                    <div class="text-start">
+                        <p><strong>Email:</strong> juan.perez@prensa.com</p>
+                        <p><strong>Equipo Favorito:</strong> <span class="badge bg-primary">Parla FC</span></p>
+                    </div>
+                    <a href="edit-profile.html" class="btn btn-outline-primary btn-sm w-100 mt-3">Editar Perfil</a>
+                </div>
+                <div class="mt-4 p-3 bg-warning bg-opacity-10 border border-warning rounded">
+                    <p class="small mb-2 text-warning-emphasis fw-bold">Modo Administrador</p>
+                    <a href="Admin_Page.html" class="btn btn-warning btn-sm w-100">Ir al Panel de Control</a>
+                </div>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-dark table-hover align-middle border-secondary">
-                    <thead class="text-info">
-                        <tr>
-                            <th>Avatar</th>
-                            <th>Nombre y Apellidos</th>
-                            <th>Correo Electrónico</th>
-                            <th>Equipo</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody">
-                        <tr>
-                            <td>
-                               <img src="../images/Juan_Perez_Avatar.PNG" 
-                                     alt="Jaun perez" style="width: 45px; height: 45px; object-fit: contain;">
-                            </td>
-                            </td>
-                            <td class="text-white">Juan Pérez</td>
-                            <td class="text-white-50">juan.perez@prensa.com</td>
-                            <td><span class="badge bg-primary">Parla FC</span></td>
-                            <td class="text-center">
-                                <div class="d-flex justify-content-center gap-2">
-                                    <button class="btn btn-sm btn-warning" onclick="editUser('edit-profile.html')">
-                                        Editar
-                                    </button>
-                                    <button class="btn btn-sm btn-danger" onclick="deleteUser('Juan Pérez')">
-                                        Borrar
-                                    </button>
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">Mis Últimas Valoraciones</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex mb-4 pb-3 border-bottom">
+                            <div class="flex-shrink-0">
+                                <img src="https://via.placeholder.com/50" class="rounded" alt="Jugador">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="mb-1">García (Dorsal 9) - Parla FC</h6>
+                                    <span class="badge bg-warning text-dark">⭐ 4.25</span>
                                 </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                                <p class="small text-muted mb-1">Partido vs Madrid Sur - 12/05/2024</p>
+                                <p class="mb-0 italic text-secondary">"Excelente movilidad en el área y definición clínica en el segundo gol."</p>
+                            </div>
+                        </div>
 
-            <div class="d-grid gap-2 mt-4">
-                <a href="Account_Management_Screen.html" class="btn btn-outline-secondary">
-                    Volver al Panel de Control
-                </a>
+                        <div class="d-flex mb-2">
+                            <div class="flex-shrink-0">
+                                <img src="https://via.placeholder.com/50" class="rounded" alt="Jugador">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="mb-1">López (Portero) - Parla FC</h6>
+                                    <span class="badge bg-warning text-dark">⭐ 3.0</span>
+                                </div>
+                                <p class="small text-muted mb-1">Partido vs Leganés - 05/05/2024</p>
+                                <p class="mb-0 italic text-secondary">"Seguro por alto, aunque pudo hacer más en el tiro libre."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white text-center">
+                        <a href="my-ratings.html" class="text-decoration-none small">Ver todas mis valoraciones</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        /**
-         * Logic for user management actions.
-         * Using English for internal function names and logic.
-         */
-        
-        function editUser(page) {
-            Swal.fire({
-                title: 'Cargando perfil...',
-                timer: 800,
-                background: '#1e293b',
-                color: '#ffffff',
-                showConfirmButton: false,
-                didOpen: () => { Swal.showLoading(); }
-            }).then(() => {
-                window.location.href = page;
-            });
-        }
-
-        function deleteUser(userName) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: `Vas a eliminar a ${userName}. Esta acción no se puede deshacer.`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#64748b',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                background: '#1e293b',
-                color: '#ffffff'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Eliminado',
-                        text: 'El usuario ha sido borrado.',
-                        icon: 'success',
-                        background: '#1e293b',
-                        color: '#ffffff'
-                    });
-                    // Aquí iría la lógica para quitar la fila de la tabla
-                }
-            });
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Cuentas - FootLeague</title>
+    <title>Listado de Usuarios - FootLeague</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -11,85 +11,100 @@
 <body class="bg-light">
 
     <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow border-0 p-4" style="background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1) !important;">
-                    <div class="text-center mb-4">
-                        <div class="option-icon mx-auto mb-3" style="background: #38bdf8; color: white; width: 60px; height: 60px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
-                            🔍
-                        </div>
-                        <h2 class="text-white fw-bold">Buscar Usuario</h2>
-                        <p class="text-white-50">Introduce el correo para modificar el perfil</p>
-                    </div>
+        <div class="form-container" style="max-width: 900px;">
+            <div class="text-center mb-4">
+                <h2 class="text-white fw-bold">Gestión de Usuarios</h2>
+                <p class="text-white-50">Lista de periodistas registrados en el sistema</p>
+            </div>
 
-                    <form id="searchForm">
-                        <div class="mb-4">
-                            <label class="form-label text-info">Correo Electrónico</label>
-                            <input type="email" class="form-control form-control-lg" id="searchEmail" placeholder="juan.perez@prensa.com" required>
-                        </div>
+            <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle border-secondary">
+                    <thead class="text-info">
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Nombre y Apellidos</th>
+                            <th>Correo Electrónico</th>
+                            <th>Equipo</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <tr>
+                            <td>
+                               <img src="../images/Juan_Perez_Avatar.PNG" 
+                                     alt="Jaun perez" style="width: 45px; height: 45px; object-fit: contain;">
+                            </td>
+                            </td>
+                            <td class="text-white">Juan Pérez</td>
+                            <td class="text-white-50">juan.perez@prensa.com</td>
+                            <td><span class="badge bg-primary">Parla FC</span></td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button class="btn btn-sm btn-warning" onclick="editUser('edit-profile.html')">
+                                        Editar
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteUser('Juan Pérez')">
+                                        Borrar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">
-                                Buscar Cuenta
-                            </button>
-                            <a href="Account_Management_Screen.html" class="btn btn-outline-secondary">
-                                Volver al Panel
-                            </a>
-                        </div>
-                    </form>
-                </div>
+            <div class="d-grid gap-2 mt-4">
+                <a href="Account_Management_Screen.html" class="btn btn-outline-secondary">
+                    Volver al Panel de Control
+                </a>
             </div>
         </div>
     </div>
 
     <script>
         /**
-         * Account Search Simulation Logic.
-         * Code quality: Using English for variables and comments.
+         * Logic for user management actions.
+         * Using English for internal function names and logic.
          */
-        const searchForm = document.getElementById('searchForm');
+        
+        function editUser(page) {
+            Swal.fire({
+                title: 'Cargando perfil...',
+                timer: 800,
+                background: '#1e293b',
+                color: '#ffffff',
+                showConfirmButton: false,
+                didOpen: () => { Swal.showLoading(); }
+            }).then(() => {
+                window.location.href = page;
+            });
+        }
 
-        searchForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            const emailInput = document.getElementById('searchEmail').value.toLowerCase();
-            
-            // Simulation of a database (Mock Data)
-            // FIXED: Added missing bracket and corrected the page destination
-            const registeredUsers = [
-                { email: "juan.perez@prensa.com", page: "edit-profile.html" }
-            ];
-
-            // Internal log in English
-            console.log("Searching for user: " + emailInput);
-
-            // Find if the user exists in our local list
-            const foundUser = registeredUsers.find(user => user.email === emailInput);
-
-            if (foundUser) {
-                Swal.fire({
-                    title: '¡Usuario Encontrado!',
-                    text: 'Redirigiendo al perfil de ' + emailInput,
-                    icon: 'success',
-                    background: '#1e293b',
-                    color: '#ffffff',
-                    timer: 1500,
-                    showConfirmButton: false
-                }).then(() => {
-                    // Redirect to edit-profile.html
-                    window.location.href = foundUser.page;
-                });
-            } else {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'No se ha encontrado ninguna cuenta con ese correo.',
-                    icon: 'error',
-                    background: '#1e293b',
-                    color: '#ffffff',
-                    confirmButtonColor: '#38bdf8'
-                });
-            }
-        });
+        function deleteUser(userName) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: `Vas a eliminar a ${userName}. Esta acción no se puede deshacer.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                background: '#1e293b',
+                color: '#ffffff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Eliminado',
+                        text: 'El usuario ha sido borrado.',
+                        icon: 'success',
+                        background: '#1e293b',
+                        color: '#ffffff'
+                    });
+                    // Aquí iría la lógica para quitar la fila de la tabla
+                }
+            });
+        }
     </script>
 </body>
 </html>

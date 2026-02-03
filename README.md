@@ -22,19 +22,17 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 
 1. **[Entidad 1]**  Usuario (Periodista): Almacena la información del perfil del usuario (email, contraseña) y el equipo favorito sobre el que ejerce como periodista, pudiendo valorar la actuación de los jugadores en los partidos de dicho equipo.
 2. **[Entidad 2]**: Equipo: Información del club (Nombre, Escudo, Estadio) y sus estadísticas acumuladas (puntos, goles).
-3. **[Entidad 3]**: Jugador: Ficha técnica de los integrantes (Nombre, Dorsal, Posición, Equipo al que pertenecen).
-4. **[Entidad 4]**: Partido: El evento central que une a dos equipos, con fecha, jornada, marcador final, campo y las alineaciones iniciales de ambos equipos.
-5. **[Entidad 5]**: Evento de Partido: Registro de cada hito (Gol, Tarjeta Roja/Amarilla, Cambio) vinculado a un minuto y a un jugador.
-6. **[Entidad 6]**: Valoración: Almacena los comentarios y puntuaciones que los usuarios registrados otorgan a los jugadores. Incluye el texto de la opinión y la calificación numérica.
+3. **[Entidad 3]**: Partido: El evento central que une a dos equipos, con fecha, jornada, marcador final, campo y las alineaciones iniciales de ambos equipos.
+4. **[Entidad 4]**: Evento de Partido: Registro de cada hito (Gol, Tarjeta Roja/Amarilla, Cambio) vinculado a un minuto y a un jugador (Nombre + Dorsal).
+5. **[Entidad 5]**: Valoración: Almacena los comentarios y puntuaciones que los usuarios registrados otorgan a los jugadores. Incluye el texto de la opinión y la calificación numérica.
 
 **Relaciones entre entidades:**
 - Usuario - Equipo (N:1): Muchos usuarios pueden tener el mismo "Equipo Favorito".
-- Jugador - Evento (1:N): Un jugador puede marcar varios goles o recibir tarjetas en diferentes partidos.
 - Partido - Evento (1:N): Un solo partido puede generar múltiples eventos (ej: 3 goles y 2 tarjetas).
 - Equipo - Partido (1:N): Un equipo participa en muchos partidos a lo largo del torneo (ya sea como local o visitante).
 - Equipo - Jugador (1:N): Un equipo tiene muchos jugadores, pero un jugador (en el momento actual de la liga) solo pertenece a un equipo.
 - Usuario - Valoración (1:N): Un usuario puede escribir muchas valoraciones, pero cada valoración pertenece a un único autor.
-- Jugador - Valoración (1:N): Un jugador puede recibir muchas valoraciones de distintos usuarios a lo largo del torneo.
+- XXXX - Valoración (1:N): Un XXXX puede recibir muchas valoraciones de distintos usuarios a lo largo del XXXX.
 - Partido - Valoración (1:N): Una valoración está asociada a la actuación de un jugador en un partido determinado.
 
 ### **Permisos de los Usuarios**
@@ -43,7 +41,7 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
 * **Usuario Anónimo**: 
   - Permisos:
       - Visualizar resultados, partidos y clasificaciones
-      - Consultar equipos, jugadores y estadísticas
+      - Consultar equipos, y estadísticas
       - Acceder al panel de novedades
       - Registrarse en la aplicación
   - No es dueño de ninguna entidad
@@ -52,14 +50,14 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
   - Permisos:
       - Todas las funcionalidades del usuario anónimo
       - Gestión de su perfil y selección de equipo favorito
-      - Valorar jugadores en partidos
+      - Valorar XXXX en partidos
   - Es dueño de:
       - Su perfil de usuario
-      - Sus valoraciones a jugadores
+      - Sus valoraciones a XXXX
 
 * **Administrador**: 
   - Permisos:
-      - Gestión completa (CRUD) de equipos, jugadores y cuerpo técnico
+      - Gestión completa (CRUD) de equipos
       - Creación y edición de partidos y eventos
       - Gestión de usuarios
   - Es dueño de:
@@ -69,7 +67,6 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
 Indicar qué entidades tendrán asociadas una o varias imágenes:
 
 - **[Entidad 2]**: Equipo : Una imagen para el Escudo o Estandarte oficial del club, que se mostrará en la clasificación, en las fichas de partido y junto a las noticias relacionadas.
-- **[Entidad 3]**: Jugador: Una imagen de Ficha/Retrato para cada integrante, que se visualizará en la plantilla del equipo, en la tabla de goleadores y en el panel de valoraciones.
 - **[Entidad 1]**: Usuario: Una imagen de Avatar para el perfil del usuario, que aparecerá junto a sus reseñas y valoraciones de los partidos.
 
 ---

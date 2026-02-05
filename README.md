@@ -22,7 +22,7 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 
 1. **[Entidad 1]**  Usuario (Periodista): Almacena la información del perfil del usuario (email, contraseña) y el equipo favorito sobre el que ejerce como periodista, pudiendo valorar la actuación de los jugadores en los partidos de dicho equipo.
 2. **[Entidad 2]**: Equipo: Información del club (Nombre, Escudo, Estadio) y sus estadísticas acumuladas (puntos, goles).
-3. **[Entidad 3]**: Partido: El evento central que une a dos equipos, con fecha, jornada, marcador final, campo y las alineaciones iniciales de ambos equipos.
+3. **[Entidad 3]**: Partido: El evento central que une a dos equipos, con fecha, marcador final y estadio.
 4. **[Entidad 4]**: Evento de Partido: Registro de cada hito (Gol, Tarjeta Roja/Amarilla, Cambio) vinculado a un minuto y a un jugador (Nombre + Dorsal).
 5. **[Entidad 5]**: Valoración: Almacena los comentarios y puntuaciones que los usuarios registrados otorgan a los jugadores. Incluye el texto de la opinión y la calificación numérica.
 
@@ -30,10 +30,8 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 - Usuario - Equipo (N:1): Muchos usuarios pueden tener el mismo "Equipo Favorito".
 - Partido - Evento (1:N): Un solo partido puede generar múltiples eventos (ej: 3 goles y 2 tarjetas).
 - Equipo - Partido (1:N): Un equipo participa en muchos partidos a lo largo del torneo (ya sea como local o visitante).
-- Equipo - Jugador (1:N): Un equipo tiene muchos jugadores, pero un jugador (en el momento actual de la liga) solo pertenece a un equipo.
 - Usuario - Valoración (1:N): Un usuario puede escribir muchas valoraciones, pero cada valoración pertenece a un único autor.
-- XXXX - Valoración (1:N): Un XXXX puede recibir muchas valoraciones de distintos usuarios a lo largo del XXXX.
-- Partido - Valoración (1:N): Una valoración está asociada a la actuación de un jugador en un partido determinado.
+- Evento - Valoración (1:N): Un evento puede recibir muchas valoraciones de distintos usuarios.
 
 ### **Permisos de los Usuarios**
 Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:
@@ -95,15 +93,15 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 ### **Participación de Miembros en la Práctica 1**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - Jaime Tejero Fernández**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+El alumno Jaime Tejero será encargado de la parte de administrador de la página web, esto incluye creación y modificación de equipos, evento y usuarios
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
+|1| Creación inicio de Pagina De opciones de Administrador provisional para crear un esqueleto sobre el que trabajar (https://github.com/DWS-2026/project-grupo-11/commit/7baa33387f82ab0e3b71a1e8c4ef68cd4637cbac)  | [Pagina_Admin.html](https://github.com/DWS-2026/project-grupo-11/blob/7baa33387f82ab0e3b71a1e8c4ef68cd4637cbac/HTML/Pagina_Admin.html)   |
+|2| [Añadida navegación con SweetAlert debido a conflictos con el CSS, Creacion del CSS comun para la pagina y finalizacion de la pagina panel de administrador añadiendo las opciones necesarias](https://github.com/DWS-2026/project-grupo-11/commit/9897a534d0fa390c21d2f0a6817b2be7ef25349c)  | [Pagina_Admin.html](https://github.com/DWS-2026/project-grupo-11/blob/9897a534d0fa390c21d2f0a6817b2be7ef25349c/HTML/Pagina_Admin.html)[style.css](https://github.com/DWS-2026/project-grupo-11/blob/9897a534d0fa390c21d2f0a6817b2be7ef25349c/css/styles.css)   |
+|3| [](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
 |4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
 |5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
 

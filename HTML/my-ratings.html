@@ -19,38 +19,51 @@
     </nav>
 
     <div class="container py-4">
-        <div class="form-container" style="max-width: 800px;"> <h1 class="h4 text-white text-center mb-4 border-bottom pb-3">Mi Historial de Valoraciones</h1>
+        <div class="form-container" style="max-width: 800px;">
+            <h1 class="h4 text-white text-center mb-4 border-bottom pb-3">Historial de Eventos Valorados</h1>
             
             <div class="card option-card p-3 mb-3">
                 <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <h6 class="text-white mb-1">Vinícius Jr. (Real Madrid)</h6>
-                        <small class="text-white-50">Partido: Real Madrid vs Barcelona</small>
-                        <p class="mt-2 text-muted mb-0 italic small">"Increíble regate en el primer gol, muy decisivo."</p>
+                    <div class="d-flex">
+                        <div class="me-3 h2">⚽</div>
+                        <div>
+                            <h6 class="text-white mb-1">Gol - Real Madrid (2-1)</h6>
+                            <small class="text-white-50">Partido: Real Madrid vs Barcelona (01/02/2026)</small>
+                            <p class="mt-2 text-muted mb-0 small italic">"Espectacular remate de volea, totalmente imparable."</p>
+                        </div>
                     </div>
                     <div class="text-end">
                         <div class="text-warning">⭐⭐⭐⭐⭐</div>
-                        <small class="text-white-50 d-block mt-1">02 Feb 2026</small>
+                        <small class="text-white-50 d-block mt-1">Hace 10 min</small>
+                        <button class="btn btn-sm btn-outline-danger mt-2" style="font-size: 0.7rem;">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
                     </div>
                 </div>
             </div>
 
             <div class="card option-card p-3 mb-3">
                 <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <h6 class="text-white mb-1">Jude Bellingham (Real Madrid)</h6>
-                        <small class="text-white-50">Partido: Real Madrid vs Barcelona</small>
-                        <p class="mt-2 text-muted mb-0 italic small">"Apareció cuando más se le necesitaba. MVP."</p>
+                    <div class="d-flex">
+                        <div class="me-3 h2">🟨</div>
+                        <div>
+                            <h6 class="text-white mb-1">Tarjeta Amarilla - FC Barcelona</h6>
+                            <small class="text-white-50">Partido: Real Madrid vs Barcelona (01/02/2026)</small>
+                            <p class="mt-2 text-muted mb-0 small italic">"Demasiado rigurosa, apenas hubo contacto en la jugada."</p>
+                        </div>
                     </div>
                     <div class="text-end">
-                        <div class="text-warning">⭐⭐⭐⭐</div>
-                        <small class="text-white-50 d-block mt-1">02 Feb 2026</small>
+                        <div class="text-warning">⭐⭐</div>
+                        <small class="text-white-50 d-block mt-1">Ayer</small>
+                        <button class="btn btn-sm btn-outline-danger mt-2" style="font-size: 0.7rem;">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
                     </div>
                 </div>
             </div>
 
             <div class="d-grid gap-2 mt-4">
-                <a href="player-ratings.html" class="btn btn-primary" id="continueBtn">Nueva Valoración</a>
+                <a href="player-ratings.html" class="btn btn-primary">Valorar otro evento</a>
                 <a href="index.html" class="btn btn-return text-center py-2">Volver al Inicio</a>
             </div>
         </div>

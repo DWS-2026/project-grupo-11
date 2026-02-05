@@ -71,7 +71,7 @@ Indicar qué entidades tendrán asociadas una o varias imágenes:
 ## 🛠 **Práctica 1: Maquetación de páginas con HTML y CSS**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://youtu.be/ix9c7odGRQ8)**
+📹 **[Enlace al vídeo en YouTube](https://youtu.be/y07HqKPgQR0)**
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Diagrama de Navegación**
@@ -104,24 +104,27 @@ El alumno Jaime Tejero será encargado de la parte de administrador de la págin
 |4| [Solucion Match_Management_Screen.html mal estructuradamain](https://github.com/DWS-2026/project-grupo-11/commit/fb30af35ca314d777db7023843fa7a652160ffd2)  | [Match_Management_Screen.html](https://github.com/DWS-2026/project-grupo-11/blob/fb30af35ca314d777db7023843fa7a652160ffd2/HTML/Match_Management_Screen.html)   |
 |5| [Actualizadas funcionalidades buscar equipo, regresar a pantalla de inicio (cambiada por regreso a perfil), buscar usuario, eliminar usuario, modificar usuario y modificar equipo junto a pagina FC Barcelona](https://github.com/DWS-2026/project-grupo-11/commit/492f5384391b20ea554a4fc9abaff5730bc03085)  | [Admin_Page.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/Admin_Page.html), [CreateAccount.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/CreateAccount.html), [DeleteAccount.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/DeleteAccount.html), [EditTeamBarcelona.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/EditTeamBarcelona.html), [ModifyAccount.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/ModifyAccount.html),  [ModifyTeam.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/ModifyTeam.html) |
 |6| [Actualizadas funcionalidades buscar usuario](https://github.com/DWS-2026/project-grupo-11/commit/44345cc115a1ac1ed7fef186b4767bc200ac04b1)  | [ModifyAccount.html](https://github.com/DWS-2026/project-grupo-11/commit/44345cc115a1ac1ed7fef186b4767bc200ac04b1/HTML/ModifyAccount.html)   |
-|7| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-|8| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-|9| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-|10| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|7| [Refactor: Sustituidos buscadores manuales por tablas de gestión dinámica en Usuarios y Equipos. Unificadas funciones de Modificar/Eliminar y añadido creacion de partidos y  registro de eventos (goles/tarjetas) en la creación de partidos](https://github.com/DWS-2026/project-grupo-11/commit/fb31e50506eb62d40e2b31902ef0bdde42d431ee#diff-64779b39e77a7af020f0fa5f8b836f1663c171b04808a488f5db96547c2ccad1)  | [](*)   |
+|8| [Actualizacion resultado dinamico en createMatch.html](https://github.com/DWS-2026/project-grupo-11/commit/c06134949427e37424c7cf0c0e742c380bae92a1#diff-bc4ad04f795105d8dc2153eb5aa19fa12b892a9b057f70d045496e85e8741ff5)  | [CreateMatch.html](https://github.com/DWS-2026/project-grupo-11/commit/c06134949427e37424c7cf0c0e742c380bae92a1#diff-bc4ad04f795105d8dc2153eb5aa19fa12b892a9b057f70d045496e85e8741ff5/HTML/CreateMatch.html)   |
+|9| [Finalizacion de la interfaz crear partidos y gestionar partidos](https://github.com/DWS-2026/project-grupo-11/commit/a1e9bcdbbf9bc94166b47ee5aca65902c6c9fe1d)  | [HTML/ModifyMatch.html](https://github.com/DWS-2026/project-grupo-11/commit/a1e9bcdbbf9bc94166b47ee5aca65902c6c9fe1d/HTML/ModifyMatch.html), *   |
+
+
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
+#### **Alumno 2 - Rubén Sánchez López**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Mi aportación se centró en desarrollar la interfaz pública y la experiencia del usuario, implementando la visualización dinámica de partidos, los eventos en tiempo real y el sistema de valoraciones.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Maquetación inicial de detalle de partido y eventos.](https://github.com/DWS-2026/project-grupo-11/commit/7eb85548ad3438347230cdfd8fb8433d675e794f)  | [partido-detalle.html](https://github.com/DWS-2026/project-grupo-11/commit/7eb85548ad3438347230cdfd8fb8433d675e794f#diff-b1f380592c7f5433ea91292b2726f95cce071aaf17589c48ec4f3f5c2147ef7f)   |
+|2| [Creada la home con lista de partidos y cards](https://github.com/DWS-2026/project-grupo-11/commit/6d310db6cb3baf4e0c625b1688dff5f18b9af659)  | [index.html](https://github.com/DWS-2026/project-grupo-11/commit/6d310db6cb3baf4e0c625b1688dff5f18b9af659#diff-c9caeff2e64b497a71a0cc0d2ba6f659ff3d653b2913129a6a4ee33d3cf8f868)   |
+|3| [Cambio de Liga Proyect a Liga Pro](https://github.com/DWS-2026/project-grupo-11/commit/8801129947b786fdf121545573446750e4631d0d)  | [player-ratings.html](https://github.com/DWS-2026/project-grupo-11/commit/8801129947b786fdf121545573446750e4631d0d#diff-e7cdad96aad0e5ff97fb92912a5800e7df8a6ea761dd181f97ec6a4f2b7b2a63)   |
+|4| [Add my-ratings view to show user feedback history](https://github.com/DWS-2026/project-grupo-11/commit/f5e299fa37ff787d713e53d8fe88c1f12f62b398)  | [my-ratings.html](https://github.com/DWS-2026/project-grupo-11/commit/f5e299fa37ff787d713e53d8fe88c1f12f62b398#diff-46aa992c5047cba950f8a2215b7ea5ec32e8bc4115cbfb9ea782d218bfed6eac)   |
+|5| [Refactor UI y navegación: Clasificación, Listado de Partidos y Valoración de Eventos](https://github.com/DWS-2026/project-grupo-11/commit/fc36d3b38e1c8ddc8172cfd24e1944bd866ed056#diff-9e4be119b5d8791da9edf9d513e3586795b3ece00680fa31d46c8860381738e6)  | [classification.html](https://github.com/DWS-2026/project-grupo-11/commit/fc36d3b38e1c8ddc8172cfd24e1944bd866ed056#diff-9e4be119b5d8791da9edf9d513e3586795b3ece00680fa31d46c8860381738e6), [index.html](https://github.com/DWS-2026/project-grupo-11/commit/fc36d3b38e1c8ddc8172cfd24e1944bd866ed056#diff-c9caeff2e64b497a71a0cc0d2ba6f659ff3d653b2913129a6a4ee33d3cf8f868), [match-list.html](https://github.com/DWS-2026/project-grupo-11/commit/fc36d3b38e1c8ddc8172cfd24e1944bd866ed056#diff-32197a9a681d4b0cff0f309c671bb8481f43fd908d1bb1d3516d01086f56196c), [my-ratings.html](https://github.com/DWS-2026/project-grupo-11/commit/fc36d3b38e1c8ddc8172cfd24e1944bd866ed056#diff-46aa992c5047cba950f8a2215b7ea5ec32e8bc4115cbfb9ea782d218bfed6eac), [player-ratings.html](https://github.com/DWS-2026/project-grupo-11/commit/fc36d3b38e1c8ddc8172cfd24e1944bd866ed056#diff-e7cdad96aad0e5ff97fb92912a5800e7df8a6ea761dd181f97ec6a4f2b7b2a63)   |
+|6| [UI: Split matches into columns and added dates to upcoming games](https://github.com/DWS-2026/project-grupo-11/commit/d11b56ea9a22b5ae0736d888bcb072ccbac8933d)  | [index.html](https://github.com/DWS-2026/project-grupo-11/commit/d11b56ea9a22b5ae0736d888bcb072ccbac8933d#diff-c9caeff2e64b497a71a0cc0d2ba6f659ff3d653b2913129a6a4ee33d3cf8f868), [match-details.html](https://github.com/DWS-2026/project-grupo-11/commit/d11b56ea9a22b5ae0736d888bcb072ccbac8933d#diff-d4673f6089deb4a16f4530275aed71cbe57b2218b427477b27d98e18885b3911)   |
+|7| [Switched ratings from Players to Match Events (Goal, Cards, Subs)](https://github.com/DWS-2026/project-grupo-11/commit/f368aa4ea730d21621dd0aa9c279e68113e814b1)  | [match-details.html](https://github.com/DWS-2026/project-grupo-11/commit/f368aa4ea730d21621dd0aa9c279e68113e814b1#diff-d4673f6089deb4a16f4530275aed71cbe57b2218b427477b27d98e18885b3911), [my-ratings.html](https://github.com/DWS-2026/project-grupo-11/commit/f368aa4ea730d21621dd0aa9c279e68113e814b1#diff-46aa992c5047cba950f8a2215b7ea5ec32e8bc4115cbfb9ea782d218bfed6eac), [player-ratings.html](https://github.com/DWS-2026/project-grupo-11/commit/f368aa4ea730d21621dd0aa9c279e68113e814b1#diff-e7cdad96aad0e5ff97fb92912a5800e7df8a6ea761dd181f97ec6a4f2b7b2a63)   |
 
 ---
 
@@ -131,11 +134,13 @@ Me encargué de la autenticación de usuarios (login y registro), del diseño y 
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Añadir diseño de la página de inicio de sesión con Bootstrap](https://github.com/DWS-2026/project-grupo-11/commit/e18183fbcd337c4c39c5324c52f2668e9f359187)  | [login.html](https://github.com/DWS-2026/project-grupo-11/commit/e18183fbcd337c4c39c5324c52f2668e9f359187#diff-f6181bdad2f9eb4c11b593518b97d18ed818e3c25f9e249236758c1e47a2d201)   |
+|2| [Crear formulario de registro de usuario con tipos de entrada adecuados](https://github.com/DWS-2026/project-grupo-11/commit/e18183fbcd337c4c39c5324c52f2668e9f359187)  | [registration.html](https://github.com/DWS-2026/project-grupo-11/commit/e18183fbcd337c4c39c5324c52f2668e9f359187#diff-678b41f554fc522ea9b2667684636912e6da63d8c6a60ae0f56a84f38b80b578)   |
+|3| [Implementar el diseño de la página de perfil de usuario](https://github.com/DWS-2026/project-grupo-11/commit/af5881ff9d0d928482aebbd6633f63f27d2c746b)  | [profile.html](https://github.com/DWS-2026/project-grupo-11/commit/af5881ff9d0d928482aebbd6633f63f27d2c746b#diff-94c8caeb27cc8da815d3b8daeeb0a1bc9628cce47ea1db8e17ecb817535845a1)   |
+|4| [Añadir formulario de edición de perfil y selección de equipo favorito](https://github.com/DWS-2026/project-grupo-11/commit/72ae6eb4f541356c113e9dc314d66011ae6cd737)  | [edit-profile.html](https://github.com/DWS-2026/project-grupo-11/commit/72ae6eb4f541356c113e9dc314d66011ae6cd737#diff-b314f77d096679a612f85f27d64ef1d521dfa51e1d410d5d4e7c520e5b9739da)   |
+|5| [Añadido panel de administración en la página de perfil de usuario](https://github.com/DWS-2026/project-grupo-11/commit/65252c0c123d43ad9fd2d297b14b1df510073d28)  | [profile.html](github.com/DWS-2026/project-grupo-11/commit/65252c0c123d43ad9fd2d297b14b1df510073d28#diff-94c8caeb27cc8da815d3b8daeeb0a1bc9628cce47ea1db8e17ecb817535845a1)   |
+|6| [Mejorados todos los pequeños detalles de la página del login](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a)  |  [login.html](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a#diff-f6181bdad2f9eb4c11b593518b97d18ed818e3c25f9e249236758c1e47a2d201)  |
+|7| [Mejorados todos los pequeños detalles de la página de registro](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a)  |  [registration.html](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a#diff-678b41f554fc522ea9b2667684636912e6da63d8c6a60ae0f56a84f38b80b578)
 
 ---
 

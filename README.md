@@ -131,11 +131,11 @@ Me encargué de la autenticación de usuarios (login y registro), del diseño y 
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Añadir diseño de la página de inicio de sesión con Bootstrap](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
+|2| [Crear formulario de registro de usuario con tipos de entrada adecuados](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
+|3| [Implementar el diseño de la página de perfil de usuario](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
+|4| [Añadir formulario de edición de perfil y selección de equipo favorito](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
+|5| [Crear el diseño de la página de listado de valoraciones del usuario](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
 
 ---
 

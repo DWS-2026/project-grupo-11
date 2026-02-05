@@ -84,11 +84,22 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 ### **Capturas de Pantalla y Descripción de Páginas**
 
 #### **1. Página Principal / Home**
-![Página Principal](images/home-page.png)
+![Página Principal](images/index.jpg)
 
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+> [Puerta de entrada principal con el listado de partidos, clasificación y acceso global a la navegación.]
 
-#### **AQUÍ AÑADIR EL RESTO DE PÁGINAS**
+![Página de login](images/login.jpg)
+
+> [Formulario de acceso para usuarios registrados (periodistas) y administradores.]
+
+![Página de registro](images/registration.jpg)
+
+> [Formulario de registro para nuevos periodistas deportivos.]
+
+![Página de perfil](images/profile.jpg)
+
+> [Panel personal del usuario donde se visualizan sus datos y valoraciones, además de mostrar un panel para acceder a la página de administrador.]
+
 
 ### **Participación de Miembros en la Práctica 1**
 

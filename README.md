@@ -111,9 +111,9 @@ El alumno Jaime Tejero será encargado de la parte de administrador de la págin
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
+#### **Alumno 2 - Rubén Sánchez López**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Mi aportación se centró en desarrollar la interfaz pública y la experiencia del usuario, implementando la visualización dinámica de partidos, los eventos en tiempo real y el sistema de valoraciones.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|

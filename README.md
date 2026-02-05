@@ -120,7 +120,7 @@ Mi aportación se centró en desarrollar la interfaz pública y la experiencia d
 |1| [Maquetación inicial de detalle de partido y eventos.](https://github.com/DWS-2026/project-grupo-11/commit/7eb85548ad3438347230cdfd8fb8433d675e794f)  | [Archivo1](URL_archivo_1)   |
 |2| [Creada la home con lista de partidos y cards](https://github.com/DWS-2026/project-grupo-11/commit/6d310db6cb3baf4e0c625b1688dff5f18b9af659)  | [index.html](https://github.com/DWS-2026/project-grupo-11/commit/6d310db6cb3baf4e0c625b1688dff5f18b9af659#diff-c9caeff2e64b497a71a0cc0d2ba6f659ff3d653b2913129a6a4ee33d3cf8f868)   |
 |3| [Cambio de Liga Proyect a Liga Pro](https://github.com/DWS-2026/project-grupo-11/commit/8801129947b786fdf121545573446750e4631d0d)  | [player-ratings.html](https://github.com/DWS-2026/project-grupo-11/commit/8801129947b786fdf121545573446750e4631d0d#diff-e7cdad96aad0e5ff97fb92912a5800e7df8a6ea761dd181f97ec6a4f2b7b2a63)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
+|4| [Add my-ratings view to show user feedback history](https://github.com/DWS-2026/project-grupo-11/commit/f5e299fa37ff787d713e53d8fe88c1f12f62b398)  | [my-ratings.html](https://github.com/DWS-2026/project-grupo-11/commit/f5e299fa37ff787d713e53d8fe88c1f12f62b398#diff-46aa992c5047cba950f8a2215b7ea5ec32e8bc4115cbfb9ea782d218bfed6eac)   |
 |5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
 
 ---

@@ -133,7 +133,7 @@ Me encargué de la autenticación de usuarios (login y registro), del diseño y 
 |:------------: |:------------:| :------------:|
 |1| [Añadir diseño de la página de inicio de sesión con Bootstrap](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a)  | [Archivo1](URL_archivo_1)   |
 |2| [Crear formulario de registro de usuario con tipos de entrada adecuados](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a)  | [Archivo2](URL_archivo_2)   |
-|3| [Implementar el diseño de la página de perfil de usuario](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
+|3| [Implementar el diseño de la página de perfil de usuario](https://github.com/DWS-2026/project-grupo-11/commit/af5881ff9d0d928482aebbd6633f63f27d2c746b)  | [Archivo3](URL_archivo_3)   |
 |4| [Añadir formulario de edición de perfil y selección de equipo favorito](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
 |5| [Commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
 

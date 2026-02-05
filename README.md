@@ -87,20 +87,86 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 ![Página Principal](images/index.jpg)
 
 > [Puerta de entrada principal con el listado de partidos, clasificación y acceso global a la navegación.]
-
+#### **2. Página de login**
 ![Página de login](images/login.jpg)
 
 > [Formulario de acceso para usuarios registrados (periodistas) y administradores.]
-
+#### **3. Página de registro**
 ![Página de registro](images/registration.jpg)
 
 > [Formulario de registro para nuevos periodistas deportivos.]
-
+#### **4. Página de perfil**
 ![Página de perfil](images/profile.jpg)
 
 > [Panel personal del usuario donde se visualizan sus datos y valoraciones, además de mostrar un panel para acceder a la página de administrador.]
+#### **5. Página de editar perfil**
+![Página de editar perfil](images/edit-profile.jpg)
 
+> [Interfaz para que el usuario modifique su información y preferencias.]
+#### **6. Página de todas las valoraciones**
+![Página de todas las valoraciones](images/my-ratings.jpg)
 
+> [Listado histórico de todas las valoraciones realizadas por el periodista.]
+#### **7. Página principal de administrador**
+![Página principal de administrador](images/Admin_Page.jpg)
+
+> [Panel central con tarjetas de navegación hacia las distintas áreas de gestión.]
+#### **8. Página de administación de cuentas**
+![Página de administación de cuentas](images/Account_Management_Screen.jpg)
+
+> [Interfaz donde el administrador puede crear usuarios y ver el listado de usuarios pudiendo editarlos o eliminarlos.]
+#### **9. Página de administación de partidos**
+![Página de administación de partidos](images/Match_Management_Screen.jpg)
+
+> [Interfaz para que el administrador cree o modifique partidos.]
+#### **10. Página de administación de equipos**
+![Página de administación de equipos](images/Team_Management_Screen.jpg)
+
+> [Gestión integral de los equipos inscritos en la liga.]
+#### **11. Página de cración de partidos**
+![Página de cración de partido](images/CreateMatch.jpg)
+
+> [Interfaz donde el administrador crea los partidos de la liga.]
+#### **12. Página de cración de equipos**
+![Página de cración de equipos](images/CreateTeam.jpg)
+
+> [Interfaz donde el administrador crea los equipos de la liga.]
+#### **13. Página para editar partidos**
+![Página para editar partidos](images/EditMatchDetails.jpg)
+
+> [Interfaz donde el administrador puede editar los partidos de la liga.]
+#### **14. Página para editar equipos**
+![Página para editar equipos](images/EditTeamBarcelona.jpg)
+
+> [Interfaz donde el administrador puede editar los equipos de la liga.]
+#### **15. Página del listado de usuarios**
+![Página del listado de usuarios](images/ModifyAccount.jpg)
+
+> [Interfaz donde se muestra un listado de usuarios registrados pudiendo editarlos o eliminarlos.]
+#### **16. Página del listado de partidos**
+![Página del listado de partidos](images/ModifyMatch.jpg)
+
+> [Interfaz donde se muestra el listado de partidos de la liga pudiendo editarlos o eliminarlos.]
+#### **17. Página del listado de equipos**
+![Página del listado de equipos](images/ModifyTeam.jpg)
+
+> [Interfaz donde se muestra el listado de equipos de la liga pudiendo editarlos o eliminarlos.]
+#### **18. Página de la clasificación de la liga**
+![Página de la clasificación de la liga](images/classification.jpg)
+
+> [Interfaz donde se muestra la clasificación de la liga con todos sus detalles.]
+#### **19. Página del acta del partido**
+![Página del acta del partido](images/match-details.jpg)
+
+> [Interfaz donde se muestra el acta del partido con todos los eventos ocurridos en él.]
+#### **20. Página del calendario de la liga**
+![Página del calendario de la liga](images/match-list.jpg)
+
+> [Interfaz donde se muestra el calendario de todos los partidos de la liga.]
+#### **21. Página para valorar un evento**
+![Página para valorar un evento](images/rating-player.jpg)
+
+> [Interfaz donde se puede realizar una valoración sobre un evento de un partido determinado.]
 ### **Participación de Miembros en la Práctica 1**
 
 #### **Alumno 1 - Jaime Tejero Fernández**

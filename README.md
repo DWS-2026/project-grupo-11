@@ -71,7 +71,7 @@ Indicar qué entidades tendrán asociadas una o varias imágenes:
 ## 🛠 **Práctica 1: Maquetación de páginas con HTML y CSS**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://youtu.be/ix9c7odGRQ8)**
+📹 **[Enlace al vídeo en YouTube](https://youtu.be/y07HqKPgQR0)**
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Diagrama de Navegación**
@@ -104,10 +104,11 @@ El alumno Jaime Tejero será encargado de la parte de administrador de la págin
 |4| [Solucion Match_Management_Screen.html mal estructuradamain](https://github.com/DWS-2026/project-grupo-11/commit/fb30af35ca314d777db7023843fa7a652160ffd2)  | [Match_Management_Screen.html](https://github.com/DWS-2026/project-grupo-11/blob/fb30af35ca314d777db7023843fa7a652160ffd2/HTML/Match_Management_Screen.html)   |
 |5| [Actualizadas funcionalidades buscar equipo, regresar a pantalla de inicio (cambiada por regreso a perfil), buscar usuario, eliminar usuario, modificar usuario y modificar equipo junto a pagina FC Barcelona](https://github.com/DWS-2026/project-grupo-11/commit/492f5384391b20ea554a4fc9abaff5730bc03085)  | [Admin_Page.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/Admin_Page.html), [CreateAccount.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/CreateAccount.html), [DeleteAccount.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/DeleteAccount.html), [EditTeamBarcelona.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/EditTeamBarcelona.html), [ModifyAccount.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/ModifyAccount.html),  [ModifyTeam.html](https://github.com/DWS-2026/project-grupo-11/blob/492f5384391b20ea554a4fc9abaff5730bc03085/HTML/ModifyTeam.html) |
 |6| [Actualizadas funcionalidades buscar usuario](https://github.com/DWS-2026/project-grupo-11/commit/44345cc115a1ac1ed7fef186b4767bc200ac04b1)  | [ModifyAccount.html](https://github.com/DWS-2026/project-grupo-11/commit/44345cc115a1ac1ed7fef186b4767bc200ac04b1/HTML/ModifyAccount.html)   |
-|7| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-|8| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-|9| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-|10| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|7| [Refactor: Sustituidos buscadores manuales por tablas de gestión dinámica en Usuarios y Equipos. Unificadas funciones de Modificar/Eliminar y añadido creacion de partidos y  registro de eventos (goles/tarjetas) en la creación de partidos](https://github.com/DWS-2026/project-grupo-11/commit/fb31e50506eb62d40e2b31902ef0bdde42d431ee#diff-64779b39e77a7af020f0fa5f8b836f1663c171b04808a488f5db96547c2ccad1)  | [](*)   |
+|8| [Actualizacion resultado dinamico en createMatch.html](https://github.com/DWS-2026/project-grupo-11/commit/c06134949427e37424c7cf0c0e742c380bae92a1#diff-bc4ad04f795105d8dc2153eb5aa19fa12b892a9b057f70d045496e85e8741ff5)  | [CreateMatch.html](https://github.com/DWS-2026/project-grupo-11/commit/c06134949427e37424c7cf0c0e742c380bae92a1#diff-bc4ad04f795105d8dc2153eb5aa19fa12b892a9b057f70d045496e85e8741ff5/HTML/CreateMatch.html)   |
+|9| [Finalizacion de la interfaz crear partidos y gestionar partidos](https://github.com/DWS-2026/project-grupo-11/commit/a1e9bcdbbf9bc94166b47ee5aca65902c6c9fe1d)  | [HTML/ModifyMatch.html](https://github.com/DWS-2026/project-grupo-11/commit/a1e9bcdbbf9bc94166b47ee5aca65902c6c9fe1d/HTML/ModifyMatch.html), *   |
+
+
 
 ---
 

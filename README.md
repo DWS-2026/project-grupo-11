@@ -134,11 +134,13 @@ Me encargué de la autenticación de usuarios (login y registro), del diseño y 
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Añadir diseño de la página de inicio de sesión con Bootstrap](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a)  | [login.html](URL_archivo_1)   |
-|2| [Crear formulario de registro de usuario con tipos de entrada adecuados](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a)  | [registration.html](URL_archivo_2)   |
-|3| [Implementar el diseño de la página de perfil de usuario](https://github.com/DWS-2026/project-grupo-11/commit/af5881ff9d0d928482aebbd6633f63f27d2c746b)  | [profile.html](URL_archivo_3)   |
-|4| [Añadir formulario de edición de perfil y selección de equipo favorito](https://github.com/DWS-2026/project-grupo-11/commit/72ae6eb4f541356c113e9dc314d66011ae6cd737)  | [edit-profile.html](URL_archivo_4)   |
-|5| [Commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Añadir diseño de la página de inicio de sesión con Bootstrap](https://github.com/DWS-2026/project-grupo-11/commit/e18183fbcd337c4c39c5324c52f2668e9f359187)  | [login.html](https://github.com/DWS-2026/project-grupo-11/commit/e18183fbcd337c4c39c5324c52f2668e9f359187#diff-f6181bdad2f9eb4c11b593518b97d18ed818e3c25f9e249236758c1e47a2d201)   |
+|2| [Crear formulario de registro de usuario con tipos de entrada adecuados](https://github.com/DWS-2026/project-grupo-11/commit/e18183fbcd337c4c39c5324c52f2668e9f359187)  | [registration.html](https://github.com/DWS-2026/project-grupo-11/commit/e18183fbcd337c4c39c5324c52f2668e9f359187#diff-678b41f554fc522ea9b2667684636912e6da63d8c6a60ae0f56a84f38b80b578)   |
+|3| [Implementar el diseño de la página de perfil de usuario](https://github.com/DWS-2026/project-grupo-11/commit/af5881ff9d0d928482aebbd6633f63f27d2c746b)  | [profile.html](https://github.com/DWS-2026/project-grupo-11/commit/af5881ff9d0d928482aebbd6633f63f27d2c746b#diff-94c8caeb27cc8da815d3b8daeeb0a1bc9628cce47ea1db8e17ecb817535845a1)   |
+|4| [Añadir formulario de edición de perfil y selección de equipo favorito](https://github.com/DWS-2026/project-grupo-11/commit/72ae6eb4f541356c113e9dc314d66011ae6cd737)  | [edit-profile.html](https://github.com/DWS-2026/project-grupo-11/commit/72ae6eb4f541356c113e9dc314d66011ae6cd737#diff-b314f77d096679a612f85f27d64ef1d521dfa51e1d410d5d4e7c520e5b9739da)   |
+|5| [Añadido panel de administración en la página de perfil de usuario](https://github.com/DWS-2026/project-grupo-11/commit/65252c0c123d43ad9fd2d297b14b1df510073d28)  | [profile.html](github.com/DWS-2026/project-grupo-11/commit/65252c0c123d43ad9fd2d297b14b1df510073d28#diff-94c8caeb27cc8da815d3b8daeeb0a1bc9628cce47ea1db8e17ecb817535845a1)   |
+|6| [Mejorados todos los pequeños detalles de la página del login](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a)  |  [login.html](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a#diff-f6181bdad2f9eb4c11b593518b97d18ed818e3c25f9e249236758c1e47a2d201)  |
+|7| [Mejorados todos los pequeños detalles de la página de registro](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a)  |  [registration.html](https://github.com/DWS-2026/project-grupo-11/commit/e587ba3c9ebf57b68ff796de5aa2efa041aa495a#diff-678b41f554fc522ea9b2667684636912e6da63d8c6a60ae0f56a84f38b80b578)
 
 ---
 

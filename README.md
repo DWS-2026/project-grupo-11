@@ -47,10 +47,10 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
   - Permisos:
       - Todas las funcionalidades del usuario anónimo
       - Gestión de su perfil y selección de equipo favorito
-      - Valorar XXXX en partidos
+      - Valorar evnetos de partidos
   - Es dueño de:
       - Su perfil de usuario
-      - Sus valoraciones a XXXX
+      - Sus valoraciones
 
 * **Administrador**: 
   - Permisos:
@@ -125,9 +125,9 @@ El alumno Jaime Tejero será encargado de la parte de administrador de la págin
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - Sergio Sánchez López**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Me encargué de la autenticación de usuarios (login y registro), del diseño y maquetación del perfil de usuario, y de los formularios asociados, incluyendo la edición de perfil, selección de equipo favorito y uso de campos HTML bien tipados.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|

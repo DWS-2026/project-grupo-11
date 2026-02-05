@@ -77,9 +77,9 @@ Indicar qué entidades tendrán asociadas una o varias imágenes:
 ### **Diagrama de Navegación**
 Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicación:
 
-![Diagrama de Navegación](images/navigation-diagram.png)
+![Diagrama de Navegación](images/navigationDiagram.png)
 
-> [Descripción opcional del flujo de navegación: Ej: "El usuario puede acceder desde la página principal a todas las secciones mediante el menú de navegación. Los usuarios anónimos solo tienen acceso a las páginas públicas, mientras que los registrados pueden acceder a su perfil y panel de usuario."]
+> El flujo de navegación se divide en tres niveles de permisos. El Usuario Anónimo accede a la información pública como resultados (match-list), estadísticas (classification) y el registro. El Usuario Registrado dispone de un área privada (profile) para gestionar su cuenta y realizar valoraciones. Por último, el Administrador tiene acceso exclusivo a los paneles de gestión global (Admin_Page), permitiéndole el control total (CRUD) sobre las entidades de equipos, partidos y cuentas de usuario.
 
 ### **Capturas de Pantalla y Descripción de Páginas**
 

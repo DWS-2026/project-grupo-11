@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Acta de Partido - FootLeague</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">⚽ FootLeague 2026</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="index.html">Volver a Inicio</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container py-5">
+        <div class="form-container">
+            <h2 class="text-center mb-4 text-white">Editar Acta del Encuentro</h2>
+            
+            <form id="editMatchForm">
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-info small">Equipo Local</label>
+                        <input type="text" class="form-control bg-dark text-white border-secondary" id="homeTeam" value="Real Madrid" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-info small">Equipo Visitante</label>
+                        <input type="text" class="form-control bg-dark text-white border-secondary" id="awayTeam" value="FC Barcelona" required>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-info small">Fecha del encuentro</label>
+                        <input type="date" class="form-control bg-dark text-white border-secondary" id="matchDate" value="2026-02-01" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-info small">Hora de inicio</label>
+                        <input type="time" class="form-control bg-dark text-white border-secondary" id="matchTime" value="16:15" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-info small">Estadio</label>
+                        <input type="text" class="form-control bg-dark text-white border-secondary" id="stadium" value="Santiago Bernabéu" required>
+                    </div>
+                </div>
+
+                <div class="text-center mb-4 p-3 rounded" style="background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8;">
+                    <h5 class="text-white-50 mb-1 small text-uppercase">Marcador Actual</h5>
+                    <div class="h1 text-info fw-bold mb-0">
+                        <span id="displayHomeScore">2</span> - <span id="displayAwayScore">1</span>
+                    </div>
+                </div>
+
+                <div class="p-3 mb-4 rounded" style="background: rgba(255,255,255,0.05)">
+                    <h6 class="text-white border-bottom border-secondary pb-2 mb-3">Sucesos del Partido</h6>
+                    <div id="eventsContainer">
+                        </div>
+                    <button type="button" class="btn btn-outline-info btn-sm mt-2" onclick="addEventField()">
+                        + Añadir Suceso
+                    </button>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-warning p-3 fw-bold text-dark shadow">Guardar Cambios en Acta</button>
+                    <a href="ModifyMatch.html" class="btn btn-secondary text-center py-2">Cancelar y Volver</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <template id="eventTemplate">
+        <div class="event-row row g-2 mb-3 align-items-end border-start border-info ps-2">
+            <div class="col-md-2">
+                <select class="form-select form-select-sm team-selector bg-dark text-white" onchange="calculateScore()">
+                    <option value="local">Local</option>
+                    <option value="visitante">Visitante</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select form-select-sm event-type bg-dark text-white" onchange="calculateScore()">
+                    <option value="⚽">⚽ Gol</option>
+                    <option value="🟨">🟨 Tarjeta Amarilla</option>
+                    <option value="🟥">🟥 Tarjeta Roja</option>
+                    <option value="🟢">🟢 ➡️ Entra</option>
+                    <option value="🔴">🔴 ⬅️ Sale</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <input type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Min" min="1">
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control form-control-sm bg-dark text-white" placeholder="Jugador (Dorsal)">
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-danger btn-sm w-100" onclick="this.parentElement.parentElement.remove(); calculateScore();">×</button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // Función para añadir sucesos con datos precargados para la simulación
+        function addEventField(type = '⚽', team = 'local', min = '', player = '') {
+            const container = document.getElementById('eventsContainer');
+            const template = document.getElementById('eventTemplate');
+            const clone = template.content.cloneNode(true);
+            
+            const row = clone.querySelector('.event-row');
+            row.querySelector('.event-type').value = type;
+            row.querySelector('.team-selector').value = team;
+            row.querySelector('input[type="number"]').value = min;
+            row.querySelector('input[type="text"]').value = player;
+            
+            container.appendChild(clone);
+            calculateScore();
+        }
+
+        // Cargamos los sucesos de tu página de detalle al iniciar
+        window.onload = () => {
+            addEventField('⚽', 'local', '23', 'Vinícius Jr.');
+            addEventField('🟨', 'visitante', '40', 'Gavi');
+            addEventField('⚽', 'visitante', '67', 'Lewandowski');
+            addEventField('⚽', 'local', '89', 'Bellingham');
+        };
+
+        function calculateScore() {
+            let h = 0, a = 0;
+            document.querySelectorAll('.event-row').forEach(row => {
+                if(row.querySelector('.event-type').value === '⚽') {
+                    row.querySelector('.team-selector').value === 'local' ? h++ : a++;
+                }
+            });
+            document.getElementById('displayHomeScore').innerText = h;
+            document.getElementById('displayAwayScore').innerText = a;
+        }
+
+        document.getElementById('editMatchForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            Swal.fire({
+                title: '¡Acta Actualizada!',
+                text: 'La información del partido ha sido modificada con éxito.',
+                icon: 'success',
+                background: '#1e293b', color: '#ffffff',
+                timer: 1500, showConfirmButton: false
+            }).then(() => { window.location.href = 'ModifyMatch.html'; });
+        });
+    </script>
+
+    <footer class="footer bg-light text-center py-3 mt-5">
+        <div class="container">
+            <span class="text-muted">
+                © 2026 LigaApp · Proyecto académico
+            </span>
+        </div>
+    </footer>
+    
+</body>
+</html>

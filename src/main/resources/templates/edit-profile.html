@@ -16,9 +16,9 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="index.html">⚽ FootLeague 2026</a>
+            <a class="navbar-brand" th:href="@{/}">⚽ FootLeague 2026</a>
             <div class="navbar-nav ms-auto">
-                <a href="index.html" class="btn btn-outline-light btn-sm">Cerrar Sesión</a>
+                <a th:href="@{/}" class="btn btn-outline-light btn-sm">Cerrar Sesión</a>
             </div>
         </div>
     </nav>
@@ -64,7 +64,7 @@
                                     </div>
                                     
                                     <div class="d-flex justify-content-end gap-2">
-                                        <a href="profile.html" class="btn btn-light">Cancelar</a>
+                                        <a th:href="@{/profile}" class="btn btn-light">Cancelar</a>
                                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                                     </div>
                                 </div>

@@ -1,10 +1,10 @@
-package es.codeurjc.demo_vscode;
+package es.footleague.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoVscodeApplicationTests {
+class AppApplicationTests {
 
 	@Test
 	void contextLoads() {

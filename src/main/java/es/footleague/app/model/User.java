@@ -1,4 +1,4 @@
-package es.model;
+package es.footleague.app.model;
 
 public class User {
 

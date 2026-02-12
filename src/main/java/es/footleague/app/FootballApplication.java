@@ -1,4 +1,4 @@
-package es;
+package es.footleague.app;
 
 
 import org.springframework.boot.SpringApplication;

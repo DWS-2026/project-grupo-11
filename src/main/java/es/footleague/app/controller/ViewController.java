@@ -27,5 +27,14 @@ public class ViewController {
         return "profile";
     }
 
+    @GetMapping("/classification")
+    public String classification() {
+        return "classification";
+    }
+
+    @GetMapping("/match-details")
+    public String matchDetails() {
+        return "match-details";
+    }
 }
 

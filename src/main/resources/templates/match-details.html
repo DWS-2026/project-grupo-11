@@ -10,14 +10,7 @@
 </head>
 
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">⚽ FootLeague 2026</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="index.html">Volver a Inicio</a>
-            </div>
-        </div>
-    </nav>
+    <div th:replace="~{fragments/navbar :: menu}"></div>
     <div class="container py-5">
         <div class="form-container">
             <div class="text-center mb-3">
@@ -75,13 +68,7 @@
         </div>
     </div>
 
-    <footer class="footer bg-light text-center py-3 mt-5">
-        <div class="container">
-            <span class="text-muted">
-                © 2026 LigaApp · Proyecto académico
-            </span>
-        </div>
-    </footer>
+    <div th:replace="~{fragments/footer :: copy}"></div>
 </body>
 
 </html>

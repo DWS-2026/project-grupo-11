@@ -9,15 +9,24 @@ public class MatchEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer minute;
-    
-    private String description; // Ej: "Gol de Vinícius Jr."
-    
+    private int minute;
     private String type; // "GOAL", "CARD", "SUBSTITUTION"
+    private String namePlayer; 
+    private int numberPlayer;
 
     @ManyToOne
     @JoinColumn(name = "match_id")
     private Match match;
+
+    protected MatchEvent(){}
+
+    public MatchEvent(String type, int minute, String namePlayer, int numberPlayer, Match match){
+        this.type = type;
+        this.minute = minute;
+        this.namePlayer = namePlayer;
+        this.numberPlayer = numberPlayer;
+        this.match = match;
+    }
 
     public Long getId() {
         return id;
@@ -27,20 +36,12 @@ public class MatchEvent {
         this.id = id;
     }
 
-    public Integer getMinute() {
+    public int getMinute() {
         return minute;
     }
 
-    public void setMinute(Integer minute) {
+    public void setMinute(int minute) {
         this.minute = minute;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getType() {
@@ -51,6 +52,22 @@ public class MatchEvent {
         this.type = type;
     }
 
+    public String getNamePlayer() {
+        return namePlayer;
+    }
+
+    public void setNamePlayer(String namePlayer) {
+        this.namePlayer = namePlayer;
+    }
+
+    public int getNumberPlayer() {
+        return numberPlayer;
+    }
+
+    public void setNumberPlayer(int numberPlayer) {
+        this.numberPlayer = numberPlayer;
+    }
+
     public Match getMatch() {
         return match;
     }
@@ -58,6 +75,8 @@ public class MatchEvent {
     public void setMatch(Match match) {
         this.match = match;
     }
+
+    
 
     
 }

@@ -1,11 +1,21 @@
 package es.footleague.app.controller;
 
+import es.footleague.app.services.RatingService;
+import es.footleague.app.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
 public class ViewController {
+
+    // 1. Inyectamos el servicio (Arquitectura en capas)
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private RatingService ratingService; // Inyectamos RatingService
 
     @GetMapping("/")
     public String home() {

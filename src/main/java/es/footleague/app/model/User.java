@@ -70,6 +70,5 @@ public class User {
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
     }
-
-    
+   
 }

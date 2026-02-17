@@ -46,5 +46,10 @@ public class ViewController {
     public String matchDetails() {
         return "match-details";
     }
+
+    @GetMapping("/match-list")
+    public String matchList(){
+        return "match-list";
+    }
 }
 

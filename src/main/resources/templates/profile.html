@@ -1,84 +1,66 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{{>fragments/header}}
 
-    <title>Mi Perfil - Periodista Liga Pro</title>
-
-     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Common styles -->
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-</head>
-<body class="bg-light">
-
-    <div th:replace="~{fragments/header :: menu}"></div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm border-0 text-center p-4">
-                    <div class="mb-3">
-                        <img th:src="@{/images/Juan_Perez_Avatar.PNG" class="rounded-circle img-thumbnail" alt="Avatar" style="width: 150px; height: 150px; object-fit: cover;">
-                    </div>
-                    <h3 class="card-title h4">Juan Pérez</h3>
-                    <p class="text-muted">Periodista Deportivo</p>
-                    <hr>
-                    <div class="text-start">
-                        <p><strong>Email:</strong> juan.perez@prensa.com</p>
-                        <p><strong>Equipo Favorito:</strong> <span>Real Madrid FC</span></p>
-                    </div>
-                    <a href="edit-profile.html" class="btn btn-outline-primary btn-sm w-100 mt-3">Editar Perfil</a>
-                </div>
-                <div class="mt-4 p-3 bg-warning bg-opacity-10 border border-warning rounded">
-                    <p class="small mb-2 text-warning-emphasis fw-bold">Modo Administrador</p>
-                    <a href="Admin_Page.html" class="btn btn-warning btn-sm w-100">Ir al Panel de Control</a>
-                </div>
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0 text-center p-4">
+            <div class="mb-3">
+                <img src="/images/Juan_Perez_Avatar.PNG" class="rounded-circle img-thumbnail" alt="Avatar"
+                    style="width: 150px; height: 150px; object-fit: cover;">
             </div>
-
-            <div class="col-md-8">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-white py-3">
-                        <h5 class="mb-0">Mis Últimas Valoraciones</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex mb-4 pb-3 border-bottom">
-                            <div class="me-3 h2">⚽</div>
-                            <div class="flex-grow-1 ms-3">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="mb-1">Gol - Real Madrid (2-1)</h6>
-                                    <span class="badge bg-warning text-dark">⭐ 5</span>
-                                </div>
-                                <p class="small text-muted mb-1">Partido: Real Madrid vs Barcelona (01/02/2026)</p>
-                                <p class="mb-0 italic text-secondary">"Espectacular remate de volea, totalmente imparable."</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex mb-2">
-                            <div class="me-3 h2">🟨</div>
-                            <div class="flex-grow-1 ms-3">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="mb-1">Tarjeta Amarilla - FC Barcelona</h6>
-                                    <span class="badge bg-warning text-dark">⭐ 2.0</span>
-                                </div>
-                                <p class="small text-muted mb-1">Partido: Real Madrid vs Barcelona (01/02/2026)</p>
-                                <p class="mb-0 italic text-secondary">"Demasiado rigurosa, apenas hubo contacto en la jugada."</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="my-ratings.html" class="text-decoration-none small">Ver todas mis valoraciones</a>
-                    </div>
-                </div>
+            <h3 class="card-title h4">Juan Pérez</h3>
+            <p class="text-muted">Periodista Deportivo</p>
+            <hr>
+            <div class="text-start">
+                <p><strong>Email:</strong> juan.perez@prensa.com</p>
+                <p><strong>Equipo Favorito:</strong> <span>Real Madrid FC</span></p>
             </div>
+            <a href="edit-profile.html" class="btn btn-outline-primary btn-sm w-100 mt-3">Editar Perfil</a>
+        </div>
+        <div class="mt-4 p-3 bg-warning bg-opacity-10 border border-warning rounded">
+            <p class="small mb-2 text-warning-emphasis fw-bold">Modo Administrador</p>
+            <a href="Admin_Page.html" class="btn btn-warning btn-sm w-100">Ir al Panel de Control</a>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">Mis Últimas Valoraciones</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex mb-4 pb-3 border-bottom">
+                    <div class="me-3 h2">⚽</div>
+                    <div class="flex-grow-1 ms-3">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="mb-1">Gol - Real Madrid (2-1)</h6>
+                            <span class="badge bg-warning text-dark">⭐ 5</span>
+                        </div>
+                        <p class="small text-muted mb-1">Partido: Real Madrid vs Barcelona (01/02/2026)</p>
+                        <p class="mb-0 italic text-secondary">"Espectacular remate de volea, totalmente imparable."</p>
+                    </div>
+                </div>
 
-    <div th:replace="~{fragments/footer :: copy}"></div>
-    
-</body>
-</html>
+                <div class="d-flex mb-2">
+                    <div class="me-3 h2">🟨</div>
+                    <div class="flex-grow-1 ms-3">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="mb-1">Tarjeta Amarilla - FC Barcelona</h6>
+                            <span class="badge bg-warning text-dark">⭐ 2.0</span>
+                        </div>
+                        <p class="small text-muted mb-1">Partido: Real Madrid vs Barcelona (01/02/2026)</p>
+                        <p class="mb-0 italic text-secondary">"Demasiado rigurosa, apenas hubo contacto en la jugada."
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white text-center">
+                <a href="my-ratings.html" class="text-decoration-none small">Ver todas mis valoraciones</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+{{>fragments/footer}}

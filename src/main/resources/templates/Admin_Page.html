@@ -1,95 +1,80 @@
-<!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin Options - FootLeague</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-</head>
-<body class="bg-light">
-    <div th:replace="~{fragments/header :: menu}"></div>
-    <div class="container py-5">
-        <div class="mb-4">
-            <h1 class="h4 mb-0 text-white">Panel de Administración</h1>
-            <small class="text-white-50">Selecciona una tarjeta para gestionar</small>
-        </div>
+{{>fragments/header}}
+<div class="mb-4">
+    <h1 class="h4 mb-0 text-white">Panel de Administración</h1>
+    <small class="text-white-50">Selecciona una tarjeta para gestionar</small>
+</div>
 
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="card option-card p-3" data-option="manage-users" role="button">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3 option-icon">👥</div>
-                        <div>
-                            <h5 class="mb-1">Modificar Cuentas</h5>
-                            <p class="mb-0 text-muted">Gestión de usuarios.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card option-card p-3" data-option="manage-matches" role="button">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3 option-icon">📅</div>
-                        <div>
-                            <h5 class="mb-1">Modificar Partidos</h5>
-                            <p class="mb-0 text-muted">Resultados y jornadas.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card option-card p-3" data-option="manage-teams" role="button">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3 option-icon">⚽</div>
-                        <div>
-                            <h5 class="mb-1">Modificar Equipos</h5>
-                            <p class="mb-0 text-muted">Plantillas y escudos.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card option-card p-3" data-option="return-profile" role="button">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3 option-icon">↩️</div>
-                        <div>
-                            <h5 class="mb-1">Regresar</h5>
-                            <p class="mb-0 text-muted">Volver al perfil.</p>
-                        </div>
-                    </div>
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card option-card p-3" data-option="manage-users" role="button">
+            <div class="d-flex align-items-center">
+                <div class="me-3 option-icon">👥</div>
+                <div>
+                    <h5 class="mb-1">Modificar Cuentas</h5>
+                    <p class="mb-0 text-muted">Gestión de usuarios.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        //Navegation Paths
-        const paths = {
-            'manage-users': 'Account_Management_Screen.html',
-            'manage-matches': 'Match_Management_Screen.html',
-            'manage-teams': 'Team_Management_Screen.html',
-            'return-profile': 'profile.html'
-        };
+    <div class="col-md-6">
+        <div class="card option-card p-3" data-option="manage-matches" role="button">
+            <div class="d-flex align-items-center">
+                <div class="me-3 option-icon">📅</div>
+                <div>
+                    <h5 class="mb-1">Modificar Partidos</h5>
+                    <p class="mb-0 text-muted">Resultados y jornadas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Listener and events
-        document.querySelectorAll('.option-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const option = card.getAttribute('data-option');
-                
-                // Redirection based on option
-                if (paths[option]) {
-                    window.location.href = paths[option];
-                }
-            });
+    <div class="col-md-6">
+        <div class="card option-card p-3" data-option="manage-teams" role="button">
+            <div class="d-flex align-items-center">
+                <div class="me-3 option-icon">⚽</div>
+                <div>
+                    <h5 class="mb-1">Modificar Equipos</h5>
+                    <p class="mb-0 text-muted">Plantillas y escudos.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card option-card p-3" data-option="return-profile" role="button">
+            <div class="d-flex align-items-center">
+                <div class="me-3 option-icon">↩️</div>
+                <div>
+                    <h5 class="mb-1">Regresar</h5>
+                    <p class="mb-0 text-muted">Volver al perfil.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    //Navegation Paths
+    const paths = {
+        'manage-users': 'Account_Management_Screen.html',
+        'manage-matches': 'Match_Management_Screen.html',
+        'manage-teams': 'Team_Management_Screen.html',
+        'return-profile': 'profile.html'
+    };
+
+    // Listener and events
+    document.querySelectorAll('.option-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const option = card.getAttribute('data-option');
+
+            // Redirection based on option
+            if (paths[option]) {
+                window.location.href = paths[option];
+            }
         });
-    </script>
+    });
+</script>
 
-    <div th:replace="~{fragments/footer :: copy}"></div>
-    
-</body>
-</html>
+{{>fragments/footer}}

@@ -70,6 +70,7 @@ public class User {
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
     }
+    @ManyToOne
     @JoinColumn(name = "favorite_team_id")
     private Team favoriteTeam;
 

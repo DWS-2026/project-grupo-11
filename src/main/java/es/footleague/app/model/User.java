@@ -70,5 +70,15 @@ public class User {
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
     }
-   
+    @JoinColumn(name = "favorite_team_id")
+    private Team favoriteTeam;
+
+    // Añade su Getter y Setter
+    public Team getFavoriteTeam() {
+     return favoriteTeam;
+    }
+
+    public void setFavoriteTeam(Team favoriteTeam) {
+        this.favoriteTeam = favoriteTeam;
+    }
 }

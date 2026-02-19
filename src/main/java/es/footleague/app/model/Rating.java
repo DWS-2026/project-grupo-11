@@ -12,15 +12,22 @@ public class Rating {
     private Long id;
 
     @Column(nullable = false)
-    private Integer score; // Nota de 1 a 10, por ejemplo
+    private Integer score; // Nota de 1 a 5, por ejemplo
 
     @Column(columnDefinition = "TEXT")
     private String comment; // Opinión del periodista
 
     private LocalDateTime createdAt;
 
-    // Relaciones (esto es lo que te pedían como Persona 1)
     
+    public Rating(Integer score, String comment, User author, Match match, MatchEvent event) {
+        this.score = score;
+        this.comment = comment;
+        this.author = author;
+        this.match = match;
+        this.event = event;
+    }
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User author; // El periodista que valora
@@ -28,6 +35,9 @@ public class Rating {
     @ManyToOne
     @JoinColumn(name = "match_id")
     private Match match; // El partido valorado
+
+    @ManyToOne
+    private MatchEvent event;
 
     // Constructor, Getters y Setters
     public Rating() {
@@ -80,6 +90,14 @@ public class Rating {
 
     public void setMatch(Match match) {
         this.match = match;
+    }
+
+    public MatchEvent getEvent() {
+        return event;
+    }
+
+    public void setEvent(MatchEvent event) {
+        this.event = event;
     }
 
 }

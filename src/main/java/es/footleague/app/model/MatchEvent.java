@@ -12,7 +12,6 @@ public class MatchEvent {
     private int minute;
     private String type; // "GOAL", "CARD", "SUBSTITUTION"
     private String namePlayer; 
-    private int numberPlayer;
 
     @ManyToOne
     @JoinColumn(name = "match_id")
@@ -20,11 +19,10 @@ public class MatchEvent {
 
     protected MatchEvent(){}
 
-    public MatchEvent(String type, int minute, String namePlayer, int numberPlayer, Match match){
+    public MatchEvent(String type, int minute, String namePlayer, Match match){
         this.type = type;
         this.minute = minute;
         this.namePlayer = namePlayer;
-        this.numberPlayer = numberPlayer;
         this.match = match;
     }
 
@@ -58,14 +56,6 @@ public class MatchEvent {
 
     public void setNamePlayer(String namePlayer) {
         this.namePlayer = namePlayer;
-    }
-
-    public int getNumberPlayer() {
-        return numberPlayer;
-    }
-
-    public void setNumberPlayer(int numberPlayer) {
-        this.numberPlayer = numberPlayer;
     }
 
     public Match getMatch() {

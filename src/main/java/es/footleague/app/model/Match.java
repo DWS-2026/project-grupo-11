@@ -21,7 +21,17 @@ public class Match {
 
     private Integer localGoals;
     private Integer visitorGoals;
+
+    protected Match(){}
     
+    public Match(Team localTeam, Team visitorTeam, Integer localGoals, Integer visitorGoals, LocalDateTime matchDate) {
+        this.localTeam = localTeam;
+        this.visitorTeam = visitorTeam;
+        this.localGoals = localGoals;
+        this.visitorGoals = visitorGoals;
+        this.matchDate = matchDate;
+    }
+
     private LocalDateTime matchDate;
 
     @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)

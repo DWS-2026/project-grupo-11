@@ -39,4 +39,8 @@ public class MatchService {
                 .map(Match::getRatings)
                 .orElse(List.of()); // Devuelve lista vacía si el partido no existe
     }
+
+    public void deleteById(long id) {
+        matchRepository.deleteById(id);
+    }
 }

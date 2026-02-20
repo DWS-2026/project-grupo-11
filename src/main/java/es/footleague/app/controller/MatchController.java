@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@Controller // Cambia a RestController si vas a devolver JSON con ResponseEntity
+@Controller 
 public class MatchController {
 
     @Autowired

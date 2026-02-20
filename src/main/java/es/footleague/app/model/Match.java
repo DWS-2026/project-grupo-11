@@ -21,6 +21,15 @@ public class Match {
 
     private Integer localGoals;
     private Integer visitorGoals;
+    private String weather;
+    
+    public String getWeather() {
+        return weather;
+    }
+
+    public void setWeather(String weather) {
+        this.weather = weather;
+    }
 
     protected Match(){}
     

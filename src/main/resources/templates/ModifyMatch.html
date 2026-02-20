@@ -1,5 +1,11 @@
 {{>fragments/header}}
 
+{{#mensaje}}
+<div class="alert alert-success mt-3 mx-auto" style="max-width: 1100px;">
+    {{mensaje}}
+</div>
+{{/mensaje}}
+
 <div class="form-container" style="max-width: 1100px;">
     <div class="text-center mb-4">
         <h2 class="text-white fw-bold">Gestión de Partidos</h2>
@@ -19,46 +25,32 @@
                 </tr>
             </thead>
             <tbody id="matchTableBody">
+                {{#matches}}
                 <tr>
-                    <td class="text-white-50 small">01/02/2026</td>
+                    <td class="text-white-50 small">{{matchDate}}</td>
                     <td class="text-white">
-                        <span class="fw-bold">Real Madrid</span> vs <span class="fw-bold">FC Barcelona</span>
+                        <span class="fw-bold">{{localTeam.name}}</span> vs <span class="fw-bold">{{visitorTeam.name}}</span>
                     </td>
                     <td class="text-center">
-                        <span class="badge bg-dark border border-info px-3 py-2 fs-6">2 - 1</span>
+                        <span class="badge bg-dark border border-info px-3 py-2 fs-6">{{localGoals}} - {{visitorGoals}}</span>
                     </td>
-                    <td class="small">Santiago Bernabéu</td>
-                    <td><span class="badge bg-info text-dark">☀️ Despejado</span></td>
+                    <td class="small">{{localTeam.stadiumName}}</td>
+                    <td><span class="badge bg-info text-dark">{{weather}}</span></td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center gap-2">
-                            <button class="btn btn-sm btn-warning" onclick="editMatch(1)">Editar</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteMatch('RM vs FCB')">Borrar</button>
+                            <button class="btn btn-sm btn-warning" onclick="editMatch({{id}})">Editar</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteMatch('{{id}}', '{{localTeam.name}} vs {{visitorTeam.name}}')">Borrar</button>
+                            <form id="delete-form-{{id}}" action="/match/{{id}}/delete" method="post" style="display:none;"></form>
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td class="text-white-50 small">15/02/2026</td>
-                    <td class="text-white">
-                        <span class="fw-bold">Atlético de Madrid</span> vs <span class="fw-bold">Sevilla FC</span>
-                    </td>
-                    <td class="text-center">
-                        <span class="badge bg-dark border border-info px-3 py-2 fs-6">2 - 2</span>
-                    </td>
-                    <td class="small">Cívitas Metropolitano</td>
-                    <td><span class="badge bg-secondary">🌧️ Lluvia</span></td>
-                    <td class="text-center">
-                        <div class="d-flex justify-content-center gap-2">
-                            <button class="btn btn-sm btn-warning" onclick="editMatch(2)">Editar</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteMatch('ATM vs SEV')">Borrar</button>
-                        </div>
-                    </td>
-                </tr>
+                {{/matches}}
             </tbody>
         </table>
     </div>
 
     <div class="d-grid gap-2 mt-4">
-        <a href="Match_Management_Screen.html" class="btn btn-outline-secondary">
+        <a href="/match-list" class="btn btn-outline-secondary">
             Volver a Gestión de Partidos
         </a>
     </div>
@@ -75,11 +67,12 @@
             showConfirmButton: false,
             didOpen: () => { Swal.showLoading(); }
         }).then(() => {
-            window.location.href = 'EditMatchDetails.html';
+            window.location.href = '/match/edit' + matchId;
         });
     }
 
-    function deleteMatch(matchName) {
+    //Nueva Funcion
+    function confirmDelate(matchId, matchName) {
         Swal.fire({
             title: '¿Eliminar partido?',
             text: `Se borrarán los datos del encuentro: ${matchName}`,
@@ -93,13 +86,8 @@
             color: '#ffffff'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Eliminado',
-                    text: 'El acta ha sido borrada.',
-                    icon: 'success',
-                    background: '#1e293b',
-                    color: '#ffffff'
-                });
+                // Si el usuario confirma, enviamos el formulario oculto que creamos arriba
+                document.getElementById('delete-form-' + matchId).submit();
             }
         });
     }

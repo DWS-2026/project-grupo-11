@@ -43,7 +43,7 @@ public class MatchController {
         }
     }
 
-    @PostMapping("/match/{id}")
+    @PostMapping("/match/{id}/delete")
     public String deleteMatch(@PathVariable long id, RedirectAttributes redirectAttributes) {
         // Buscamos el partido por su ID
         Optional<Match> match = matchService.findById(id);

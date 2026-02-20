@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController; // O @Controller
+import org.springframework.stereotype.Controller;; // O @Controller
 
-@RestController // Cambia a RestController si vas a devolver JSON con ResponseEntity
+@Controller // Cambia a RestController si vas a devolver JSON con ResponseEntity
 public class MatchController {
 
     @Autowired

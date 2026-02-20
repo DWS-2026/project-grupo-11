@@ -7,11 +7,15 @@
         <div class="row mb-3">
             <div class="col-md-6 mb-3">
                 <label class="form-label text-info">Equipo Local</label>
-                <input type="text" class="form-control" id="homeTeam" placeholder="Ej: Real Madrid" required>
+                <select class="form-select bg-dark text-white border-info" id="homeTeam" required>
+                    <option value="" disabled selected>Seleccione equipo local...</option>
+                </select>
             </div>
             <div class="col-md-6 mb-3">
                 <label class="form-label text-info">Equipo Visitante</label>
-                <input type="text" class="form-control" id="awayTeam" placeholder="Ej: FC Barcelona" required>
+                <select class="form-select bg-dark text-white border-info" id="awayTeam" required>
+                    <option value="" disabled selected>Seleccione equipo visitante...</option>
+                </select>
             </div>
         </div>
 
@@ -37,8 +41,7 @@
             </div>
         </div>
 
-        <div class="text-center mb-4 p-3 rounded"
-            style="background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8;">
+        <div class="text-center mb-4 p-3 rounded" style="background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8;">
             <h5 class="text-white mb-2 small text-uppercase">Marcador en Vivo</h5>
             <div class="h2 text-info fw-bold mb-0">
                 <span id="displayHomeScore">0</span> - <span id="displayAwayScore">0</span>
@@ -55,10 +58,9 @@
 
         <div class="d-grid gap-2">
             <button type="submit" class="btn btn-primary p-3 fw-bold">Guardar Partido y Sucesos</button>
-            <a href="Match_Management_Screen.html" class="btn btn-return text-center py-2">Cancelar</a>
+            <a href="/matches" class="btn btn-secondary py-2">Cancelar</a>
         </div>
     </form>
-</div>
 </div>
 
 <template id="eventTemplate">
@@ -73,72 +75,26 @@
         <div class="col-md-2">
             <label class="form-label text-white-50 small">Tipo</label>
             <select class="form-select form-select-sm event-type" onchange="calculateScore()">
-                <option value="⚽">⚽ Gol</option>
-                <option value="🟨">🟨 Tarjeta Amarilla</option>
-                <option value="🟥">🟥 Tarjeta Roja</option>
-                <option value="🟢">🟢 ➡️ Entra</option>
-                <option value="🔴">🔴 ⬅️ Sale</option>
+                <option value="GOAL">⚽ Gol</option>
+                <option value="YELLOW_CARD">🟨 Tarjeta Amarilla</option>
+                <option value="RED_CARD">🟥 Tarjeta Roja</option>
+                <option value="SUB_IN">🟢 Entra</option>
+                <option value="SUB_OUT">🔴 Sale</option>
             </select>
         </div>
         <div class="col-md-2">
             <label class="form-label text-white-50 small">Minuto</label>
-            <input type="number" class="form-control form-control-sm" placeholder="min" min="1" max="120">
+            <input type="number" class="form-control form-control-sm minute-input" placeholder="min" min="1" max="120">
         </div>
         <div class="col-md-4">
             <label class="form-label text-white-50 small">Jugador (Nombre y Dorsal)</label>
-            <input type="text" class="form-control form-control-sm" placeholder="Nombre (00)">
+            <input type="text" class="form-control form-control-sm player-info" placeholder="Nombre (00)">
         </div>
         <div class="col-md-2">
-            <button type="button" class="btn btn-danger btn-sm w-100"
-                onclick="this.parentElement.parentElement.remove(); calculateScore();">X</button>
+            <button type="button" class="btn btn-danger btn-sm w-100" onclick="removeEvent(this)">X</button>
         </div>
     </div>
 </template>
 
-<script>
-    function addEventField() {
-        const container = document.getElementById('eventsContainer');
-        const template = document.getElementById('eventTemplate');
-        const clone = template.content.cloneNode(true);
-        container.appendChild(clone);
-        calculateScore();
-    }
-
-    function calculateScore() {
-        let homeScore = 0;
-        let awayScore = 0;
-        const events = document.querySelectorAll('.event-row');
-        events.forEach(row => {
-            const type = row.querySelector('.event-type').value;
-            const team = row.querySelector('.team-selector').value;
-            if (type === "⚽") {
-                if (team === "local") homeScore++;
-                else awayScore++;
-            }
-        });
-        document.getElementById('displayHomeScore').innerText = homeScore;
-        document.getElementById('displayAwayScore').innerText = awayScore;
-    }
-
-    window.onload = addEventField;
-
-    document.getElementById('createMatchForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const finalScore = document.getElementById('displayHomeScore').innerText + " - " + document.getElementById('displayAwayScore').innerText;
-        const weather = document.getElementById('weather').value;
-
-        Swal.fire({
-            title: '¡Partido Guardado!',
-            text: `Resultado: ${finalScore}. Clima: ${weather}`,
-            icon: 'success',
-            background: '#1e293b',
-            color: '#ffffff',
-            timer: 2000,
-            showConfirmButton: false
-        }).then(() => {
-            window.location.href = 'ModifyMatch.html';
-        });
-    });
-</script>
-
+<script src="/js/match_logic.js"></script>
 {{>fragments/footer}}

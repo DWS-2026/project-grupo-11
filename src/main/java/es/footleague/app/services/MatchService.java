@@ -1,6 +1,8 @@
 package es.footleague.app.services;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +26,8 @@ public class MatchService {
         matchRepository.save(match);
     }
 
-    public Match findById(Long id) {
-        return matchRepository.findById(id).orElse(null);
+    public Optional<Match> findById(Long id) {
+        return matchRepository.findById(id);
     }
     
     /**

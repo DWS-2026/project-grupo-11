@@ -7,63 +7,51 @@
 
 <div class="row g-3">
 
+    {{#matches}}
     <div class="col-md-10 mx-auto">
         <div class="card option-card p-4">
             <div class="row align-items-center">
                 <div class="col-4 text-center text-white">
-                    <img src="/images/logo_realMadrid.png" alt="Real Madrid" class="mb-2 d-block mx-auto"
+                    <img src="/images/logo_{{localTeam.name}}.png" alt="{{localTeam.name}}" class="mb-2 d-block mx-auto"
                         style="width: 45px; height: 45px; object-fit: contain;">
-                    <h6 class="mb-0">Real Madrid</h6>
+                    <h6 class="mb-0">{{localTeam.name}}</h6>
                 </div>
 
                 <div class="col-4 text-center">
-                    <div class="text-white fw-bold h3 mb-0">2 - 1</div>
-                    <span class="badge bg-success mb-2">Finalizado</span>
-                    <small class="text-white-50 d-block">01 FEB 2026</small>
+                    <div class="text-white fw-bold h3 mb-0">
+                        {{#finalized}}{{localScore}} - {{visitorScore}}{{/finalized}}
+                        {{^finalized}}VS{{/finalized}}
+                    </div>
+
+                    {{#finalized}}
+                        <span class="badge bg-success mb-2">Finalizado</span>
+                    {{/finalized}}
+                    {{^finalized}}
+                        <small class="text-warning d-block fw-bold mt-1">Próximamente</small>
+                    {{/finalized}}
+
+                    <small class="text-white-50 d-block">{{date}}</small>
                 </div>
 
                 <div class="col-4 text-center text-white">
-                    <img src="/images/logo_barcelona.jpg" alt="Barça" class="mb-2 d-block mx-auto"
+                    <img src="/images/logo_{{visitorTeam.name}}.jpg" alt="{{visitorTeam.name}}" class="mb-2 d-block mx-auto"
                         style="width: 45px; height: 45px; object-fit: contain;">
-                    <h6 class="mb-0">FC Barcelona</h6>
+                    <h6 class="mb-0">{{visitorTeam.name}}</h6>
                 </div>
             </div>
 
             <div class="mt-3 text-center border-top pt-3 border-secondary">
-                <a href="/match-details" class="btn btn-primary btn-sm px-4">Ver detalle del partido</a>
+                <a href="/match/{{id}}" class="btn btn-primary btn-sm px-4">Ver detalle del partido</a>
             </div>
         </div>
     </div>
+    {{/matches}}
 
-    <div class="col-md-10 mx-auto">
-        <div class="card option-card p-4">
-            <div class="row align-items-center">
-                <div class="col-4 text-center text-white">
-                    <img src="/images/logo_atleti.jpg" alt="Atleti" class="mb-2 d-block mx-auto"
-                        style="width: 45px; height: 45px; object-fit: contain;">
-                    <h6 class="mb-0">Atlético</h6>
-                </div>
-
-                <div class="col-4 text-center">
-                    <div class="text-info fw-bold h4 mb-0">VS</div>
-                    <small class="text-warning d-block fw-bold mt-1">15 FEB 2026</small>
-                    <small class="text-white-50">21:00h</small>
-                </div>
-
-                <div class="col-4 text-center text-white">
-                    <img src="/images/logo_sevilla.png" alt="Sevilla" class="mb-2 d-block mx-auto"
-                        style="width: 45px; height: 45px; object-fit: contain;">
-                    <h6 class="mb-0">Sevilla FC</h6>
-                </div>
-            </div>
-
-            <div class="mt-3 text-center border-top pt-3 border-secondary">
-                <button class="btn btn-outline-light btn-sm px-4" disabled>Detalles no disponibles</button>
-            </div>
-        </div>
+    {{^matches}}
+    <div class="col-12 text-center">
+        <p class="text-white-50">No hay partidos registrados en el sistema.</p>
     </div>
+    {{/matches}}
 
 </div>
-</div>
-
 {{>fragments/footer}}

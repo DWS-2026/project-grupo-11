@@ -44,8 +44,8 @@ public class SampleDataService {
         teamRepository.save(madridTeam);
         teamRepository.save(barsaTeam);
         //2. Crear usuarios
-        User user1 = new User("Juan Perez", "juanperez@prensa.com", "PERIODISTA", madridTeam);
-        User user2 = new User("admin", "admin@footleague.es", "ADMIN", null);
+        User user1 = new User("Juan Perez", "password123", "juanperez@prensa.com", "PERIODISTA", madridTeam);
+        User user2 = new User("admin", "admin123", "admin@footleague.es", "ADMIN", barsaTeam);
         userRepository.save(user1);
         userRepository.save(user2);
         //3. Crear partido

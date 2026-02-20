@@ -26,8 +26,9 @@ public class User {
         return id;
     }
 
-    public User(String username, String email, String role, Team favoriteTeam) {
+    public User(String username, String password, String email, String role, Team favoriteTeam) {
         this.username = username;
+        this.password = password;
         this.email = email;
         this.role = role;
         this.favoriteTeam = favoriteTeam;

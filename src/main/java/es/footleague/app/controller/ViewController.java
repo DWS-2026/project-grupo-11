@@ -51,5 +51,13 @@ public class ViewController {
     public String matchList(){
         return "match-list";
     }
+    @GetMapping("/Admin_Page")
+    public String Admin_Page() {
+        return "Admin_Page";
+    }
+    @GetMapping("/CreateMatch")
+    public String CreateMatch() {
+        return "CreateMatch";
+    }
 }
 

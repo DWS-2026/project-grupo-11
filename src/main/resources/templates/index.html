@@ -62,13 +62,18 @@
                     <small class="text-muted">Registro</small>
                 </div>
             </div>
+            <div class="card option-card p-3 text-center" data-option="go-admin">
+                <p class="small mb-2 text-warning-emphasis fw-bold">Modo Administrador</p>
+                <a href="/Admin_Page" class="btn btn-warning btn-sm w-100">Ir al Panel de Control</a>
+            </div>
         </div>
     </div>
 
     <script>
         const navigationPaths = {
             'go-login': 'login.html',
-            'go-register': 'registration.html'
+            'go-register': 'registration.html',
+            'go-admin': 'Admin_Page'
         };
 
         document.querySelectorAll('.option-card').forEach(card => {

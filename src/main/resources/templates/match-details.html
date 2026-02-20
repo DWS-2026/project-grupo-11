@@ -3,57 +3,65 @@
 <div class="form-container">
     <div class="text-center mb-3">
         <span class="text-white-50">Fecha del encuentro:</span>
-        <span class="text-info fw-bold">01 de Febrero, 2026</span>
-        <span class="text-info fw-bold">16:15</span>
+        <span class="text-info fw-bold">{{match.date}}</span>
+        <span class="text-info fw-bold">{{match.time}}</span>
     </div>
     <h1 class="h4 text-white text-center mb-4">Resumen del Encuentro</h1>
 
     <div class="text-center mb-5 p-4 rounded" style="background: rgba(255,255,255,0.02)">
         <div class="row align-items-center">
             <div class="col text-white">
-                <img src="/images/logo_realMadrid.png" alt="Real Madrid" class="mb-3"
+                <img src="/images/logo_{{match.localTeam.name}}.png" alt="{{match.localTeam.name}}" class="mb-3"
                     style="width: 80px; height: 80px; object-fit: contain;">
-                <h5>Real Madrid</h5>
+                <h5>{{match.localTeam.name}}</h5>
             </div>
 
             <div class="col text-info">
-                <h1 class="display-5 fw-bold mb-0 text-nowrap">2 - 1</h1>
+                <h1 class="display-5 fw-bold mb-0 text-nowrap">
+                    {{match.localScore}} - {{match.visitorScore}}
+                </h1>
+                {{#match.finalized}}
                 <span class="badge bg-success mt-1">Finalizado</span>
+                {{/match.finalized}}
+                {{^match.finalized}}
+                    <span class="badge bg-warning mt-1 text-dark">En curso / Próximamente</span>
+                {{/match.finalized}}
+
                 <div class="mt-3">
                     <p class="text-white-50 mb-0 small">Estadio:</p>
-                    <p class="text-white fw-semibold">Santiago Bernabéu</p>
+                    <p class="text-white fw-semibold">{{match.stadium}}</p>
                 </div>
             </div>
 
             <div class="col text-white">
-                <img src="/images/logo_barcelona.jpg" alt="FC Barcelona" class="mb-3"
+                <img src="/images/logo_{{match.visitorTeam.name}}.jpg" alt="{{match.visitorTeam.name}}" class="mb-3"
                     style="width: 80px; height: 80px; object-fit: contain;">
-                <h5>FC Barcelona</h5>
+                <h5>{{match.visitorTeam.name}}</h5>
             </div>
         </div>
     </div>
 
     <div class="mb-4">
         <h6 class="text-white-50 mb-3">Sucesos del Partido</h6>
+        {{#match.events}}
         <div class="card option-card p-2 mb-2">
-            <small class="text-white">⚽ 23' - Gol de Vinícius Jr.</small>
+            <small class="text-white">
+                {{icon}} {{minute}}' - {{description}}
+            </small>
         </div>
-        <div class="card option-card p-2 mb-2">
-            <small class="text-white">🟨 40' - Tarjeta para Gavi</small>
+        {{/match.events}}
+
+        {{^match.events}}
+        <div class="text-center py-3">
+            <small class="text-white-50">No hay eventos registrados en este partido.</small>
         </div>
-        <div class="card option-card p-2 mb-2">
-            <small class=" text-white">⚽ 67' - Gol de Lewandowski</small>
-        </div>
-        <div class="card option-card p-2 mb-2">
-            <small class="text-white">⚽ 89' - Gol de Bellingham</small>
-        </div>
+        {{/match.events}}
     </div>
 
     <div class="d-grid gap-2 mt-4">
-        <a href="player-ratings.html" class="btn btn-primary" id="continueBtn">Valorar Eventos del Partido</a>
-        <a href="index.html" class="btn btn-return text-center py-2">Volver</a>
+        <a href="/match/{{match.id}}/ratings" class="btn btn-primary" id="continueBtn">Valorar Eventos del Partido</a>
+        <a href="/" class="btn btn-return text-center py-2">Volver</a>
     </div>
-</div>
 </div>
 
 {{>fragments/footer}}

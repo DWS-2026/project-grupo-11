@@ -49,7 +49,7 @@ public class SampleDataService {
         userRepository.save(user1);
         userRepository.save(user2);
         //3. Crear partido
-        Match match = new Match(madridTeam, barsaTeam, 2, 1, LocalDateTime.of(LocalDate.of(2026, 02, 01), LocalTime.of(21, 00)));
+        Match match = new Match(madridTeam, barsaTeam, 2, 1, LocalDate.of(2026, 02, 01), LocalTime.of(21, 00));
         matchRepository.save(match);
         //4. Crear eventos
         MatchEvent goal1 = new MatchEvent("GOAL", 23, "Vinicius Jr.", match);

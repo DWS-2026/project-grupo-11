@@ -23,9 +23,7 @@ public class MatchEventService {
         if(event.getMinute() < 0 || event.getMinute() > 120){
             throw new IllegalArgumentException("El minuto debe estar entre 0 y 120");
         }
-        else{
-           matchEventRepository.save(event);
-        }
+        matchEventRepository.save(event);
     }
 
     public Optional<MatchEvent> findById(long id){

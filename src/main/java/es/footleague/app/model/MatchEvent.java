@@ -11,15 +11,16 @@ public class MatchEvent {
 
     private int minute;
     private String type; // "GOAL", "CARD", "SUBSTITUTION"
-    private String namePlayer; 
+    private String namePlayer;
 
     @ManyToOne
     @JoinColumn(name = "match_id")
     private Match match;
 
-    protected MatchEvent(){}
+    protected MatchEvent() {
+    }
 
-    public MatchEvent(String type, int minute, String namePlayer, Match match){
+    public MatchEvent(String type, int minute, String namePlayer, Match match) {
         this.type = type;
         this.minute = minute;
         this.namePlayer = namePlayer;
@@ -66,7 +67,26 @@ public class MatchEvent {
         this.match = match;
     }
 
-    
+    // Método para devolver el icono según el tipo de evento
+    public String getIcon() {
+        if (type == null)
+            return "•";
+        return switch (type.toUpperCase()) {
+            case "GOAL" -> "⚽";
+            case "CARD" -> "🟨";
+            case "RED_CARD" -> "🟥";
+            case "SUBSTITUTION" -> "🔄";
+            default -> "•";
+        };
+    }
 
-    
+    // Método para generar la descripción automática que pedía tu HTML
+    public String getDescription() {
+        return switch (type.toUpperCase()) {
+            case "GOAL" -> "Gol de " + namePlayer;
+            case "CARD" -> "Tarjeta para " + namePlayer;
+            case "SUBSTITUTION" -> "Cambio: " + namePlayer;
+            default -> type + " - " + namePlayer;
+        };
+    }
 }

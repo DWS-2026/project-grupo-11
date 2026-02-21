@@ -12,7 +12,7 @@ import es.footleague.app.repository.MatchRepository;
 
 @Service
 public class MatchService {
-    
+
     @Autowired
     private MatchRepository matchRepository;
 
@@ -23,13 +23,16 @@ public class MatchService {
 
     // Guarda un objeto de tipo Match
     public void save(Match match) {
+        if (match.getMatchDate() == null || match.getMatchTime() == null) {
+            throw new IllegalArgumentException("El partido debe tener una fecha y una hora asignadas.");
+        }
         matchRepository.save(match);
     }
 
     public Optional<Match> findById(Long id) {
         return matchRepository.findById(id);
     }
-    
+
     /**
      * Obtiene las valoraciones de un partido específico.
      * Basado en tu Match.java, accedemos a la lista de ratings interna.

@@ -1,7 +1,9 @@
 package es.footleague.app.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -22,7 +24,7 @@ public class Match {
     private Integer localGoals;
     private Integer visitorGoals;
     private String weather;
-    
+
     public String getWeather() {
         return weather;
     }
@@ -31,17 +33,20 @@ public class Match {
         this.weather = weather;
     }
 
-    protected Match(){}
-    
-    public Match(Team localTeam, Team visitorTeam, Integer localGoals, Integer visitorGoals, LocalDateTime matchDate) {
+    protected Match() {
+    }
+
+    public Match(Team localTeam, Team visitorTeam, Integer localGoals, Integer visitorGoals, LocalDate matchDate, LocalTime matchTime) {
         this.localTeam = localTeam;
         this.visitorTeam = visitorTeam;
         this.localGoals = localGoals;
         this.visitorGoals = visitorGoals;
         this.matchDate = matchDate;
+        this.matchTime = matchTime;
     }
 
-    private LocalDateTime matchDate;
+    private LocalDate matchDate;
+    private LocalTime matchTime;
 
     @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)
     private List<MatchEvent> events;
@@ -89,12 +94,20 @@ public class Match {
         this.visitorGoals = visitorGoals;
     }
 
-    public LocalDateTime getMatchDate() {
+    public LocalDate getMatchDate() {
         return matchDate;
     }
 
-    public void setMatchDate(LocalDateTime matchDate) {
+    public void setMatchDate(LocalDate matchDate) {
         this.matchDate = matchDate;
+    }
+
+    public LocalTime getMatchTime() {
+        return matchTime;
+    }
+
+    public void setMatchTime(LocalTime matchTime) {
+        this.matchTime = matchTime;
     }
 
     public List<MatchEvent> getEvents() {
@@ -113,5 +126,10 @@ public class Match {
         this.ratings = ratings;
     }
 
+    public boolean isFinalized() {
+    if (this.matchDate == null || this.matchTime == null) return false;
     
+    LocalDateTime fullDateTime = LocalDateTime.of(this.matchDate, this.matchTime);
+    return fullDateTime.isBefore(LocalDateTime.now());
+    }
 }

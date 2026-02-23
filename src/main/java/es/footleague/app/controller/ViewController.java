@@ -46,11 +46,6 @@ public class ViewController {
     public String matchDetails() {
         return "match-details";
     }
-
-    @GetMapping("/match-list")
-    public String matchList(){
-        return "match-list";
-    }
     @GetMapping("/Admin_Page")
     public String Admin_Page() {
         return "Admin_Page";
@@ -58,6 +53,18 @@ public class ViewController {
     @GetMapping("/CreateMatch")
     public String CreateMatch() {
         return "CreateMatch";
+    }
+    @GetMapping("/CreateTeam")
+    public String CreateTeam() {
+        return "CreateTeam";
+    }
+    @GetMapping("/Team_Management_Screen")
+    public String showTeamManagement() {
+        return "Team_Management_Screen";
+    }
+    @GetMapping("/Match_Management_Screen")
+    public String showMatchManagement() {
+        return "Match_Management_Screen";
     }
 }
 

@@ -14,7 +14,8 @@ public class Team {
     private String name;
     private String logoPath; // Ruta a la imagen del escudo
     private String stadiumName;
-    
+    public Team() {
+    }
     public Team(String name, String stadiumName) {
         this.name = name;
         this.stadiumName = stadiumName;

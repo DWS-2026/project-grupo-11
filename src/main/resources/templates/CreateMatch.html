@@ -1,100 +1,73 @@
 {{>fragments/header}}
 
-<div class="form-container">
-    <h2 class="text-center mb-4 text-white">Registrar Partido y Sucesos</h2>
+<div class="form-container container mt-4">
+    <h2 class="text-center mb-4 text-white">
+        {{#match.id}}Editar{{/match.id}}{{^match.id}}Registrar{{/match.id}} Partido y Sucesos
+    </h2>
 
-    <form id="createMatchForm">
-        <div class="row mb-3">
-            <div class="col-md-6 mb-3">
-                <label class="form-label text-info">Equipo Local</label>
-                <select class="form-select bg-dark text-white border-info" id="homeTeam" required>
-                    <option value="" disabled selected>Seleccione equipo local...</option>
-                </select>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label text-info">Equipo Visitante</label>
-                <select class="form-select bg-dark text-white border-info" id="awayTeam" required>
-                    <option value="" disabled selected>Seleccione equipo visitante...</option>
-                </select>
-            </div>
+    <form id="createMatchForm" action="/match/save" method="post">
+        
+        {{#match.id}}
+            <input type="hidden" name="id" value="{{match.id}}">
+        {{/match.id}}
+
+        <div class="col-md-6 mb-3">
+        <label class="form-label text-info">Equipo Local</label>
+            <select class="form-select bg-dark text-white border-info" name="localTeam" required>
+                <option value="" disabled selected>Seleccione equipo local...</option>
+                {{#teams}}
+                    <option value="{{id}}">{{name}}</option>
+                {{/teams}}
+            </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label text-info">Equipo Visitante</label>
+            <select class="form-select bg-dark text-white border-info" name="visitorTeam" required>
+                <option value="" disabled selected>Seleccione equipo visitante...</option>
+                {{#teams}}
+                    <option value="{{id}}">{{name}}</option>
+                {{/teams}}
+            </select>
         </div>
 
         <div class="row mb-4">
             <div class="col-md-4 mb-3">
                 <label class="form-label text-info">Fecha</label>
-                <input type="date" class="form-control" id="matchDate" required>
+                <input type="date" class="form-control" name="matchDate" value="{{#match.matchDate}}{{match.matchDate}}{{/match.matchDate}}" required>
             </div>
             <div class="col-md-4 mb-3">
                 <label class="form-label text-info">Hora de inicio</label>
-                <input type="time" class="form-control" id="matchTime" required>
+                <input type="time" class="form-control" name="matchTime" value="{{#match.matchTime}}{{match.matchTime}}{{/match.matchTime}}" required>
             </div>
             <div class="col-md-4 mb-3">
                 <label class="form-label text-info">Temporal (Clima)</label>
-                <select class="form-select" id="weather" required>
-                    <option value="" disabled selected>Selecciona...</option>
-                    <option value="Despejado">☀️ Despejado</option>
-                    <option value="Nublado">☁️ Nublado</option>
-                    <option value="Lluvia">🌧️ Lluvia</option>
-                    <option value="Nieve">❄️ Nieve</option>
-                    <option value="Viento">💨 Viento</option>
+                <select class="form-select" name="weather" required>
+                    <option value="Despejado" {{#climaDespejado}}selected{{/climaDespejado}}>☀️ Despejado</option>
+                    <option value="Nublado" {{#climaNublado}}selected{{/climaNublado}}>☁️ Nublado</option>
+                    <option value="Lluvia" {{#climaLluvia}}selected{{/climaLluvia}}>🌧️ Lluvia</option>
+                    <option value="Nieve" {{#climaNieve}}selected{{/climaNieve}}>❄️ Nieve</option>
+                    <option value="Viento" {{#climaViento}}selected{{/climaViento}}>💨 Viento</option>
                 </select>
             </div>
         </div>
 
-        <div class="text-center mb-4 p-3 rounded" style="background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8;">
-            <h5 class="text-white mb-2 small text-uppercase">Marcador en Vivo</h5>
-            <div class="h2 text-info fw-bold mb-0">
-                <span id="displayHomeScore">0</span> - <span id="displayAwayScore">0</span>
+        <div class="row mb-4">
+            <div class="col-md-6 text-center">
+                <label class="text-info small">Goles Local</label>
+                <input type="number" name="localGoals" class="form-control text-center h2 fw-bold" value="{{#match.localGoals}}{{match.localGoals}}{{/match.localGoals}}{{^match.localGoals}}0{{/match.localGoals}}">
+            </div>
+            <div class="col-md-6 text-center">
+                <label class="text-info small">Goles Visitante</label>
+                <input type="number" name="visitorGoals" class="form-control text-center h2 fw-bold" value="{{#match.visitorGoals}}{{match.visitorGoals}}{{/match.visitorGoals}}{{^match.visitorGoals}}0{{/match.visitorGoals}}">
             </div>
         </div>
 
-        <div class="p-3 mb-4 rounded" style="background: rgba(255,255,255,0.05)">
-            <h6 class="text-white border-bottom border-secondary pb-2 mb-3">Añadir Sucesos del Partido</h6>
-            <div id="eventsContainer"></div>
-            <button type="button" class="btn btn-outline-info btn-sm mt-2" onclick="addEventField()">
-                + Añadir Suceso (Gol, Tarjeta...)
-            </button>
-        </div>
-
         <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-primary p-3 fw-bold">Guardar Partido y Sucesos</button>
-            <a href="/matches" class="btn btn-secondary py-2">Cancelar</a>
+            <button type="submit" class="btn btn-primary p-3 fw-bold">Guardar Partido</button>
+            <a href="/match-list" class="btn btn-secondary py-2">Cancelar</a>
         </div>
     </form>
 </div>
 
-<template id="eventTemplate">
-    <div class="event-row row g-2 mb-3 align-items-end border-start border-info ps-2">
-        <div class="col-md-2">
-            <label class="form-label text-white-50 small">Equipo</label>
-            <select class="form-select form-select-sm team-selector" onchange="calculateScore()">
-                <option value="local">Local</option>
-                <option value="visitante">Visitante</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label class="form-label text-white-50 small">Tipo</label>
-            <select class="form-select form-select-sm event-type" onchange="calculateScore()">
-                <option value="GOAL">⚽ Gol</option>
-                <option value="YELLOW_CARD">🟨 Tarjeta Amarilla</option>
-                <option value="RED_CARD">🟥 Tarjeta Roja</option>
-                <option value="SUB_IN">🟢 Entra</option>
-                <option value="SUB_OUT">🔴 Sale</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label class="form-label text-white-50 small">Minuto</label>
-            <input type="number" class="form-control form-control-sm minute-input" placeholder="min" min="1" max="120">
-        </div>
-        <div class="col-md-4">
-            <label class="form-label text-white-50 small">Jugador (Nombre y Dorsal)</label>
-            <input type="text" class="form-control form-control-sm player-info" placeholder="Nombre (00)">
-        </div>
-        <div class="col-md-2">
-            <button type="button" class="btn btn-danger btn-sm w-100" onclick="removeEvent(this)">X</button>
-        </div>
-    </div>
-</template>
-
-<script src="/js/match_logic.js"></script>
 {{>fragments/footer}}

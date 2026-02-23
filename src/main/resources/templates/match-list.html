@@ -3,10 +3,12 @@
 <div class="mb-5 text-center">
     <h1 class="h2 mb-0 text-white fw-bold">Calendario de Partidos</h1>
     <small class="text-white-50">Temporada 2026 - Todos los encuentros</small>
+    <div class="mt-3">
+        <a href="/match/new" class="btn btn-outline-success">➕ Registrar Nuevo Partido</a>
+    </div>
 </div>
 
 <div class="row g-3">
-
     {{#matches}}
     <div class="col-md-10 mx-auto">
         <div class="card option-card p-4">
@@ -30,7 +32,7 @@
                         <small class="text-warning d-block fw-bold mt-1">Próximamente</small>
                     {{/finalized}}
 
-                    <small class="text-white-50 d-block">{{date}}</small>
+                    <small class="text-white-50 d-block">{{matchDate}}</small>
                 </div>
 
                 <div class="col-4 text-center text-white">
@@ -40,8 +42,12 @@
                 </div>
             </div>
 
-            <div class="mt-3 text-center border-top pt-3 border-secondary">
-                <a href="/match/{{id}}" class="btn btn-primary btn-sm px-4">Ver detalle del partido</a>
+            <div class="mt-3 text-center border-top pt-3 border-secondary d-flex justify-content-center gap-2">
+                <a href="/match/{{id}}" class="btn btn-primary btn-sm px-3">Ver detalle</a>
+                <a href="/match/{{id}}/edit" class="btn btn-warning btn-sm px-3">Editar</a>
+                <form action="/match/{{id}}/delete" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm px-3" onclick="return confirm('¿Seguro que quieres eliminar este partido?')">Eliminar</button>
+                </form>
             </div>
         </div>
     </div>
@@ -49,9 +55,9 @@
 
     {{^matches}}
     <div class="col-12 text-center">
-        <p class="text-white-50">No hay partidos registrados en el sistema.</p>
+        <p class="text-white-50">No hay partidos programados.</p>
     </div>
     {{/matches}}
-
 </div>
+
 {{>fragments/footer}}

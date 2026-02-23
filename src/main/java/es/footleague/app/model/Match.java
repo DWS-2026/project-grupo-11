@@ -68,21 +68,7 @@ public class Match {
 
     public void setLocalTeam(Team localTeam) {
         this.localTeam = localTeam;
-    }
-
-    public Team getVisitorTeam() {
-        return visitorTeam;
-    }
-
-    public void setVisitorTeam(Team visitorTeam) {
         this.visitorTeam = visitorTeam;
-    }
-
-    public Integer getLocalGoals() {
-        return localGoals;
-    }
-
-    public void setLocalGoals(Integer localGoals) {
         this.localGoals = localGoals;
     }
 

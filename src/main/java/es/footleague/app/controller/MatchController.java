@@ -1,7 +1,6 @@
 package es.footleague.app.controller;
 
 import es.footleague.app.model.Match;
-import es.footleague.app.repository.MatchRepository;
 import es.footleague.app.services.MatchService;
 
 import java.util.Optional;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 
 @Controller 
 public class MatchController {

@@ -26,6 +26,9 @@ public class User {
         return id;
     }
 
+    protected User() {
+    }
+
     public User(String username, String password, String email, String role, Team favoriteTeam) {
         this.username = username;
         this.password = password;
@@ -77,6 +80,7 @@ public class User {
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
     }
+
     @ManyToOne
     @JoinColumn(name = "favorite_team_id")
     private Team favoriteTeam;
@@ -91,7 +95,7 @@ public class User {
 
     // Añade su Getter y Setter
     public Team getFavoriteTeam() {
-     return favoriteTeam;
+        return favoriteTeam;
     }
 
     public void setFavoriteTeam(Team favoriteTeam) {

@@ -22,30 +22,11 @@ public class ViewController {
         return "index"; // si tienes index.html
     }
 
-    @GetMapping("/login")
-    public String showlogin() {
-        return "login";
-    }
-
-    @GetMapping("/register")
-    public String register() {
-        return "registration";
-    }
-
-    @GetMapping("/profile")
-    public String profile() {
-        return "profile";
-    }
-
     @GetMapping("/classification")
     public String classification() {
         return "classification";
     }
 
-    @GetMapping("/match-details")
-    public String matchDetails() {
-        return "match-details";
-    }
     @GetMapping("/Admin_Page")
     public String Admin_Page() {
         return "Admin_Page";

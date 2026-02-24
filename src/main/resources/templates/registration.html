@@ -12,7 +12,8 @@
                 <form action="/register" method="post">
                     <div class="mb-3">
                         <label class="form-label text-primary">Nombre Usuario</label>
-                        <input type="text" name="username" class="form-control" placeholder="Ej. Juan Pérez" required>
+                        <input type="text" name="username" class="form-control" placeholder="Ej. JuanPérez"
+                            pattern="^\S+$" title="El nombre de usuario no puede contener espacios" required>
                     </div>
 
                     <div class="mb-3">

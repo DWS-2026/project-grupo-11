@@ -60,7 +60,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/profile/{user.username}/edit")
+    @GetMapping("/profile/{username}/edit")
     public String editProfileForm(@PathVariable String username, Model model) {
         User user = userService.findByUsername(username);
         if (user != null) {

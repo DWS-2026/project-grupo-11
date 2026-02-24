@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Optional;
+import org.springframework.http.ResponseEntity;
+import es.footleague.app.model.Team;
 
 @Controller
 public class MatchController {
@@ -67,5 +69,25 @@ public class MatchController {
     public String deleteMatch(@PathVariable Long id) {
         matchService.deleteById(id);
         return "redirect:/match-list";
+    }
+    @PostMapping("/api/matches")
+    @ResponseBody // Esto permite que el método responda JSON y no una página
+    public ResponseEntity<?> createMatchApi(@RequestBody Match matchData) {
+        try {
+            // 1. Buscamos el equipo local para obtener su estadio
+            Team local = teamService.findById(matchData.getLocalTeam().getId());
+
+            // 2. Asignamos el estadio del local al partido (lo que pediste)
+            if (local != null) {
+                matchData.setStadium(local.getStadiumName());
+            }
+
+            // 3. Guardamos el partido
+            matchService.save(matchData);
+        
+            return ResponseEntity.ok().body("{\"status\": \"success\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("{\"error\": \"" + e.getMessage() + "\"}");
+        }
     }
 }

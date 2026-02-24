@@ -24,6 +24,7 @@ public class Match {
     private Integer localGoals;
     private Integer visitorGoals;
     private String weather;
+    private String stadium;
 
     public String getWeather() {
         return weather;
@@ -43,6 +44,7 @@ public class Match {
         this.visitorGoals = visitorGoals;
         this.matchDate = matchDate;
         this.matchTime = matchTime;
+        this.stadium = localTeam.getStadiumName(); // Asumimos que el partido se juega en el estadio del equipo local
     }
 
     private LocalDate matchDate;
@@ -76,6 +78,13 @@ public class Match {
 
     public void setVisitorTeam(Team visitorTeam) {
         this.visitorTeam = visitorTeam;
+    }
+    public String getStadium() {
+        return stadium;
+    }
+
+    public void setStadium(String stadium) {
+        this.stadium = stadium;
     }
 
     public Integer getLocalGoals() {

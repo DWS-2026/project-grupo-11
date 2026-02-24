@@ -1,5 +1,7 @@
+<head>
+    <script src="/js/match_logic.js" defer></script> 
+</head>
 {{>fragments/header}}
-
 <div class="form-container container mt-4">
     <h2 class="text-center mb-4 text-white">
         {{#match.id}}Editar{{/match.id}}{{^match.id}}Registrar{{/match.id}} Partido y Sucesos
@@ -11,24 +13,26 @@
             <input type="hidden" name="id" value="{{match.id}}">
         {{/match.id}}
 
-        <div class="col-md-6 mb-3">
-        <label class="form-label text-info">Equipo Local</label>
-            <select class="form-select bg-dark text-white border-info" name="localTeam" required>
-                <option value="" disabled selected>Seleccione equipo local...</option>
-                {{#teams}}
-                    <option value="{{id}}">{{name}}</option>
-                {{/teams}}
-            </select>
-        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label text-info">Equipo Local</label>
+                <select id="homeTeam" class="form-select bg-dark text-white border-info" name="localTeam" required>
+                    <option value="" disabled selected>Seleccione equipo local...</option>
+                    {{#teamList}}
+                        <option value="{{id}}">{{name}}</option>
+                    {{/teamList}}
+                </select>
+            </div>
 
-        <div class="col-md-6 mb-3">
-            <label class="form-label text-info">Equipo Visitante</label>
-            <select class="form-select bg-dark text-white border-info" name="visitorTeam" required>
-                <option value="" disabled selected>Seleccione equipo visitante...</option>
-                {{#teams}}
-                    <option value="{{id}}">{{name}}</option>
-                {{/teams}}
-            </select>
+            <div class="col-md-6 mb-3">
+                <label class="form-label text-info">Equipo Visitante</label>
+                <select id="awayTeam" class="form-select bg-dark text-white border-info" name="visitorTeam" required>
+                    <option value="" disabled selected>Seleccione equipo visitante...</option>
+                    {{#teamList}}
+                        <option value="{{id}}">{{name}}</option>
+                    {{/teamList}}
+                </select>
+            </div>
         </div>
 
         <div class="row mb-4">

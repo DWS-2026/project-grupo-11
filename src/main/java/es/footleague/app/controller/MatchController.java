@@ -28,8 +28,7 @@ public class MatchController {
     @GetMapping("/match/new")
     public String showCreateForm(Model model) {
         model.addAttribute("match", new Match());
-        // Cambiamos el nombre para evitar conflictos con palabras reservadas
-        model.addAttribute("teamList", teamService.findAll()); 
+        model.addAttribute("teamList", teamService.findAll()); // <--- ¡Asegúrate de que pone teamList!
         return "CreateMatch";
     }
     

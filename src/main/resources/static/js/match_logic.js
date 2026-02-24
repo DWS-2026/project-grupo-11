@@ -3,17 +3,23 @@
 // 1. Cargar equipos desde la base de datos al abrir la página
 async function fetchTeams() {
     try {
-        const response = await fetch('/api/teams'); // Ajusta a tu endpoint real
+        const response = await fetch('/api/teams'); 
         const teams = await response.json();
         
         const homeSelect = document.getElementById('homeTeam');
         const awaySelect = document.getElementById('awayTeam');
 
+        // Limpiar opciones previas (excepto la primera de "Seleccione...")
+        homeSelect.length = 1;
+        awaySelect.length = 1;
+
         teams.forEach(team => {
+            // team.id y team.name coinciden con tu tabla MySQL
             const option = `<option value="${team.id}">${team.name}</option>`;
             homeSelect.innerHTML += option;
             awaySelect.innerHTML += option;
         });
+        console.log("Equipos cargados correctamente");
     } catch (error) {
         console.error("Error cargando equipos:", error);
     }

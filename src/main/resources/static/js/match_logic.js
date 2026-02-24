@@ -19,7 +19,9 @@ async function fetchTeams() {
             const option = `<option value="${team.id}">${team.name}</option>`;
             homeSelect.innerHTML += option;
             awaySelect.innerHTML += option;
-        });
+        }
+        
+    );
         console.log("Equipos cargados correctamente");
     } catch (error) {
         console.error("Error cargando equipos:", error);

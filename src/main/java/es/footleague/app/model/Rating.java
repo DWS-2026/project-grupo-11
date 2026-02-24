@@ -19,15 +19,6 @@ public class Rating {
 
     private LocalDateTime createdAt;
 
-    
-    public Rating(Integer score, String comment, User author, Match match, MatchEvent event) {
-        this.score = score;
-        this.comment = comment;
-        this.author = author;
-        this.match = match;
-        this.event = event;
-    }
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User author; // El periodista que valora
@@ -38,6 +29,14 @@ public class Rating {
 
     @ManyToOne
     private MatchEvent event;
+
+    public Rating(Integer score, String comment, User author, Match match, MatchEvent event) {
+        this.score = score;
+        this.comment = comment;
+        this.author = author;
+        this.match = match;
+        this.event = event;
+    }
 
     // Constructor, Getters y Setters
     public Rating() {

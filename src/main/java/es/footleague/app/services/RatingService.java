@@ -19,6 +19,10 @@ public class RatingService {
     public void save(Rating rating) {
         ratingRepository.save(rating);
     }
+
+    public void deleteRating(Long ratingId) {
+        ratingRepository.deleteById(ratingId);
+    }
     
     // Método para obtener las valoraciones de un partido específico
     public List<Rating> findByMatchId(Long matchId) {

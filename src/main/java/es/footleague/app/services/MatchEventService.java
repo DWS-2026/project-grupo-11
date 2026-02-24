@@ -30,6 +30,10 @@ public class MatchEventService {
         return matchEventRepository.findById(id);
     }
 
+    public List<MatchEvent> findAllByMatchId(Long matchId){
+        return matchEventRepository.findAll().stream().filter(matchEvent -> matchEvent.getMatch().getId().equals(matchId)).toList();
+    }
+
     public void deleteById(long id) {
         matchEventRepository.deleteById(id);
 	}

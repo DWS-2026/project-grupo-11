@@ -7,42 +7,44 @@
                 <h4 class="mb-0">Configuración del Perfil</h4>
             </div>
             <div class="card-body p-4">
-                <form action="profile.html">
+                <form action="/profile/edit" method="post">
                     <div class="row">
                         <div class="col-md-4 text-center mb-4">
-                            <img src="/images/Juan_Perez_Avatar.PNG" class="rounded-circle img-thumbnail mb-2"
-                                alt="Avatar">
+                            <img src="{{#user.avatarPath}}{{user.avatarPath}}{{/user.avatarPath}}{{^user.avatarPath}}/images/default-avatar.png{{/user.avatarPath}}" 
+                                class="rounded-circle img-thumbnail mb-2" alt="Avatar" style="width: 150px; height: 150px; object-fit: cover;">
                             <div class="mb-3">
                                 <label for="formFileSm" class="form-label small text-primary">Cambiar foto</label>
-                                <input class="form-control form-control-sm" id="formFileSm" type="file">
+                                <input class="form-control form-control-sm" name="avatarPath" id="formFileSm" type="file">
                             </div>
                         </div>
 
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label class="form-label text-primary">Nombre Usuario</label>
-                                <input type="text" class="form-control" value="Juan Pérez">
+                                <input type="text" name="username" class="form-control" value="{{user.username}}" readonly>
+                                <div class="form-text">El nombre de usuario no se puede modificar.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-primary">Correo Electrónico</label>
-                                <input type="email" class="form-control" value="juan.perez@prensa.com">
+                                <input type="email" name="email" class="form-control" value="{{user.email}}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-primary">Nueva Contraseña</label>
-                                <input type="password" class="form-control"
+                                <input type="password" name="password" class="form-control"
                                     placeholder="Dejar en blanco para no cambiar">
                             </div>
                             <div class="mb-4">
                                 <label class="form-label text-primary">Equipo Favorito</label>
-                                <select class="form-select">
-                                    <option value="1" selected>Real Madrid CF</option>
+                                <select class="form-select" name="favouriteTeam">
+                                    <option disabled>Selecciona un equipo...</option>
+                                    <option value="1">Real Madrid CF</option>
                                     <option value="2">FC Barcelona</option>
                                     <option value="3">Atlético de Madrid</option>
                                 </select>
                             </div>
 
                             <div class="d-flex justify-content-end gap-2">
-                                <a href="/profile" class="btn btn-light">Cancelar</a>
+                                <a href="/profile/{{user.username}}" class="btn btn-light">Cancelar</a>
                                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                             </div>
                         </div>
@@ -52,8 +54,5 @@
         </div>
     </div>
 </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 {{>fragments/footer}}

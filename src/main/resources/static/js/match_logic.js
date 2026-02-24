@@ -116,10 +116,19 @@ document.getElementById('createMatchForm').addEventListener('submit', async (e) 
 });
 
 // Inicialización
-window.onload = () => {
-    fetchTeams();
-    // Solo añade campo si el contenedor existe
-    if(document.getElementById('eventsContainer')) {
+window.onload = async () => {
+    // 1. Cargamos los equipos primero
+    await fetchTeams();
+    
+    // 2. Calculamos el marcador actual (por si ya hay eventos/goles en la edición)
+    calculateScore();
+
+    // 3. Solo añade un campo de evento vacío si es un partido nuevo 
+    // (si no hay filas de eventos ya creadas por Mustache)
+    const container = document.getElementById('eventsContainer');
+    if(container && container.querySelectorAll('.event-row').length === 0) {
         addEventField();
     }
+    
+    console.log("Datos del partido inicializados: Hora, Clima y Resultado listos.");
 };

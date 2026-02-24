@@ -17,25 +17,7 @@
                 </tr>
             </thead>
             <tbody id="teamTableBody">
-                <tr>
-                    <td>
-                        <img src="/images/logo_barcelona.jpg" alt="Barça Logo"
-                            style="width: 45px; height: 45px; object-fit: contain;">
-                    </td>
-                    <td class="text-white fw-bold">FC Barcelona</td>
-                    <td class="text-white-50">Spotify Camp Nou</td>
-                    <td class="text-center">
-                        <div class="d-flex justify-content-center gap-2">
-                            <button class="btn btn-sm btn-warning" onclick="editTeam('EditTeamBarcelona.html')">
-                                Editar
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteTeam('FC Barcelona')">
-                                Borrar
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
+                </tbody>
         </table>
     </div>
 
@@ -45,53 +27,8 @@
         </a>
     </div>
 </div>
-</div>
 
-<script>
-    /**
-     * Team management actions.
-     * Functions named in English for code quality evaluation.
-     */
-
-    function editTeam(page) {
-        Swal.fire({
-            title: 'Abriendo editor...',
-            background: '#1e293b',
-            color: '#ffffff',
-            timer: 800,
-            showConfirmButton: false,
-            didOpen: () => { Swal.showLoading(); }
-        }).then(() => {
-            window.location.href = page;
-        });
-    }
-
-    function deleteTeam(teamName) {
-        Swal.fire({
-            title: '¿Eliminar equipo?',
-            text: `Estás a punto de borrar al ${teamName} de la liga.`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#64748b',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar',
-            background: '#1e293b',
-            color: '#ffffff'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Eliminado',
-                    text: 'El equipo ha sido dado de baja correctamente.',
-                    icon: 'success',
-                    background: '#1e293b',
-                    color: '#ffffff'
-                });
-                // Log in English for debugging
-                console.log("Entity Team: " + teamName + " deleted.");
-            }
-        });
-    }
-</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/Team_Management.js"></script>
 
 {{>fragments/footer}}

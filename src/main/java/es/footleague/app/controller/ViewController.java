@@ -47,5 +47,14 @@ public class ViewController {
     public String showMatchManagement() {
         return "Match_Management_Screen";
     }
+    @GetMapping("/ModifyTeam")
+    public String listado() {
+        return "ModifyTeam"; // Abre templates/ModifyTeam.html
+    }
+
+    @GetMapping("/EditTeam")
+    public String formulario() {
+        return "EditTeam"; // Abre templates/EditTeam.html
+    }
 }
 

@@ -24,11 +24,11 @@ public class UserController {
     public String userProfile(@PathVariable String username, Model model) {
         Optional<User> user = userService.findByUsername(username);
 
-        if (user.isEmpty()) {
-            return "user_not_found";
+        if(user.isPresent()){
+            model.addAttribute("user", user.get());
+            return "profile";
         }
-        model.addAttribute("user", user.get());
-        return "profile";
+        return "user_not_found";
     }
 
     // 2. REGISTRATION FORM (View)
@@ -40,9 +40,9 @@ public class UserController {
     // 3. PROCESS RECORD (Logic)
     @PostMapping("/register")
     public String processRegister(User user) {
-        user.setRole("USER");
+        user.setRole("PERIODISTA");
         userService.save(user);
-        return "redirect:/login";
+        return "redirect:/profile/" + user.getUsername();
     }
 
     @GetMapping("/login")
@@ -53,19 +53,18 @@ public class UserController {
     @GetMapping("/profile/{username}/my-ratings")
     public String myRatings(@PathVariable String username, Model model) {
         Optional<User> user = userService.findByUsername(username);
-        if (user != null) {
-            model.addAttribute("user", user);
+        if (user.isPresent()) {
+            model.addAttribute("user", user.get());
             return "my-ratings";
-        } else {
-            return "user_not_found";
         }
+        return "user_not_found";
     }
 
     @GetMapping("/profile/{username}/edit")
     public String editProfileForm(@PathVariable String username, Model model) {
         Optional<User> user = userService.findByUsername(username);
-        if (user != null) {
-            model.addAttribute("user", user);
+        if (user.isPresent()) {
+            model.addAttribute("user", user.get());
             return "edit-profile";
         }
         return "user_not_found";
@@ -86,7 +85,7 @@ public class UserController {
                 existingUser.setEmail(updatedUser.getEmail());
             }
 
-            existingUser.setFavoriteTeam(updatedUser.getFavoriteTeam());
+            existingUser.setFavouriteTeam(updatedUser.getFavouriteTeam());
 
             // We only change the password if you've entered something new
             if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {

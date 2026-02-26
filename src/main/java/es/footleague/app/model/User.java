@@ -29,12 +29,12 @@ public class User {
     protected User() {
     }
 
-    public User(String username, String password, String email, String role, Team favoriteTeam) {
+    public User(String username, String password, String email, String role, Team favouriteTeam) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
-        this.favoriteTeam = favoriteTeam;
+        this.favouriteTeam = favouriteTeam;
     }
 
     public void setId(Long id) {
@@ -82,8 +82,8 @@ public class User {
     }
 
     @ManyToOne
-    @JoinColumn(name = "favorite_team_id")
-    private Team favoriteTeam;
+    @JoinColumn(name = "favourite_team_id")
+    private Team favouriteTeam;
 
     public String getAvatarPath() {
         return avatarPath;
@@ -94,11 +94,11 @@ public class User {
     }
 
     // Añade su Getter y Setter
-    public Team getFavoriteTeam() {
-        return favoriteTeam;
+    public Team getFavouriteTeam() {
+        return favouriteTeam;
     }
 
-    public void setFavoriteTeam(Team favoriteTeam) {
-        this.favoriteTeam = favoriteTeam;
+    public void setFavouriteTeam(Team favouriteTeam) {
+        this.favouriteTeam = favouriteTeam;
     }
 }

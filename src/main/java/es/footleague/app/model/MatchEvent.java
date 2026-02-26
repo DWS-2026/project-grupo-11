@@ -17,14 +17,18 @@ public class MatchEvent {
     @JoinColumn(name = "match_id")
     private Match match;
 
+    @ManyToOne
+    private Team team;
+
     protected MatchEvent() {
     }
 
-    public MatchEvent(String type, int minute, String namePlayer, Match match) {
+    public MatchEvent(String type, int minute, String namePlayer, Match match, Team team) {
         this.type = type;
         this.minute = minute;
         this.namePlayer = namePlayer;
         this.match = match;
+        this.team = team;
     }
 
     public Long getId() {
@@ -67,13 +71,21 @@ public class MatchEvent {
         this.match = match;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     // Método para devolver el icono según el tipo de evento
     public String getIcon() {
         if (type == null)
             return "•";
         return switch (type.toUpperCase()) {
             case "GOAL" -> "⚽";
-            case "CARD" -> "🟨";
+            case "YELLOW CARD" -> "🟨";
             case "RED_CARD" -> "🟥";
             case "SUBSTITUTION" -> "🔄";
             default -> "•";

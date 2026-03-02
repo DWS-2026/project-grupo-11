@@ -43,11 +43,9 @@ async function fetchTeams() {
     }
 }
 
-// ... tus funciones confirmDelete y deleteTeam se mantienen igual ...
 function editTeam(id) {
-    window.location.href = `/ModifyTeam?id=${id}`; // Sin .html y con barra inicial
+    window.location.href = `/EditTeam/${id}`; 
 }
-
 async function confirmDelete(id, teamName) {
     const result = await Swal.fire({
         title: '¿Eliminar equipo?',

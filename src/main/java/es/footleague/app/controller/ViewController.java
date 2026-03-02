@@ -1,25 +1,30 @@
 package es.footleague.app.controller;
 
+import es.footleague.app.model.Team;
 import es.footleague.app.services.RatingService;
+import es.footleague.app.services.TeamService; // Asegúrate de importar esto
 import es.footleague.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model; // Necesario para pasar datos a Mustache
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PathVariable; // Necesario para el ID
 
 @Controller
 public class ViewController {
 
-    // 1. Inyectamos el servicio (Arquitectura en capas)
     @Autowired
     private UserService userService;
 
     @Autowired
-    private RatingService ratingService; // Inyectamos RatingService
+    private RatingService ratingService;
+
+    @Autowired
+    private TeamService teamService; // Inyectamos TeamService para buscar el equipo
 
     @GetMapping("/")
     public String home() {
-        return "index"; // si tienes index.html
+        return "index";
     }
 
     @GetMapping("/classification")
@@ -31,30 +36,42 @@ public class ViewController {
     public String Admin_Page() {
         return "Admin_Page";
     }
+
     @GetMapping("/CreateMatch")
     public String CreateMatch() {
         return "CreateMatch";
     }
+
     @GetMapping("/CreateTeam")
     public String CreateTeam() {
         return "CreateTeam";
     }
+
     @GetMapping("/Team_Management_Screen")
     public String showTeamManagement() {
         return "Team_Management_Screen";
     }
+
     @GetMapping("/Match_Management_Screen")
     public String showMatchManagement() {
         return "Match_Management_Screen";
     }
+
     @GetMapping("/ModifyTeam")
     public String listado() {
-        return "ModifyTeam"; // Abre templates/ModifyTeam.html
+        return "ModifyTeam";
     }
 
-    @GetMapping("/EditTeam")
-    public String formulario() {
-        return "EditTeam"; // Abre templates/EditTeam.html
+    @GetMapping("/EditTeam/{id}")
+    public String formulario(@PathVariable Long id, Model model) {
+        Team team = teamService.findById(id);
+        
+        if (team != null) {
+            model.addAttribute("team", team);
+            return "EditTeam"; 
+        }
+        
+        // Si el equipo no existe, redirigimos al listado
+        return "redirect:/ModifyTeam";
     }
 }
-

@@ -52,17 +52,65 @@
                 </select>
             </div>
         </div>
-
-        <div class="row mb-4">
-            <div class="col-md-6 text-center">
-                <label class="text-info small">Goles Local</label>
-                <input type="number" id="displayHomeScore" name="localGoals" min="0" class="form-control text-center h2 fw-bold" value="{{#match.localGoals}}{{match.localGoals}}{{/match.localGoals}}{{^match.localGoals}}0{{/match.localGoals}}">
+        <div class="mt-4">
+            <h4 class="text-info border-bottom border-info pb-2">Eventos del Partido</h4>
+            <div id="eventsContainer">
+                {{#match.events}}
+                <div class="row g-2 mb-2 event-row">
+                    <div class="col-md-2">
+                        <input type="number" class="form-control event-minute" value="{{minute}}" placeholder="Min">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select event-type">
+                            <option value="GOAL" {{#isGoal}}selected{{/isGoal}}>⚽ Gol</option>
+                            <option value="YELLOW CARD" {{#isYellow}}selected{{/isYellow}}>🟨 Tarjeta</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control event-player" value="{{namePlayer}}" placeholder="Nombre Apellido (Nº)">
+                    </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-danger" onclick="removeEvent(this)">×</button>
+                        </div>
+                    </div>
+                {{/match.events}}
             </div>
-            <div class="col-md-6 text-center">
-                <label class="text-info small">Goles Visitante</label>
-                <input type="number" id="displayAwayScore" name="visitorGoals" min="0" class="form-control text-center h2 fw-bold" value="{{#match.visitorGoals}}{{match.visitorGoals}}{{/match.visitorGoals}}{{^match.visitorGoals}}0{{/match.visitorGoals}}">
-            </div>
+            <button type="button" class="btn btn-outline-info btn-sm mt-2" onclick="addEventField()">
+                + Añadir Evento (Gol, Tarjeta, etc.)
+            </button>
         </div>
+
+        <template id="eventTemplate">
+            <div class="row g-2 mb-2 event-row align-items-end">
+                <div class="col-md-2">
+                    <label class="small text-white-50">Minuto</label>
+                    <input type="number" class="form-control form-control-sm event-minute" placeholder="Min" min="1" max="120" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="small text-white-50">Tipo</label>
+                    <select class="form-select form-select-sm event-type" onchange="calculateScore()">
+                        <option value="GOAL">⚽ Gol</option>
+                        <option value="YELLOW CARD">🟨 Tarjeta Amarilla</option>
+                        <option value="RED_CARD">🟥 Tarjeta Roja</option>
+                        <option value="SUBSTITUTION">🔄 Cambio</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="small text-white-50">Jugador (Nombre Apellido (Nº))</label>
+                    <input type="text" class="form-control form-control-sm event-player" placeholder="Ej: Lionel Messi (10)" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="small text-white-50">Equipo</label>
+                    <select class="form-select form-select-sm event-team">
+                        <option value="LOCAL">Local</option>
+                        <option value="VISITOR">Visitante</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeEvent(this)">×</button>
+                </div>
+            </div>
+        </template>
 
         <div class="d-grid gap-2">
             <button type="submit" class="btn btn-primary p-3 fw-bold">Guardar Partido</button>

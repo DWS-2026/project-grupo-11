@@ -2,20 +2,23 @@
 
 <div class="form-container">
     <div class="text-center mb-4">
-        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_logo.svg/1200px-FC_Barcelona_logo.svg.png"
-            alt="Barça Logo" style="width: 80px;" class="mb-3">
-        <h2 class="text-white">Modificar FC Barcelona</h2>
+        <img src="{{#team.logoData}}data:image/png;base64,{{team.logoData}}{{/team.logoData}}{{^team.logoData}}/images/default-logo.png{{/team.logoData}}"
+             alt="Logo" style="width: 80px; height: 80px; object-fit: contain;" class="mb-3">
+        
+        <h2 class="text-white">Modificar {{team.name}}</h2>
     </div>
 
     <form id="editTeamForm">
+        <input type="hidden" id="teamId" value="{{team.id}}">
+
         <div class="mb-3">
             <label class="form-label text-info">Nombre del Equipo</label>
-            <input type="text" class="form-control" id="teamName" value="FC Barcelona" required>
+            <input type="text" class="form-control" id="teamName" value="{{team.name}}" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label text-info">Estadio</label>
-            <input type="text" class="form-control" id="stadiumName" value="Spotify Camp Nou" required>
+            <input type="text" class="form-control" id="stadiumName" value="{{team.stadiumName}}" required>
         </div>
 
         <div class="mb-4">
@@ -26,37 +29,68 @@
 
         <div class="d-grid gap-2">
             <button type="submit" class="btn btn-warning p-3 fw-bold">Guardar Cambios</button>
-            <a href="ModifyTeam.html" class="btn btn-outline-secondary">Cancelar</a>
+            <a href="/ModifyTeam" class="btn btn-outline-secondary">Cancelar</a>
         </div>
     </form>
 </div>
-</div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    /**
-     * Team Modification Logic
-     * Code quality: Variable names and logs in English as per project requirements.
-     */
     const editForm = document.getElementById('editTeamForm');
 
-    editForm.addEventListener('submit', (event) => {
+    editForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        // Console log in English for the teacher to see quality code
-        console.log("Updating FC Barcelona data in local storage...");
+        // Getting data from the form
+        const teamId = document.getElementById('teamId').value;
+        const teamName = document.getElementById('teamName').value;
+        const stadiumName = document.getElementById('stadiumName').value;
+        const logoFile = document.getElementById('teamLogo').files[0];
 
-        Swal.fire({
-            title: '¡Actualizado!',
-            text: 'Los cambios en el FC Barcelona se han guardado.',
-            icon: 'success',
-            background: '#1e293b',
-            color: '#ffffff',
-            timer: 1500,
-            showConfirmButton: false
-        }).then(() => {
-            // Return to the main management screen
-            window.location.href = 'Team_Management_Screen.html';
-        });
+        // Creating FormData for multipart/form-data request
+        const formData = new FormData();
+        formData.append('name', teamName);
+        formData.append('stadiumName', stadiumName);
+        
+        // Match the parameter name 'logoFile' defined in TeamRestController
+        if (logoFile) {
+            formData.append('logoFile', logoFile);
+        }
+
+        console.log(`Updating data for team ID: ${teamId}...`);
+
+        try {
+            const response = await fetch(`/api/teams/${teamId}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response.ok) {
+                Swal.fire({
+                    title: '¡Actualizado!',
+                    text: `Los cambios en ${teamName} se han guardado con éxito.`,
+                    icon: 'success',
+                    background: '#1e293b',
+                    color: '#ffffff',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    // Redirect back to the list of teams
+                    window.location.href = '/ModifyTeam';
+                });
+            } else {
+                throw new Error('Failed to update team');
+            }
+        } catch (error) {
+            console.error("Error updating team:", error);
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo actualizar el equipo.',
+                icon: 'error',
+                background: '#1e293b',
+                color: '#ffffff'
+            });
+        }
     });
 </script>
 

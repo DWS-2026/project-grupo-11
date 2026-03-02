@@ -1,17 +1,16 @@
 // match_logic.js
 
-// match_logic.js
-
-// 1. Cargar equipos desde la base de datos al abrir la página
+/**
+ * 1. CARGA DE DATOS INICIALES
+ */
 async function fetchTeams() {
     try {
-        const response = await fetch('/api/teams'); 
+        const response = await fetch('/api/teams');
         const teams = await response.json();
-        
         const homeSelect = document.getElementById('homeTeam');
         const awaySelect = document.getElementById('awayTeam');
 
-        // Limpiar opciones previas (excepto la primera de "Seleccione...")
+        // Limpiar excepto el placeholder
         homeSelect.length = 1;
         awaySelect.length = 1;
 
@@ -19,77 +18,77 @@ async function fetchTeams() {
             const option = `<option value="${team.id}">${team.name}</option>`;
             homeSelect.innerHTML += option;
             awaySelect.innerHTML += option;
-        }
-        
-    );
-        console.log("Equipos cargados correctamente");
+        });
     } catch (error) {
         console.error("Error cargando equipos:", error);
     }
 }
 
-// 2. Gestión de campos de eventos
+/**
+ * 2. GESTIÓN DINÁMICA DE EVENTOS (Goles, Tarjetas...)
+ */
 function addEventField() {
     const container = document.getElementById('eventsContainer');
     const template = document.getElementById('eventTemplate');
-    if (!template) return; // Seguridad por si no existe el template aún
+    if (!template) return;
+    
     const clone = template.content.cloneNode(true);
     container.appendChild(clone);
 }
 
 function removeEvent(btn) {
     btn.closest('.event-row').remove();
-    calculateScore();
+    calculateScore(); // Recalcular marcador al borrar un gol
 }
 
-// 3. Cálculo dinámico del marcador
-// IMPORTANTE: Ahora actualiza .value porque son inputs
+/**
+ * 3. LÓGICA DE MARCADOR EN TIEMPO REAL
+ * Suma los goles dependiendo de si el evento es 'GOAL' y qué equipo se seleccionó
+ */
 function calculateScore() {
     let homeScore = 0;
     let awayScore = 0;
-    const events = document.querySelectorAll('.event-row');
-    
-    events.forEach(row => {
+
+    document.querySelectorAll('.event-row').forEach(row => {
         const type = row.querySelector('.event-type').value;
-        const team = row.querySelector('.team-selector').value;
-        if (type === "GOAL") {
-            if (team === "local") homeScore++;
+        const team = row.querySelector('.event-team').value; // 'LOCAL' o 'VISITOR'
+
+        if (type === 'GOAL') {
+            if (team === 'LOCAL') homeScore++;
             else awayScore++;
         }
     });
-    
-    // CORRECCIÓN: .value para que se vea en los inputs del HTML
+
+    // Actualizar los inputs visibles del marcador
     document.getElementById('displayHomeScore').value = homeScore;
     document.getElementById('displayAwayScore').value = awayScore;
 }
 
-// 4. ENVÍO DE DATOS A JAVA (POST)
+/**
+ * 4. ENVÍO DE DATOS AL SERVIDOR (POST/PUT)
+ */
 document.getElementById('createMatchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Juntamos Fecha + Hora
-    const dateInput = document.getElementById('matchDate').value;
-    const timeInput = document.getElementById('matchTime').value;
-    const fullDate = `${dateInput}T${timeInput}:00`;
-
-    // Estructura idéntica a Match.java
+    // Construcción del objeto Match coincidente con Match.java y MatchEvent.java
     const matchPayload = {
+        id: document.getElementById('matchId')?.value || null,
         localTeam: { id: parseInt(document.getElementById('homeTeam').value) },
         visitorTeam: { id: parseInt(document.getElementById('awayTeam').value) },
-        // CORRECCIÓN: Usamos .value
         localGoals: parseInt(document.getElementById('displayHomeScore').value) || 0,
         visitorGoals: parseInt(document.getElementById('displayAwayScore').value) || 0,
-        matchDate: dateInput, // Enviamos solo fecha para LocalDate
-        matchTime: timeInput, // Enviamos solo hora para LocalTime
+        matchDate: document.getElementById('matchDate').value,
+        matchTime: document.getElementById('matchTime').value,
         weather: document.getElementById('weather').value,
+        // Mapeo de la lista de eventos
         events: Array.from(document.querySelectorAll('.event-row')).map(row => ({
-            eventType: row.querySelector('.event-type').value,
-            minute: parseInt(row.querySelector('.minute-input').value),
-            playerDescription: row.querySelector('.player-info').value
+            minute: parseInt(row.querySelector('.event-minute').value),
+            type: row.querySelector('.event-type').value,
+            namePlayer: row.querySelector('.event-player').value,
+            // Enviamos el rol para que el Java asigne el Team correspondiente
+            teamRole: row.querySelector('.event-team').value 
         }))
     };
-
-    console.log("Enviando datos:", matchPayload);
 
     try {
         const response = await fetch('/api/matches', {
@@ -100,8 +99,8 @@ document.getElementById('createMatchForm').addEventListener('submit', async (e) 
 
         if (response.ok) {
             Swal.fire({
-                title: '¡Registrado!',
-                text: 'El partido se ha guardado y el estadio se asignó automáticamente.',
+                title: '¡Guardado!',
+                text: 'El partido y sus eventos se han registrado correctamente.',
                 icon: 'success',
                 background: '#1e293b',
                 color: '#fff'
@@ -115,20 +114,18 @@ document.getElementById('createMatchForm').addEventListener('submit', async (e) 
     }
 });
 
-// Inicialización
+/**
+ * 5. INICIALIZACIÓN AL CARGAR LA PÁGINA
+ */
 window.onload = async () => {
-    // 1. Cargamos los equipos primero
     await fetchTeams();
     
-    // 2. Calculamos el marcador actual (por si ya hay eventos/goles en la edición)
+    // Si estamos editando (ya hay ID), calculamos el marcador de lo que venga de DB
     calculateScore();
 
-    // 3. Solo añade un campo de evento vacío si es un partido nuevo 
-    // (si no hay filas de eventos ya creadas por Mustache)
+    // Si es un partido nuevo (container vacío), añadimos la primera fila de evento por defecto
     const container = document.getElementById('eventsContainer');
     if(container && container.querySelectorAll('.event-row').length === 0) {
         addEventField();
     }
-    
-    console.log("Datos del partido inicializados: Hora, Clima y Resultado listos.");
 };

@@ -14,7 +14,6 @@ import es.footleague.app.services.MatchEventService;
 import es.footleague.app.services.RatingService;
 import es.footleague.app.services.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 

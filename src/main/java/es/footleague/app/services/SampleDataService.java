@@ -51,10 +51,10 @@ public class SampleDataService {
         Match match = new Match(madridTeam, barsaTeam, 2, 1, LocalDate.of(2026, 02, 01), LocalTime.of(21, 00));
         matchRepository.save(match);
         //4. Crear eventos
-        MatchEvent goal1 = new MatchEvent("GOAL", 23, "Vinicius Jr.", match);
-        MatchEvent card = new MatchEvent("YELLOW CARD", 40, "Gavi", match);
-        MatchEvent goal2 = new MatchEvent("GOAL", 67, "Lewandowski", match);
-        MatchEvent goal3 = new MatchEvent("GOAL", 89, "Bellingham", match);
+        MatchEvent goal1 = new MatchEvent("GOAL", 23, "Vinicius Jr.", match, madridTeam);
+        MatchEvent card = new MatchEvent("YELLOW CARD", 40, "Gavi", match, barsaTeam);
+        MatchEvent goal2 = new MatchEvent("GOAL", 67, "Lewandowski", match, barsaTeam);
+        MatchEvent goal3 = new MatchEvent("GOAL", 89, "Bellingham", match, madridTeam);
         matchEventRepository.save(goal1);
         matchEventRepository.save(card);
         matchEventRepository.save(goal2);

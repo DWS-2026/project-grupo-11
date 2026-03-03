@@ -28,7 +28,6 @@ public class Match {
     @Column(nullable = false)
     private Integer visitorGoals;
 
-    @Column(nullable = false)
     private String weather;
 
     @Column(nullable = false)

@@ -17,7 +17,6 @@ public class Rating {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String comment; 
 
-    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @ManyToOne(optional = false)

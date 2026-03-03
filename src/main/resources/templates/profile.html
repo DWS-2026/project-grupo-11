@@ -24,12 +24,12 @@
             <a href="/profile/{{user.username}}/edit" class="btn btn-outline-primary btn-sm w-100 mt-3">Editar Perfil</a>
             {{/isOwner}}
         </div>
-        {{#loggedUser.role}}
+        {{#loggedUser}}
         <div class="mt-4 p-3 bg-warning bg-opacity-10 border border-warning rounded">
             <p class="small mb-2 text-warning-emphasis fw-bold">Modo Administrador</p>
             <a href="/Admin_Page" class="btn btn-warning btn-sm w-100">Ir al Panel de Control</a>
         </div>
-        {{/loggedUser.role}}
+        {{/loggedUser}}
     </div>
 
     <div class="col-md-8">

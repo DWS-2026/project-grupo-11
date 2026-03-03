@@ -19,7 +19,7 @@ public class User {
     private String role; // "ADMIN", "JOURNALIST", "USER"
     private String avatarPath; // Ruta a la imagen del avatar
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings;
 
     public Long getId() {

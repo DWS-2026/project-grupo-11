@@ -28,7 +28,7 @@
 
                     <div class="mb-3">
                         <label class="form-label text-primary">Confirmar Contraseña</label>
-                        <input type="password" class="form-control" required>
+                        <input type="password" name="password" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
@@ -40,9 +40,8 @@
                         <label class="form-label text-primary">Equipo Favorito</label>
                         <select class="form-select" name="favouriteTeam" required>
                             <option selected disabled>Selecciona un equipo...</option>
-                            <option value="1">Real Madrid CF</option>
-                            <option value="2">FC Barcelona</option>
-                            <option value="3">Atlético de Madrid</option>
+                            {{#teams}}<option value="{{id}}">{{name}}</option>
+                            {{/teams}}
                         </select>
                         <div class="form-text">Esto determinará sobre qué equipo podrás ejercer como periodista.</div>
                     </div>

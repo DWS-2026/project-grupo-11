@@ -7,11 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import es.footleague.app.model.User;
 import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
+import es.footleague.app.services.UserSession;
 
 @Controller
 public class UserController {
@@ -20,6 +22,15 @@ public class UserController {
     private UserService userService;
     @Autowired
     private TeamService teamService;
+    @Autowired
+    private UserSession userSession;
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        if (userSession.isLoggedIn()) {
+            model.addAttribute("loggedUser", userSession.getUser());
+        }
+    }
 
     // 1. PROFILE VIEW (To view user data)
     // We use the username because it is unique, as you defined in the entity
@@ -29,6 +40,9 @@ public class UserController {
 
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
+            boolean isOwner = userSession.isLoggedIn()
+                    && userSession.getUser().getUsername().equalsIgnoreCase(username);
+            model.addAttribute("isOwner", isOwner);
             return "profile";
         }
         return "user_not_found";
@@ -46,12 +60,35 @@ public class UserController {
     public String processRegister(User user) {
         user.setRole("PERIODISTA");
         userService.save(user);
+        userSession.setUser(user);
         return "redirect:/profile/" + user.getUsername();
     }
 
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+    @PostMapping("/login")
+    public String proccessLogin(String username, String password, Model model) {
+        Optional<User> userOpt = userService.findByUsernameIgnoreCase(username);
+
+        // Comprobamos si el usuario existe y si la contraseña coincide
+        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
+            // ¡LOGIN CORRECTO! Guardamos en la sesión
+            userSession.setUser(userOpt.get());
+            return "redirect:/profile/" + username;
+        } else {
+            // LOGIN INCORRECTO: Volvemos al login con un mensaje de error
+            model.addAttribute("error", "Usuario o contraseña incorrectos");
+            return "login";
+        }
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        userSession.logout();
+        return "redirect:/login";
     }
 
     @GetMapping("/profile/{username}/my-ratings")
@@ -66,6 +103,9 @@ public class UserController {
 
     @GetMapping("/profile/{username}/edit")
     public String editProfileForm(@PathVariable String username, Model model) {
+        if (!userSession.isLoggedIn() || !userSession.getUser().getUsername().equalsIgnoreCase(username)) {
+            return "redirect:/profile/" + username;
+        }
         Optional<User> user = userService.findByUsernameIgnoreCase(username);
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
@@ -97,6 +137,7 @@ public class UserController {
             }
 
             userService.save(existingUser);
+            userSession.setUser(existingUser);
         }
 
         return "redirect:/profile/" + updatedUser.getUsername();

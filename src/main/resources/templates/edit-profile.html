@@ -37,9 +37,9 @@
                                 <label class="form-label text-primary">Equipo Favorito</label>
                                 <select class="form-select" name="favouriteTeam">
                                     <option disabled>Selecciona un equipo...</option>
-                                    <option value="1">Real Madrid CF</option>
-                                    <option value="2">FC Barcelona</option>
-                                    <option value="3">Atlético de Madrid</option>
+                                    {{#teams}}
+                                    <option value="{{id}}">{{name}}</option>
+                                    {{/teams}}
                                 </select>
                             </div>
 

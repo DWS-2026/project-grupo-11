@@ -20,14 +20,16 @@
                     </span>
                 </p>
             </div>
-            <a href="/edit-profile" class="btn btn-outline-primary btn-sm w-100 mt-3">Editar Perfil</a>
+            {{#isOwner}}
+            <a href="/profile/{{user.username}}/edit" class="btn btn-outline-primary btn-sm w-100 mt-3">Editar Perfil</a>
+            {{/isOwner}}
         </div>
-        {{#user.role}}
+        {{#loggedUser.role}}
         <div class="mt-4 p-3 bg-warning bg-opacity-10 border border-warning rounded">
             <p class="small mb-2 text-warning-emphasis fw-bold">Modo Administrador</p>
             <a href="/Admin_Page" class="btn btn-warning btn-sm w-100">Ir al Panel de Control</a>
         </div>
-        {{/user.role}}
+        {{/loggedUser.role}}
     </div>
 
     <div class="col-md-8">
@@ -55,7 +57,7 @@
                 {{/user.ratings}}
             </div>
             <div class="card-footer bg-white text-center">
-                <a href="/my-ratings" class="text-decoration-none small">Ver todas mis valoraciones</a>
+                <a href="/profile/{{user.username}}/my-ratings" class="text-decoration-none small">Ver todas mis valoraciones</a>
             </div>
         </div>
     </div>

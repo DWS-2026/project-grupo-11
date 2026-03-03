@@ -28,8 +28,8 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "favourite_team_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "favourite_team_id", nullable = false)
     private Team favouriteTeam;
 
     protected User() {

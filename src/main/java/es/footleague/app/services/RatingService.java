@@ -24,11 +24,4 @@ public class RatingService {
         ratingRepository.deleteById(ratingId);
     }
     
-    // Método para obtener las valoraciones de un partido específico
-    public List<Rating> findByMatchId(Long matchId) {
-        // Podrás personalizar esto más adelante en el repository
-        return ratingRepository.findAll().stream()
-                .filter(r -> r.getMatch().getId().equals(matchId))
-                .toList();
-    }
 }

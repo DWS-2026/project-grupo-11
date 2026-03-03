@@ -43,8 +43,8 @@ public class SampleDataService {
         teamRepository.save(madridTeam);
         teamRepository.save(barsaTeam);
         //2. Crear usuarios
-        User user1 = new User("Juan Perez", "password123", "juanperez@prensa.com", "PERIODISTA", madridTeam);
-        User user2 = new User("admin", "admin123", "admin@footleague.es", "ADMIN", barsaTeam);
+        User user1 = new User("Juan Perez", "password123", "juanperez@prensa.com", madridTeam);
+        User user2 = new User("admin", "admin123", "admin@footleague.es", barsaTeam);
         userRepository.save(user1);
         userRepository.save(user2);
         //3. Crear partido
@@ -60,8 +60,8 @@ public class SampleDataService {
         matchEventRepository.save(goal2);
         matchEventRepository.save(goal3);
         //5. Crear valoraciones
-        Rating r1 = new Rating(5, "Espectacular remate de volea, totalmente imparable.", user1, match, goal3);
-        Rating r2 = new Rating(2, "Demasiado rigurosa, apenas hubo contacto en la jugada.", user2, match, card);
+        Rating r1 = new Rating(5, "Espectacular remate de volea, totalmente imparable.", user1, goal3);
+        Rating r2 = new Rating(2, "Demasiado rigurosa, apenas hubo contacto en la jugada.", user2, card);
         ratingRepository.save(r1);
         ratingRepository.save(r2);
 

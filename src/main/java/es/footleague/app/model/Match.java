@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,18 +14,48 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "local_team_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "local_team_id", nullable = false)
     private Team localTeam;
 
-    @ManyToOne
-    @JoinColumn(name = "visitor_team_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "visitor_team_id", nullable = false)
     private Team visitorTeam;
 
+    @Column(nullable = false)
     private Integer localGoals;
+
+    @Column(nullable = false)
     private Integer visitorGoals;
+
+    @Column(nullable = false)
     private String weather;
+
+    @Column(nullable = false)
     private String stadium;
+
+    @Column(nullable = false)
+    private LocalDate matchDate;
+
+    @Column(nullable = false)
+    private LocalTime matchTime;
+
+    @OneToMany(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MatchEvent> events = new ArrayList<>();
+
+    protected Match() {
+    }
+
+    public Match(Team localTeam, Team visitorTeam, Integer localGoals, Integer visitorGoals, LocalDate matchDate,
+            LocalTime matchTime) {
+        this.localTeam = localTeam;
+        this.visitorTeam = visitorTeam;
+        this.localGoals = localGoals;
+        this.visitorGoals = visitorGoals;
+        this.matchDate = matchDate;
+        this.matchTime = matchTime;
+        this.stadium = localTeam.getStadiumName();
+    }
 
     public String getWeather() {
         return weather;
@@ -33,28 +64,6 @@ public class Match {
     public void setWeather(String weather) {
         this.weather = weather;
     }
-
-    public Match() {
-    }
-
-    public Match(Team localTeam, Team visitorTeam, Integer localGoals, Integer visitorGoals, LocalDate matchDate, LocalTime matchTime) {
-        this.localTeam = localTeam;
-        this.visitorTeam = visitorTeam;
-        this.localGoals = localGoals;
-        this.visitorGoals = visitorGoals;
-        this.matchDate = matchDate;
-        this.matchTime = matchTime;
-        this.stadium = localTeam.getStadiumName(); // Asumimos que el partido se juega en el estadio del equipo local
-    }
-
-    private LocalDate matchDate;
-    private LocalTime matchTime;
-
-    @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)
-    private List<MatchEvent> events;
-
-    @OneToMany(mappedBy = "match")
-    private List<Rating> ratings;
 
     public Long getId() {
         return id;
@@ -79,6 +88,7 @@ public class Match {
     public void setVisitorTeam(Team visitorTeam) {
         this.visitorTeam = visitorTeam;
     }
+
     public String getStadium() {
         return stadium;
     }
@@ -127,18 +137,11 @@ public class Match {
         this.events = events;
     }
 
-    public List<Rating> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(List<Rating> ratings) {
-        this.ratings = ratings;
-    }
-
     public boolean isFinalized() {
-    if (this.matchDate == null || this.matchTime == null) return false;
-    
-    LocalDateTime fullDateTime = LocalDateTime.of(this.matchDate, this.matchTime);
-    return fullDateTime.isBefore(LocalDateTime.now());
+        if (this.matchDate == null || this.matchTime == null)
+            return false;
+
+        LocalDateTime fullDateTime = LocalDateTime.of(this.matchDate, this.matchTime);
+        return fullDateTime.isBefore(LocalDateTime.now());
     }
 }

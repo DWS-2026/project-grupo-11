@@ -12,30 +12,28 @@ public class Rating {
     private Long id;
 
     @Column(nullable = false)
-    private Integer score; // Nota de 1 a 5, por ejemplo
+    private Integer score; 
 
-    @Column(columnDefinition = "TEXT")
-    private String comment; // Opinión del periodista
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String comment; 
 
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User author; // El periodista que valora
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User author; 
 
-    @ManyToOne
-    @JoinColumn(name = "match_id")
-    private Match match; // El partido valorado
-
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "event_id", nullable = false)
     private MatchEvent event;
 
-    public Rating(Integer score, String comment, User author, Match match, MatchEvent event) {
+    public Rating(Integer score, String comment, User author, MatchEvent event) {
         this.score = score;
         this.comment = comment;
         this.author = author;
-        this.match = match;
         this.event = event;
+        this.createdAt = LocalDateTime.now();
     }
 
     // Constructor, Getters y Setters
@@ -81,14 +79,6 @@ public class Rating {
 
     public void setAuthor(User author) {
         this.author = author;
-    }
-
-    public Match getMatch() {
-        return match;
-    }
-
-    public void setMatch(Match match) {
-        this.match = match;
     }
 
     public MatchEvent getEvent() {

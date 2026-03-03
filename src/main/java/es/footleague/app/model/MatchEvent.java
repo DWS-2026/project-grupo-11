@@ -1,5 +1,8 @@
 package es.footleague.app.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -9,16 +12,25 @@ public class MatchEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private int minute;
+
+    @Column(nullable = false)
     private String type; // "GOAL", "CARD", "SUBSTITUTION"
+
+    @Column(nullable = false)
     private String namePlayer;
 
-    @ManyToOne
-    @JoinColumn(name = "match_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "match_id", nullable = false)
     private Match match;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "team_id", nullable = false)
     private Team team;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings = new ArrayList<>();
 
     protected MatchEvent() {
     }
@@ -94,6 +106,7 @@ public class MatchEvent {
 
     // Método para generar la descripción automática que pedía tu HTML
     public String getDescription() {
+        if (type == null) return "";
         return switch (type.toUpperCase()) {
             case "GOAL" -> "Gol de " + namePlayer;
             case "CARD" -> "Tarjeta para " + namePlayer;

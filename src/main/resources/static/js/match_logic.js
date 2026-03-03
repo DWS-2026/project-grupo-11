@@ -1,5 +1,3 @@
-// match_logic.js
-
 /**
  * 1. CARGA DE DATOS INICIALES
  */
@@ -10,7 +8,8 @@ async function fetchTeams() {
         const homeSelect = document.getElementById('homeTeam');
         const awaySelect = document.getElementById('awayTeam');
 
-        // Limpiar excepto el placeholder
+        if (!homeSelect || !awaySelect) return;
+
         homeSelect.length = 1;
         awaySelect.length = 1;
 
@@ -25,7 +24,7 @@ async function fetchTeams() {
 }
 
 /**
- * 2. GESTIÓN DINÁMICA DE EVENTOS (Goles, Tarjetas...)
+ * 2. GESTIÓN DINÁMICA DE EVENTOS
  */
 function addEventField() {
     const container = document.getElementById('eventsContainer');
@@ -38,12 +37,11 @@ function addEventField() {
 
 function removeEvent(btn) {
     btn.closest('.event-row').remove();
-    calculateScore(); // Recalcular marcador al borrar un gol
+    calculateScore();
 }
 
 /**
  * 3. LÓGICA DE MARCADOR EN TIEMPO REAL
- * Suma los goles dependiendo de si el evento es 'GOAL' y qué equipo se seleccionó
  */
 function calculateScore() {
     let homeScore = 0;
@@ -51,43 +49,54 @@ function calculateScore() {
 
     document.querySelectorAll('.event-row').forEach(row => {
         const type = row.querySelector('.event-type').value;
-        const team = row.querySelector('.event-team').value; // 'LOCAL' o 'VISITOR'
+        const teamSelector = row.querySelector('.team-selector') || row.querySelector('.event-team');
+        const team = teamSelector ? teamSelector.value : null;
 
         if (type === 'GOAL') {
             if (team === 'LOCAL') homeScore++;
-            else awayScore++;
+            else if (team === 'VISITOR') awayScore++;
         }
     });
 
-    // Actualizar los inputs visibles del marcador
-    document.getElementById('displayHomeScore').value = homeScore;
-    document.getElementById('displayAwayScore').value = awayScore;
+    const displayHome = document.getElementById('displayHomeScore');
+    const displayAway = document.getElementById('displayAwayScore');
+    
+    if (displayHome) displayHome.value = homeScore;
+    if (displayAway) displayAway.value = awayScore;
 }
 
 /**
- * 4. ENVÍO DE DATOS AL SERVIDOR (POST/PUT)
+ * 4. ENVÍO DE DATOS AL SERVIDOR
  */
 document.getElementById('createMatchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Construcción del objeto Match coincidente con Match.java y MatchEvent.java
     const matchPayload = {
         id: document.getElementById('matchId')?.value || null,
         localTeam: { id: parseInt(document.getElementById('homeTeam').value) },
         visitorTeam: { id: parseInt(document.getElementById('awayTeam').value) },
-        localGoals: parseInt(document.getElementById('displayHomeScore').value) || 0,
-        visitorGoals: parseInt(document.getElementById('displayAwayScore').value) || 0,
+        localGoals: parseInt(document.getElementById('displayHomeScore')?.value) || 0,
+        visitorGoals: parseInt(document.getElementById('displayAwayScore')?.value) || 0,
         matchDate: document.getElementById('matchDate').value,
         matchTime: document.getElementById('matchTime').value,
         weather: document.getElementById('weather').value,
-        // Mapeo de la lista de eventos
-        events: Array.from(document.querySelectorAll('.event-row')).map(row => ({
-            minute: parseInt(row.querySelector('.event-minute').value),
-            type: row.querySelector('.event-type').value,
-            namePlayer: row.querySelector('.event-player').value,
-            // Enviamos el rol para que el Java asigne el Team correspondiente
-            teamRole: row.querySelector('.event-team').value 
-        }))
+        
+        events: Array.from(document.querySelectorAll('.event-row')).map(row => {
+            const type = row.querySelector('.event-type').value;
+            const isSub = (type === 'SUBSTITUTION');
+            
+            return {
+                // Captura el minuto desde .event-min (clase de tu template)
+                minute: parseInt(row.querySelector('.event-min').value) || 0,
+                type: type,
+                // Si es gol/tarjeta usa namePlayer, si es cambio usa In/Out
+                namePlayer: !isSub ? row.querySelector('.event-player').value : null,
+                namePlayerIn: isSub ? row.querySelector('.event-in').value : null,
+                namePlayerOut: isSub ? row.querySelector('.event-out').value : null,
+                // Captura el equipo desde el selector
+                teamRole: (row.querySelector('.team-selector') || row.querySelector('.event-team')).value
+            };
+        })
     };
 
     try {
@@ -100,7 +109,7 @@ document.getElementById('createMatchForm').addEventListener('submit', async (e) 
         if (response.ok) {
             Swal.fire({
                 title: '¡Guardado!',
-                text: 'El partido y sus eventos se han registrado correctamente.',
+                text: 'El partido se ha registrado con éxito.',
                 icon: 'success',
                 background: '#1e293b',
                 color: '#fff'
@@ -115,15 +124,28 @@ document.getElementById('createMatchForm').addEventListener('submit', async (e) 
 });
 
 /**
- * 5. INICIALIZACIÓN AL CARGAR LA PÁGINA
+ * 5. CONTROL DE VISIBILIDAD DE CAMPOS Y CARGA
  */
+function toggleEditSubFields(select) {
+    const row = select.closest('.event-row');
+    const playerInput = row.querySelector('.event-player');
+    const subFields = row.querySelector('.sub-fields');
+    
+    if (select.value === 'SUBSTITUTION') {
+        playerInput.classList.add('d-none');
+        subFields.classList.remove('d-none');
+        playerInput.removeAttribute('required');
+    } else {
+        playerInput.classList.remove('d-none');
+        subFields.classList.add('d-none');
+        playerInput.setAttribute('required', 'required');
+    }
+}
+
 window.onload = async () => {
     await fetchTeams();
-    
-    // Si estamos editando (ya hay ID), calculamos el marcador de lo que venga de DB
     calculateScore();
 
-    // Si es un partido nuevo (container vacío), añadimos la primera fila de evento por defecto
     const container = document.getElementById('eventsContainer');
     if(container && container.querySelectorAll('.event-row').length === 0) {
         addEventField();

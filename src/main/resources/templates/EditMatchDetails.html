@@ -92,19 +92,34 @@
 
 <script>
     // Función para añadir sucesos con datos precargados para la simulación
-    function addEventField(type = '⚽', team = 'local', min = '', player = '') {
+    function addEventField(type = '⚽', team = 'local', min = '', player = '', pIn = '', pOut = '') {
         const container = document.getElementById('eventsContainer');
         const template = document.getElementById('eventTemplate');
         const clone = template.content.cloneNode(true);
-
         const row = clone.querySelector('.event-row');
+
         row.querySelector('.event-type').value = type;
         row.querySelector('.team-selector').value = team;
-        row.querySelector('input[type="number"]').value = min;
-        row.querySelector('input[type="text"]').value = player;
+        row.querySelector('.event-min').value = min;
+
+        if (type === '🔄') {
+            row.querySelector('.event-player').classList.add('d-none');
+            row.querySelector('.sub-fields').classList.remove('d-none');
+            row.querySelector('.event-in').value = pIn;
+            row.querySelector('.event-out').value = pOut;
+        } else {
+        row.querySelector('.event-player').value = player;
+        }
 
         container.appendChild(clone);
         calculateScore();
+    }
+
+    function toggleEditSubFields(select) {
+        const row = select.closest('.event-row');
+        const isSub = select.value === '🔄';
+        row.querySelector('.event-player').classList.toggle('d-none', isSub);
+        row.querySelector('.sub-fields').classList.toggle('d-none', !isSub);
     }
 
     // Cargamos los sucesos de tu página de detalle al iniciar

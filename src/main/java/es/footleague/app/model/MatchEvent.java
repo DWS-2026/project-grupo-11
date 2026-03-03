@@ -12,6 +12,8 @@ public class MatchEvent {
     private int minute;
     private String type; // "GOAL", "CARD", "SUBSTITUTION"
     private String namePlayer;
+    private String namePlayerOut;
+    private String namePlayerIn;
 
     @ManyToOne
     @JoinColumn(name = "match_id")
@@ -94,11 +96,11 @@ public class MatchEvent {
 
     // Método para generar la descripción automática que pedía tu HTML
     public String getDescription() {
-        return switch (type.toUpperCase()) {
-            case "GOAL" -> "Gol de " + namePlayer;
-            case "CARD" -> "Tarjeta para " + namePlayer;
-            case "SUBSTITUTION" -> "Cambio: " + namePlayer;
-            default -> type + " - " + namePlayer;
-        };
-    }
+    return switch (type.toUpperCase()) {
+        case "GOAL" -> "Gol de " + namePlayer;
+        case "CARD" -> "Tarjeta para " + namePlayer;
+        case "SUBSTITUTION" -> "Cambio: 🟢 " + namePlayerIn + " 🔴 " + namePlayerOut;
+        default -> type + " - " + namePlayer;
+    };
+}
 }

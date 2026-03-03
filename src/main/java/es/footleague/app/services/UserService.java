@@ -17,8 +17,17 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<User> findByUsernameIgnoreCase(String username) {
+        return userRepository.findByUsernameIgnoreCase(username);
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepository.findByUsernameIgnoreCase(username).isPresent();
+    }
+
+    public void deleteByUsername(String username) {
+        Optional<User> user = userRepository.findByUsernameIgnoreCase(username);
+        user.ifPresent(usuario -> userRepository.delete(usuario));
     }
 
     public void save(User user) {

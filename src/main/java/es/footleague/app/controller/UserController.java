@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import es.footleague.app.model.User;
+import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
 
 @Controller
@@ -17,14 +18,16 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private TeamService teamService;
 
     // 1. PROFILE VIEW (To view user data)
     // We use the username because it is unique, as you defined in the entity
     @GetMapping("/profile/{username}")
     public String userProfile(@PathVariable String username, Model model) {
-        Optional<User> user = userService.findByUsername(username);
+        Optional<User> user = userService.findByUsernameIgnoreCase(username);
 
-        if(user.isPresent()){
+        if (user.isPresent()) {
             model.addAttribute("user", user.get());
             return "profile";
         }
@@ -33,7 +36,8 @@ public class UserController {
 
     // 2. REGISTRATION FORM (View)
     @GetMapping("/register")
-    public String registerForm() {
+    public String registerForm(Model model) {
+        model.addAttribute("teams", teamService.findAll());
         return "registration";
     }
 
@@ -52,7 +56,7 @@ public class UserController {
 
     @GetMapping("/profile/{username}/my-ratings")
     public String myRatings(@PathVariable String username, Model model) {
-        Optional<User> user = userService.findByUsername(username);
+        Optional<User> user = userService.findByUsernameIgnoreCase(username);
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
             return "my-ratings";
@@ -62,7 +66,7 @@ public class UserController {
 
     @GetMapping("/profile/{username}/edit")
     public String editProfileForm(@PathVariable String username, Model model) {
-        Optional<User> user = userService.findByUsername(username);
+        Optional<User> user = userService.findByUsernameIgnoreCase(username);
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
             return "edit-profile";
@@ -74,7 +78,7 @@ public class UserController {
     public String processEditProfile(User updatedUser) {
         // We look for the original user so as not to lose data that is not in the form
         // (like the role)
-        Optional<User> userOpt = userService.findByUsername(updatedUser.getUsername());
+        Optional<User> userOpt = userService.findByUsernameIgnoreCase(updatedUser.getUsername());
 
         if (userOpt.isPresent()) {
             User existingUser = userOpt.get();

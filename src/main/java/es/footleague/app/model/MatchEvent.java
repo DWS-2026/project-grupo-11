@@ -20,6 +20,8 @@ public class MatchEvent {
 
     @Column(nullable = false)
     private String namePlayer;
+    private String namePlayerOut;
+    private String namePlayerIn;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "match_id", nullable = false)
@@ -108,10 +110,10 @@ public class MatchEvent {
     public String getDescription() {
         if (type == null) return "";
         return switch (type.toUpperCase()) {
-            case "GOAL" -> "Gol de " + namePlayer;
-            case "CARD" -> "Tarjeta para " + namePlayer;
-            case "SUBSTITUTION" -> "Cambio: " + namePlayer;
-            default -> type + " - " + namePlayer;
-        };
+        case "GOAL" -> "Gol de " + namePlayer;
+        case "CARD" -> "Tarjeta para " + namePlayer;
+        case "SUBSTITUTION" -> "Cambio: 🟢 " + namePlayerIn + " 🔴 " + namePlayerOut;
+        default -> type + " - " + namePlayer;
+    };
     }
 }

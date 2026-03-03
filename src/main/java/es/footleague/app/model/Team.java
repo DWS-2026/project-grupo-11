@@ -22,7 +22,7 @@ public class Team {
     private int goals;
 
     @Lob
-    @Column(name = "logo_data", columnDefinition = "LONGBLOB", nullable = false)
+    @Column(name = "logo_data", columnDefinition = "LONGBLOB")
     private byte[] logoData;
 
     protected Team() {

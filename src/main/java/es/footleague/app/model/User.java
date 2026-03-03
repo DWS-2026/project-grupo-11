@@ -1,6 +1,8 @@
 package es.footleague.app.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,26 +17,33 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(unique = true, nullable = false)
     private String email;
-    private String role; // "ADMIN", "JOURNALIST", "USER"
-    private String avatarPath; // Ruta a la imagen del avatar
+
+    @Lob
+    @Column(name = "avatar_data", columnDefinition = "LONGBLOB")
+    private byte[] avatarData;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Rating> ratings;
+    private List<Rating> ratings = new ArrayList<>();
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "favourite_team_id")
+    private Team favouriteTeam;
 
     protected User() {
     }
 
-    public User(String username, String password, String email, String role, Team favouriteTeam) {
+    public User(String username, String password, String email, Team favouriteTeam) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.role = role;
         this.favouriteTeam = favouriteTeam;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
@@ -65,14 +74,6 @@ public class User {
         this.email = email;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public List<Rating> getRatings() {
         return ratings;
     }
@@ -81,19 +82,6 @@ public class User {
         this.ratings = ratings;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "favourite_team_id")
-    private Team favouriteTeam;
-
-    public String getAvatarPath() {
-        return avatarPath;
-    }
-
-    public void setAvatarPath(String avatarPath) {
-        this.avatarPath = avatarPath;
-    }
-
-    // Añade su Getter y Setter
     public Team getFavouriteTeam() {
         return favouriteTeam;
     }

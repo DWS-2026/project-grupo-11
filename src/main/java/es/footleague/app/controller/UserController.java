@@ -58,7 +58,6 @@ public class UserController {
     // 3. PROCESS RECORD (Logic)
     @PostMapping("/register")
     public String processRegister(User user) {
-        user.setRole("PERIODISTA");
         userService.save(user);
         userSession.setUser(user);
         return "redirect:/profile/" + user.getUsername();

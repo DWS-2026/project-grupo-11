@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/teams")
@@ -27,24 +28,24 @@ public class TeamRestController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Team> getTeamById(@PathVariable Long id) {
-        Team team = teamService.findById(id);
-        if (team != null) {
+        Optional<Team> teamOpt = teamService.findById(id);
+        if (teamOpt.isPresent()) {
+            Team team = teamOpt.get();
             return ResponseEntity.ok(team);
         }
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping(consumes = {"multipart/form-data"})
+    @PostMapping(consumes = { "multipart/form-data" })
     public ResponseEntity<Team> createTeam(
             @RequestParam("name") String name,
             @RequestParam("stadiumName") String stadiumName,
             @RequestParam("logoFile") MultipartFile file) throws IOException {
 
         Team team = new Team(name, stadiumName);
-        
+
         if (file != null && !file.isEmpty()) {
             team.setLogoData(file.getBytes());
-            team.setLogoPath(file.getOriginalFilename());
         }
 
         return ResponseEntity.ok(teamService.save(team));
@@ -53,7 +54,7 @@ public class TeamRestController {
     /**
      * ACTUALIZAR equipo existente (PUT)
      */
-    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
+    @PutMapping(value = "/{id}", consumes = { "multipart/form-data" })
     public ResponseEntity<Team> updateTeam(
             @PathVariable Long id,
             @RequestParam("name") String name,
@@ -61,19 +62,19 @@ public class TeamRestController {
             @RequestParam(value = "logoFile", required = false) MultipartFile file) throws IOException {
 
         // 1. Buscar el equipo que ya existe en la DB
-        Team existingTeam = teamService.findById(id);
-        if (existingTeam == null) {
+        Optional<Team> existingTeamOpt = teamService.findById(id);
+        if (existingTeamOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         // 2. Modificar sus atributos
+        Team existingTeam = existingTeamOpt.get();
         existingTeam.setName(name);
         existingTeam.setStadiumName(stadiumName);
 
         // 3. Solo actualizar el logo si el usuario subió uno nuevo
         if (file != null && !file.isEmpty()) {
             existingTeam.setLogoData(file.getBytes());
-            existingTeam.setLogoPath(file.getOriginalFilename());
         }
 
         // 4. Guardar los cambios (save en Spring actualiza si el ID ya existe)

@@ -43,7 +43,7 @@ public class Match {
     @OneToMany(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MatchEvent> events = new ArrayList<>();
 
-    protected Match() {
+    public Match() {
     }
 
     public Match(Team localTeam, Team visitorTeam, Integer localGoals, Integer visitorGoals, LocalDate matchDate,

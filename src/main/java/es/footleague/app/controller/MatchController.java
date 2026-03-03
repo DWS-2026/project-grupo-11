@@ -75,10 +75,11 @@ public class MatchController {
     public ResponseEntity<?> createMatchApi(@RequestBody Match matchData) {
         try {
             // 1. Buscamos el equipo local para obtener su estadio
-            Team local = teamService.findById(matchData.getLocalTeam().getId());
+            Optional<Team> localOpt = teamService.findById(matchData.getLocalTeam().getId());
 
             // 2. Asignamos el estadio del local al partido (lo que pediste)
-            if (local != null) {
+            if (localOpt.isPresent()) {
+                Team local = localOpt.get();
                 matchData.setStadium(local.getStadiumName());
             }
 

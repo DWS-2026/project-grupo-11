@@ -6,7 +6,7 @@
 </div>
 {{/mensaje}}
 
-<div class="form-container" style="max-width: 1100px;">
+<div class="form-container container mt-4" style="max-width: 1100px;">
     <div class="text-center mb-4">
         <h2 class="text-white fw-bold">Gestión de Partidos</h2>
         <p class="text-white-50">Historial de marcadores y detalles de la Liga Pro</p>
@@ -27,19 +27,20 @@
             <tbody id="matchTableBody">
                 {{#matches}}
                 <tr>
-                    <td class="text-white-50 small">{{matchDate}}</td>
+                    <td class="text-white-50 small">{{formattedDate}}</td>
                     <td class="text-white">
                         <span class="fw-bold">{{localTeam.name}}</span> vs <span class="fw-bold">{{visitorTeam.name}}</span>
                     </td>
                     <td class="text-center">
-                        <span class="badge bg-dark border border-info px-3 py-2 fs-6">{{localGoals}} - {{visitorGoals}}</span>
+                        <span class="badge bg-dark border border-info px-3 py-2 fs-6">{{scoreBoard}}</span>
                     </td>
-                    <td class="small">{{localTeam.stadiumName}}</td>
+                    <td class="small">{{stadium}}</td>
                     <td><span class="badge bg-info text-dark">{{weather}}</span></td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center gap-2">
                             <button class="btn btn-sm btn-warning" onclick="editMatch('{{id}}')">Editar</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteMatch('{{id}}', '{{localTeam.name}} vs {{visitorTeam.name}}')">Borrar</button>
+                            <button class="btn btn-sm btn-danger" onclick="confirmDelete('{{id}}', '{{localTeam.name}} vs {{visitorTeam.name}}')">Borrar</button>
+                            
                             <form id="delete-form-{{id}}" action="/match/{{id}}/delete" method="post" style="display:none;"></form>
                         </div>
                     </td>
@@ -49,15 +50,18 @@
         </table>
     </div>
 
-    <div class="d-grid gap-2 mt-4">
-        <a href="/match-list" class="btn btn-outline-secondary">
-            Volver a Gestión de Partidos
+    <div class="d-grid gap-2 mt-4 text-center">
+        <a href="/admin-matches" class="btn btn-outline-secondary">
+            Volver a Administración
         </a>
     </div>
 </div>
-</div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    /**
+     * Navega a la pantalla de edición usando la ruta del MatchController
+     */
     function editMatch(matchId) {
         Swal.fire({
             title: 'Cargando acta...',
@@ -67,12 +71,15 @@
             showConfirmButton: false,
             didOpen: () => { Swal.showLoading(); }
         }).then(() => {
-            window.location.href = '/match/edit' + matchId;
+            // CAMBIO: La ruta debe ser /match/{id}/edit según tu MatchController
+            window.location.href = '/match/' + matchId + '/edit';
         });
     }
 
-    //Nueva Funcion
-    function confirmDelate(matchId, matchName) {
+    /**
+     * Muestra confirmación y ejecuta el borrado vía POST
+     */
+    function confirmDelete(matchId, matchName) {
         Swal.fire({
             title: '¿Eliminar partido?',
             text: `Se borrarán los datos del encuentro: ${matchName}`,
@@ -86,7 +93,7 @@
             color: '#ffffff'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Si el usuario confirma, enviamos el formulario oculto que creamos arriba
+                // Ejecuta el submit del formulario oculto
                 document.getElementById('delete-form-' + matchId).submit();
             }
         });

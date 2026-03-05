@@ -44,7 +44,7 @@ async function fetchTeams() {
 }
 
 function editTeam(id) {
-    window.location.href = `/EditTeam/${id}`; 
+    window.location.href = `/teams/edit/${id}`; 
 }
 async function confirmDelete(id, teamName) {
     const result = await Swal.fire({
@@ -60,15 +60,8 @@ async function confirmDelete(id, teamName) {
     });
 
     if (result.isConfirmed) {
-        try {
-            const response = await fetch(`/api/teams/${id}`, { method: 'DELETE' });
-            if (response.ok) {
-                Swal.fire({ title: 'Eliminado', icon: 'success', background: '#1e293b', color: '#ffffff' });
-                fetchTeams(); // Recarga la tabla sin refrescar la página
-            }
-        } catch (error) {
-            console.error("Error:", error);
-        }
+        // Redirigimos a la ruta del Controller que creamos antes
+        // El navegador se encargará de borrar y recargar la página solo
+        window.location.href = `/teams/delete/${id}`;
     }
-    
 }

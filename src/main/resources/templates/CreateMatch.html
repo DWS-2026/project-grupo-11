@@ -17,20 +17,20 @@
             <div class="col-md-6 mb-3">
                 <label class="form-label text-info">Equipo Local</label>
                 <select id="homeTeam" class="form-select bg-dark text-white border-info" name="localTeam" required>
-                    <option value="" disabled selected>Seleccione equipo local...</option>
-                    {{#teamList}}
+                    <option value="" disabled {{^match.localTeam}}selected{{/match.localTeam}}>Seleccione equipo local...</option>
+                    {{#teams}}
                         <option value="{{id}}">{{name}}</option>
-                    {{/teamList}}
+                    {{/teams}}
                 </select>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label text-info">Equipo Visitante</label>
                 <select id="awayTeam" class="form-select bg-dark text-white border-info" name="visitorTeam" required>
-                    <option value="" disabled selected>Seleccione equipo visitante...</option>
-                    {{#teamList}}
+                    <option value="" disabled {{^match.visitorTeam}}selected{{/match.visitorTeam}}>Seleccione equipo visitante...</option>
+                    {{#teams}}
                         <option value="{{id}}">{{name}}</option>
-                    {{/teamList}}
+                    {{/teams}}
                 </select>
             </div>
         </div>

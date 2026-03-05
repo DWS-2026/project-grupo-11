@@ -11,11 +11,12 @@
 <div class="row g-3">
     {{#matches}}
     <div class="col-md-10 mx-auto">
-        <div class="card option-card p-4">
+        <div class="card option-card p-4 bg-dark border-secondary">
             <div class="row align-items-center">
                 <div class="col-4 text-center text-white">
-                    <img src="/images/logo_{{localTeam.name}}.png" alt="{{localTeam.name}}" class="mb-2 d-block mx-auto"
-                        style="width: 45px; height: 45px; object-fit: contain;">
+                    <img src="{{#localTeam.logoBase64}}data:image/png;base64,{{localTeam.logoBase64}}{{/localTeam.logoBase64}}{{^localTeam.logoBase64}}/images/default-logo.png{{/localTeam.logoBase64}}" 
+                         alt="{{localTeam.name}}" class="mb-2 d-block mx-auto"
+                         style="width: 45px; height: 45px; object-fit: contain;">
                     <h6 class="mb-0">{{localTeam.name}}</h6>
                 </div>
 
@@ -32,12 +33,14 @@
                         <small class="text-warning d-block fw-bold mt-1">Próximamente</small>
                     {{/finalized}}
 
-                    <small class="text-white-50 d-block">{{matchDate}}</small>
+                    <small class="text-white-50 d-block">{{formattedDate}}</small>
+                    <small class="text-white-50 d-block small">{{matchTime}}</small>
                 </div>
 
                 <div class="col-4 text-center text-white">
-                    <img src="/images/logo_{{visitorTeam.name}}.jpg" alt="{{visitorTeam.name}}" class="mb-2 d-block mx-auto"
-                        style="width: 45px; height: 45px; object-fit: contain;">
+                    <img src="{{#visitorTeam.logoBase64}}data:image/png;base64,{{visitorTeam.logoBase64}}{{/visitorTeam.logoBase64}}{{^visitorTeam.logoBase64}}/images/default-logo.png{{/visitorTeam.logoBase64}}" 
+                         alt="{{visitorTeam.name}}" class="mb-2 d-block mx-auto"
+                         style="width: 45px; height: 45px; object-fit: contain;">
                     <h6 class="mb-0">{{visitorTeam.name}}</h6>
                 </div>
             </div>

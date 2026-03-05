@@ -1,18 +1,19 @@
 {{>fragments/header}}
 
-<div class="form-container">
+<div class="form-container container mt-4">
     <div class="text-center mb-3">
         <span class="text-white-50">Fecha del encuentro:</span>
-        <span class="text-info fw-bold">{{match.date}}</span>
-        <span class="text-info fw-bold">{{match.time}}</span>
+        <span class="text-info fw-bold">{{match.matchDate}}</span>
+        <span class="text-info fw-bold">{{match.matchTime}}</span>
     </div>
     <h1 class="h4 text-white text-center mb-4">Resumen del Encuentro</h1>
 
-    <div class="text-center mb-5 p-4 rounded" style="background: rgba(255,255,255,0.02)">
+    <div class="text-center mb-5 p-4 rounded" style="background: rgba(255,255,255,0.05)">
         <div class="row align-items-center">
             <div class="col text-white">
-                <img src="/images/logo_{{match.localTeam.name}}.png" alt="{{match.localTeam.name}}" class="mb-3"
-                    style="width: 80px; height: 80px; object-fit: contain;">
+                <img src="{{#match.localTeam.logoBase64}}data:image/png;base64,{{match.localTeam.logoBase64}}{{/match.localTeam.logoBase64}}{{^match.localTeam.logoBase64}}/images/default-logo.png{{/match.localTeam.logoBase64}}" 
+                     alt="{{match.localTeam.name}}" class="mb-3"
+                     style="width: 80px; height: 80px; object-fit: contain;">
                 <h5>{{match.localTeam.name}}</h5>
             </div>
 
@@ -24,7 +25,7 @@
                 <span class="badge bg-success mt-1">Finalizado</span>
                 {{/match.finalized}}
                 {{^match.finalized}}
-                    <span class="badge bg-warning mt-1 text-dark">En curso / Próximamente</span>
+                <span class="badge bg-warning mt-1 text-dark">En curso / Próximamente</span>
                 {{/match.finalized}}
 
                 <div class="mt-3">
@@ -34,8 +35,9 @@
             </div>
 
             <div class="col text-white">
-                <img src="/images/logo_{{match.visitorTeam.name}}.jpg" alt="{{match.visitorTeam.name}}" class="mb-3"
-                    style="width: 80px; height: 80px; object-fit: contain;">
+                <img src="{{#match.visitorTeam.logoBase64}}data:image/png;base64,{{match.visitorTeam.logoBase64}}{{/match.visitorTeam.logoBase64}}{{^match.visitorTeam.logoBase64}}/images/default-logo.png{{/match.visitorTeam.logoBase64}}" 
+                     alt="{{match.visitorTeam.name}}" class="mb-3"
+                     style="width: 80px; height: 80px; object-fit: contain;">
                 <h5>{{match.visitorTeam.name}}</h5>
             </div>
         </div>
@@ -44,9 +46,9 @@
     <div class="mb-4">
         <h6 class="text-white-50 mb-3">Sucesos del Partido</h6>
         {{#match.events}}
-        <div class="card option-card p-2 mb-2">
+        <div class="card option-card p-2 mb-2 bg-dark border-secondary">
             <small class="text-white">
-                {{icon}} {{minute}}' - {{description}}
+                {{type}} {{minute}}' - {{namePlayer}} {{#namePlayerIn}} (Entra: {{namePlayerIn}} / Sale: {{namePlayerOut}}) {{/namePlayerIn}}
             </small>
         </div>
         {{/match.events}}
@@ -59,8 +61,8 @@
     </div>
 
     <div class="d-grid gap-2 mt-4">
-        <a href="/match/{{match.id}}/rating" class="btn btn-primary" id="continueBtn">Valorar Eventos del Partido</a>
-        <a href="/" class="btn btn-return text-center py-2">Volver</a>
+        <a href="/match/{{match.id}}/rating" class="btn btn-primary fw-bold" id="continueBtn">Valorar Eventos del Partido</a>
+        <a href="/match-list" class="btn btn-outline-secondary text-center py-2">Volver al listado</a>
     </div>
 </div>
 

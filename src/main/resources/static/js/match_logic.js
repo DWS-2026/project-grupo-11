@@ -1,6 +1,5 @@
 /**
  * 1. GESTIÓN DINÁMICA DE EVENTOS
- * (La carga de equipos ahora la hace Mustache directamente en el HTML)
  */
 function addEventField() {
     const container = document.getElementById('eventsContainer');
@@ -9,6 +8,8 @@ function addEventField() {
     
     const clone = template.content.cloneNode(true);
     container.appendChild(clone);
+    // Recalculamos por si el template viene con un gol por defecto
+    calculateScore();
 }
 
 function removeEvent(btn) {
@@ -23,9 +24,10 @@ function calculateScore() {
     let homeScore = 0;
     let awayScore = 0;
 
+    // Escaneamos todas las filas de eventos
     document.querySelectorAll('.event-row').forEach(row => {
         const type = row.querySelector('.event-type').value;
-        const teamSelector = row.querySelector('.team-selector') || row.querySelector('.event-team');
+        const teamSelector = row.querySelector('.team-selector');
         const team = teamSelector ? teamSelector.value : null;
 
         if (type === 'GOAL') {
@@ -34,26 +36,51 @@ function calculateScore() {
         }
     });
 
-    const displayHome = document.getElementById('displayHomeScore');
-    const displayAway = document.getElementById('displayAwayScore');
-    
-    if (displayHome) displayHome.value = homeScore;
-    if (displayAway) displayAway.value = awayScore;
+    // A. Actualizamos los inputs ocultos para MySQL
+    const displayHomeInput = document.getElementById('displayHomeScore');
+    const displayAwayInput = document.getElementById('displayAwayScore');
+    if (displayHomeInput) displayHomeInput.value = homeScore;
+    if (displayAwayInput) displayAwayInput.value = awayScore;
+
+    // B. ACTUALIZACIÓN VISUAL (Marcador de números grandes)
+    const scoreHomeDiv = document.getElementById('scoreHome');
+    const scoreAwayDiv = document.getElementById('scoreAway');
+    if (scoreHomeDiv) scoreHomeDiv.innerText = homeScore;
+    if (scoreAwayDiv) scoreAwayDiv.innerText = awayScore;
+}
+
+/**
+ * Actualiza los nombres de los equipos en el marcador
+ */
+function updateScoreLabels() {
+    const homeSelect = document.getElementById('homeTeam');
+    const awaySelect = document.getElementById('awayTeam');
+    const homeBadge = document.getElementById('homeBadge');
+    const awayBadge = document.getElementById('awayBadge');
+
+    if (homeSelect.selectedIndex > 0) {
+        homeBadge.innerText = homeSelect.options[homeSelect.selectedIndex].text;
+    }
+    if (awaySelect.selectedIndex > 0) {
+        awayBadge.innerText = awaySelect.options[awaySelect.selectedIndex].text;
+    }
 }
 
 /**
  * 3. ENVÍO DE DATOS AL SERVIDOR
- * Nota: El envío sigue siendo JSON hacia un RestController de partidos.
  */
 document.getElementById('createMatchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Aseguramos que el marcador esté actualizado antes de enviar
+    calculateScore();
 
     const matchPayload = {
         id: document.getElementById('matchId')?.value || null,
         localTeam: { id: parseInt(document.getElementById('homeTeam').value) },
         visitorTeam: { id: parseInt(document.getElementById('awayTeam').value) },
-        localGoals: parseInt(document.getElementById('displayHomeScore')?.value) || 0,
-        visitorGoals: parseInt(document.getElementById('displayAwayScore')?.value) || 0,
+        localGoals: parseInt(document.getElementById('displayHomeScore').value),
+        visitorGoals: parseInt(document.getElementById('displayAwayScore').value),
         matchDate: document.getElementById('matchDate').value,
         matchTime: document.getElementById('matchTime').value,
         weather: document.getElementById('weather').value,
@@ -68,7 +95,7 @@ document.getElementById('createMatchForm').addEventListener('submit', async (e) 
                 namePlayer: !isSub ? row.querySelector('.event-player').value : null,
                 namePlayerIn: isSub ? row.querySelector('.event-in').value : null,
                 namePlayerOut: isSub ? row.querySelector('.event-out').value : null,
-                teamRole: (row.querySelector('.team-selector') || row.querySelector('.event-team')).value
+                teamRole: row.querySelector('.team-selector').value
             };
         })
     };
@@ -82,29 +109,21 @@ document.getElementById('createMatchForm').addEventListener('submit', async (e) 
 
         if (response.ok) {
             Swal.fire({
-                title: '¡Guardado!',
-                text: 'El partido se ha registrado con éxito.',
+                title: '¡Partido Guardado!',
+                text: `Marcador final: ${matchPayload.localGoals} - ${matchPayload.visitorGoals}`,
                 icon: 'success',
                 background: '#1e293b',
                 color: '#fff'
             }).then(() => {
-                // Redirige a la lista de partidos (ruta del Controller)
                 window.location.href = '/matches';
             });
         } else {
-            const errorData = await response.json();
-            Swal.fire({
-                title: 'Error',
-                text: errorData.error || 'Error al guardar',
-                icon: 'error',
-                background: '#1e293b',
-                color: '#fff'
-            });
+            throw new Error("Error en el servidor");
         }
     } catch (err) {
         Swal.fire({
             title: 'Error',
-            text: 'No se pudo conectar con el servidor',
+            text: 'No se pudo guardar en MySQL. Revisa la conexión.',
             icon: 'error',
             background: '#1e293b',
             color: '#fff'
@@ -132,14 +151,13 @@ function toggleEditSubFields(select) {
 }
 
 /**
- * 5. CARGA INICIAL DE LA PÁGINA
+ * 5. CARGA INICIAL
  */
 window.onload = () => {
-    // Ya no llamamos a fetchTeams(), Mustache ya cargó los equipos
+    updateScoreLabels();
     calculateScore();
 
     const container = document.getElementById('eventsContainer');
-    // Si el contenedor está vacío (nueva creación), añadimos la primera fila de evento
     if(container && container.querySelectorAll('.event-row').length === 0) {
         addEventField();
     }

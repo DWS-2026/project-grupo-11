@@ -39,11 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Cambiamos la ruta de '/api/teams' a '/teams/save' que es el @PostMapping de tu Controller
             const response = await fetch('/teams/save', {
                 method: 'POST',
-                body: formData 
+                body: formData,
+                redirect: 'follow'
                 // No ponemos cabecera Content-Type, el navegador la pone automáticamente como multipart/form-data
             });
 
-            if (response.ok) {
+            if (response.ok || response.redirected) {
                 Swal.fire({
                     title: '¡Equipo Guardado!',
                     text: 'Los datos del equipo han sido procesados correctamente.',

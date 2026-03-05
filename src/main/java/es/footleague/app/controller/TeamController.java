@@ -18,22 +18,26 @@ public class TeamController {
     @Autowired
     private TeamService teamService;
 
-    // LISTAR: Accede a /teams
     @GetMapping
     public String listTeams(Model model) {
-        // Mustache buscará una sección {{#teams}}...{{/teams}}
         model.addAttribute("teams", teamService.findAll());
-        return "teams_list"; // Archivo: src/main/resources/templates/teams_list.mustache
+        return "ModifyTeam"; 
     }
 
-    // FORMULARIO NUEVO: Accede a /teams/new
+    /**
+     * FORMULARIO NUEVO: Accede a /teams/new
+     * El archivo debe ser: src/main/resources/templates/CreateTeam.mustache
+     */
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("team", new Team());
-        return "team_form"; // Archivo: team_form.mustache
+        return "CreateTeam"; 
     }
 
-    // GUARDAR/ACTUALIZAR
+    /**
+     * GUARDAR/ACTUALIZAR
+     * Procesa los datos y los persiste en MySQL
+     */
     @PostMapping("/save")
     public String saveTeam(
             @RequestParam(value = "id", required = false) Long id,
@@ -55,23 +59,27 @@ public class TeamController {
             team.setLogoData(file.getBytes());
         }
 
-        teamService.save(team);
+        teamService.save(team); // Persistencia en MySQL
         return "redirect:/teams";
     }
 
-    // EDITAR: Accede a /teams/edit/1
+    /**
+     * EDITAR: Accede a /teams/edit/1
+     * Reutiliza la plantilla de creación
+     */
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Optional<Team> teamOpt = teamService.findById(id);
         if (teamOpt.isPresent()) {
             model.addAttribute("team", teamOpt.get());
-            model.addAttribute("isEdit", true); // Para cambiar el título en Mustache
-            return "team_form";
+            return "CreateTeam"; 
         }
         return "redirect:/teams";
     }
 
-    // ELIMINAR: Accede a /teams/delete/1
+    /**
+     * ELIMINAR: Accede a /teams/delete/1
+     */
     @GetMapping("/delete/{id}")
     public String deleteTeam(@PathVariable Long id) {
         teamService.deleteById(id);

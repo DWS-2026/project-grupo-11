@@ -25,7 +25,7 @@ public class Team {
     @Column(name = "logo_data", columnDefinition = "LONGBLOB")
     private byte[] logoData;
 
-    protected Team() {
+    public Team() {
     }
 
     public Team(String name, String stadiumName) {

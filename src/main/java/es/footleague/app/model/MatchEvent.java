@@ -34,7 +34,7 @@ public class MatchEvent {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings = new ArrayList<>();
 
-    protected MatchEvent() {
+    public MatchEvent() {
     }
 
     public MatchEvent(String type, int minute, String namePlayer, Match match, Team team) {

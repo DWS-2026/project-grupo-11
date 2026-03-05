@@ -1,6 +1,8 @@
 package es.footleague.app.controller;
 
 import es.footleague.app.model.Match;
+import es.footleague.app.model.MatchEvent;
+import es.footleague.app.services.MatchEventService;
 import es.footleague.app.services.MatchService;
 import es.footleague.app.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Optional;
-import org.springframework.http.ResponseEntity;
 import es.footleague.app.model.Team;
 
 @Controller
@@ -19,7 +20,10 @@ public class MatchController {
     private MatchService matchService;
 
     @Autowired
-    private TeamService teamService; // Necesario para cargar equipos en el select
+    private TeamService teamService; 
+
+    @Autowired
+    private MatchEventService matchEventService;
 
     @GetMapping("/match-list")
     public String listMatches(Model model) {
@@ -27,10 +31,62 @@ public class MatchController {
         return "match-list";
     }
 
+    @GetMapping("/match/{id}")
+    public String matchDetail(@PathVariable Long id, Model model){
+        Optional<Match> matchOpt = matchService.findById(id);
+
+        if(matchOpt.isPresent()){
+            Match match = matchOpt.get();
+            model.addAttribute("match", match);
+            model.addAttribute("events", match.getEvents());
+            model.addAttribute("teams", teamService.findAll());
+
+            model.addAttribute("newEvent", new MatchEvent());
+
+            return "match-details";
+        }
+        return "match-not-found";
+    }
+
+    @GetMapping("/match/{matchId}/event/new")
+    public String showCreateEventForm(@PathVariable Long matchId, Model model) {
+
+        Match match = matchService.findById(matchId).orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+
+        model.addAttribute("match", match);
+        model.addAttribute("event", new MatchEvent());
+
+        return "create-event";
+    }
+
+    @PostMapping("/match/{matchId}/event/save")
+    public String createEvent(@PathVariable Long matchId, @RequestParam String type, @RequestParam int minute, @RequestParam String namePlayer, @RequestParam Long teamId) {
+
+        Match match = matchService.findById(matchId).orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+
+        Team team = teamService.findById(teamId).orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
+
+        MatchEvent event = new MatchEvent(type, minute, namePlayer, match, team);
+
+        matchEventService.save(event);
+
+        return "redirect:/match/" + matchId;
+    }
+
+    @PostMapping("/event/{eventId}/delete")
+    public String deleteEvent(@PathVariable Long eventId){
+        MatchEvent matchEvent = matchEventService.findById(eventId).orElseThrow(() -> new RuntimeException("Evento no encontrado"));
+
+        Long matchId = matchEvent.getMatch().getId();
+        matchEventService.deleteById(eventId);
+
+        return "redirect:/match/" + matchId;
+    }
+
     @GetMapping("/match/new")
     public String showCreateForm(Model model) {
         model.addAttribute("match", new Match());
-        model.addAttribute("teamList", teamService.findAll()); // <--- ¡Asegúrate de que pone teamList!
+        model.addAttribute("teams", teamService.findAll()); 
         return "CreateMatch";
     }
     
@@ -57,6 +113,14 @@ public class MatchController {
     @PostMapping("/match/save")
     public String saveMatch(@ModelAttribute Match match, RedirectAttributes redirectAttributes) {
         try {
+            //Find local Team
+            Optional<Team> localOpt = teamService.findById(match.getLocalTeam().getId());
+
+            if(localOpt.isPresent()){
+                Team local = localOpt.get();
+                match.setStadium(local.getStadiumName());
+            }
+
             matchService.save(match);
             redirectAttributes.addFlashAttribute("mensaje", "Partido guardado con éxito");
         } catch (Exception e) {
@@ -69,26 +133,5 @@ public class MatchController {
     public String deleteMatch(@PathVariable Long id) {
         matchService.deleteById(id);
         return "redirect:/match-list";
-    }
-    @PostMapping("/api/matches")
-    @ResponseBody // Esto permite que el método responda JSON y no una página
-    public ResponseEntity<?> createMatchApi(@RequestBody Match matchData) {
-        try {
-            // 1. Buscamos el equipo local para obtener su estadio
-            Optional<Team> localOpt = teamService.findById(matchData.getLocalTeam().getId());
-
-            // 2. Asignamos el estadio del local al partido (lo que pediste)
-            if (localOpt.isPresent()) {
-                Team local = localOpt.get();
-                matchData.setStadium(local.getStadiumName());
-            }
-
-            // 3. Guardamos el partido
-            matchService.save(matchData);
-        
-            return ResponseEntity.ok().body("{\"status\": \"success\"}");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("{\"error\": \"" + e.getMessage() + "\"}");
-        }
     }
 }

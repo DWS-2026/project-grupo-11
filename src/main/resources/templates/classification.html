@@ -22,7 +22,7 @@
             <tbody class="text-white">
                 {{#teams}}
                 <tr>
-                    <td>{{@index}}</td>
+                    <td></td>
                     <td>
                         {{#logoData}}
                         <img src="/teams/{{id}}/logo" width="25" class="me-2">
@@ -32,10 +32,10 @@
                         {{/logoData}}
                         {{name}}
                     </td>
-                    <td class="text-center">20</td>
-                    <td class="text-center">-</td>
-                    <td class="text-center">-</td>
-                    <td class="text-center">-</td>
+                    <td class="text-center">{{playedMatches}}</td>
+                    <td class="text-center">{{wins}}</td>
+                    <td class="text-center">{{draws}}</td>
+                    <td class="text-center">{{losses}}</td>
                     <td class="text-center fw-bold">{{points}}</td>
                 </tr>
                 {{/teams}}

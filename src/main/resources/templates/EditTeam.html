@@ -1,8 +1,8 @@
 {{>fragments/header}}
 
-<div class="form-container">
+<div class="form-container container mt-4">
     <div class="text-center mb-4">
-        <img src="{{#team.logoData}}data:image/png;base64,{{team.logoData}}{{/team.logoData}}{{^team.logoData}}/images/default-logo.png{{/team.logoData}}"
+        <img src="{{#team.logoBase64}}data:image/png;base64,{{team.logoBase64}}{{/team.logoBase64}}{{^team.logoBase64}}/images/default-logo.png{{/team.logoBase64}}"
              alt="Logo" style="width: 80px; height: 80px; object-fit: contain;" class="mb-3">
         
         <h2 class="text-white">Modificar {{team.name}}</h2>
@@ -13,23 +13,23 @@
 
         <div class="mb-3">
             <label class="form-label text-info">Nombre del Equipo</label>
-            <input type="text" class="form-control" id="teamName" value="{{team.name}}" required>
+            <input type="text" class="form-control bg-dark text-white" id="teamName" value="{{team.name}}" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label text-info">Estadio</label>
-            <input type="text" class="form-control" id="stadiumName" value="{{team.stadiumName}}" required>
+            <input type="text" class="form-control bg-dark text-white" id="stadiumName" value="{{team.stadiumName}}" required>
         </div>
 
         <div class="mb-4">
             <label class="form-label text-info">Actualizar Logo</label>
-            <input type="file" class="form-control" id="teamLogo" accept="image/*">
+            <input type="file" class="form-control bg-dark text-white" id="teamLogo" accept="image/*">
             <small class="text-white-50">Deja vacío si no quieres cambiar el logo actual.</small>
         </div>
 
         <div class="d-grid gap-2">
             <button type="submit" class="btn btn-warning p-3 fw-bold">Guardar Cambios</button>
-            <a href="/ModifyTeam" class="btn btn-outline-secondary">Cancelar</a>
+            <a href="/teams" class="btn btn-outline-secondary">Cancelar</a>
         </div>
     </form>
 </div>
@@ -41,27 +41,25 @@
     editForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        // Getting data from the form
         const teamId = document.getElementById('teamId').value;
         const teamName = document.getElementById('teamName').value;
         const stadiumName = document.getElementById('stadiumName').value;
         const logoFile = document.getElementById('teamLogo').files[0];
 
-        // Creating FormData for multipart/form-data request
         const formData = new FormData();
+        // IMPORTANTE: Incluimos el ID para que el Controller sepa que es una actualización
+        formData.append('id', teamId); 
         formData.append('name', teamName);
         formData.append('stadiumName', stadiumName);
         
-        // Match the parameter name 'logoFile' defined in TeamRestController
         if (logoFile) {
             formData.append('logoFile', logoFile);
         }
 
-        console.log(`Updating data for team ID: ${teamId}...`);
-
         try {
-            const response = await fetch(`/api/teams/${teamId}`, {
-                method: 'PUT',
+            // CAMBIO: Enviamos a /teams/save mediante POST (el estándar de los Controllers de vista)
+            const response = await fetch(`/teams/save`, {
+                method: 'POST',
                 body: formData
             });
 
@@ -75,8 +73,8 @@
                     timer: 1500,
                     showConfirmButton: false
                 }).then(() => {
-                    // Redirect back to the list of teams
-                    window.location.href = '/ModifyTeam';
+                    // Redirigimos a la ruta del controlador de la lista
+                    window.location.href = '/teams';
                 });
             } else {
                 throw new Error('Failed to update team');

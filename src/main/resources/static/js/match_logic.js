@@ -1,30 +1,6 @@
 /**
- * 1. CARGA DE DATOS INICIALES
- */
-async function fetchTeams() {
-    try {
-        const response = await fetch('/api/teams');
-        const teams = await response.json();
-        const homeSelect = document.getElementById('homeTeam');
-        const awaySelect = document.getElementById('awayTeam');
-
-        if (!homeSelect || !awaySelect) return;
-
-        homeSelect.length = 1;
-        awaySelect.length = 1;
-
-        teams.forEach(team => {
-            const option = `<option value="${team.id}">${team.name}</option>`;
-            homeSelect.innerHTML += option;
-            awaySelect.innerHTML += option;
-        });
-    } catch (error) {
-        console.error("Error cargando equipos:", error);
-    }
-}
-
-/**
- * 2. GESTIÓN DINÁMICA DE EVENTOS
+ * 1. GESTIÓN DINÁMICA DE EVENTOS
+ * (La carga de equipos ahora la hace Mustache directamente en el HTML)
  */
 function addEventField() {
     const container = document.getElementById('eventsContainer');
@@ -41,7 +17,7 @@ function removeEvent(btn) {
 }
 
 /**
- * 3. LÓGICA DE MARCADOR EN TIEMPO REAL
+ * 2. LÓGICA DE MARCADOR EN TIEMPO REAL
  */
 function calculateScore() {
     let homeScore = 0;
@@ -66,7 +42,8 @@ function calculateScore() {
 }
 
 /**
- * 4. ENVÍO DE DATOS AL SERVIDOR
+ * 3. ENVÍO DE DATOS AL SERVIDOR
+ * Nota: El envío sigue siendo JSON hacia un RestController de partidos.
  */
 document.getElementById('createMatchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -86,14 +63,11 @@ document.getElementById('createMatchForm').addEventListener('submit', async (e) 
             const isSub = (type === 'SUBSTITUTION');
             
             return {
-                // Captura el minuto desde .event-min (clase de tu template)
                 minute: parseInt(row.querySelector('.event-min').value) || 0,
                 type: type,
-                // Si es gol/tarjeta usa namePlayer, si es cambio usa In/Out
                 namePlayer: !isSub ? row.querySelector('.event-player').value : null,
                 namePlayerIn: isSub ? row.querySelector('.event-in').value : null,
                 namePlayerOut: isSub ? row.querySelector('.event-out').value : null,
-                // Captura el equipo desde el selector
                 teamRole: (row.querySelector('.team-selector') || row.querySelector('.event-team')).value
             };
         })
@@ -113,18 +87,33 @@ document.getElementById('createMatchForm').addEventListener('submit', async (e) 
                 icon: 'success',
                 background: '#1e293b',
                 color: '#fff'
-            }).then(() => window.location.href = '/match-list');
+            }).then(() => {
+                // Redirige a la lista de partidos (ruta del Controller)
+                window.location.href = '/matches';
+            });
         } else {
             const errorData = await response.json();
-            Swal.fire('Error', errorData.error || 'Error al guardar', 'error');
+            Swal.fire({
+                title: 'Error',
+                text: errorData.error || 'Error al guardar',
+                icon: 'error',
+                background: '#1e293b',
+                color: '#fff'
+            });
         }
     } catch (err) {
-        Swal.fire('Error', 'No se pudo conectar con el servidor', 'error');
+        Swal.fire({
+            title: 'Error',
+            text: 'No se pudo conectar con el servidor',
+            icon: 'error',
+            background: '#1e293b',
+            color: '#fff'
+        });
     }
 });
 
 /**
- * 5. CONTROL DE VISIBILIDAD DE CAMPOS Y CARGA
+ * 4. CONTROL DE VISIBILIDAD DE CAMPOS
  */
 function toggleEditSubFields(select) {
     const row = select.closest('.event-row');
@@ -142,11 +131,15 @@ function toggleEditSubFields(select) {
     }
 }
 
-window.onload = async () => {
-    await fetchTeams();
+/**
+ * 5. CARGA INICIAL DE LA PÁGINA
+ */
+window.onload = () => {
+    // Ya no llamamos a fetchTeams(), Mustache ya cargó los equipos
     calculateScore();
 
     const container = document.getElementById('eventsContainer');
+    // Si el contenedor está vacío (nueva creación), añadimos la primera fila de evento
     if(container && container.querySelectorAll('.event-row').length === 0) {
         addEventField();
     }

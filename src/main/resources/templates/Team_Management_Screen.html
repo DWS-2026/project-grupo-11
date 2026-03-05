@@ -1,19 +1,19 @@
 {{>fragments/header}}
 
 <div class="container mt-5">
-    <h1 class="mb-4 text-white">Administración de Equipos</h1>
+    <h1 class="mb-4 text-white text-center">Administración de Equipos</h1>
 
     <div class="row g-4 justify-content-center">
         <div class="col-md-5">
-            <div class="card option-card h-100 p-3">
+            <div class="card option-card h-100 p-3 bg-dark border-secondary">
                 <div class="card-body text-center">
                     <div class="option-icon mb-3"
-                        style="background: linear-gradient(180deg,#bbf7d0,#10b981); color: #04201a;">
+                        style="background: linear-gradient(180deg,#bbf7d0,#10b981); color: #04201a; width: 60px; height: 60px; line-height: 60px; border-radius: 50%; margin: 0 auto; font-size: 1.5rem;">
                         ➕
                     </div>
-                    <h5 class="card-title">Crear Equipo</h5>
-                    <p class="card-text">Registra un nuevo club y su estadio en la liga</p>
-                    <button class="btn btn-primary w-100 mt-3" onclick="navigateTo('CreateTeam.html')">
+                    <h5 class="card-title text-white">Crear Equipo</h5>
+                    <p class="card-text text-white-50">Registra un nuevo club y su estadio en la liga</p>
+                    <button class="btn btn-primary w-100 mt-3 fw-bold" onclick="navigateTo('/teams/new')">
                         Añadir Nuevo
                     </button>
                 </div>
@@ -21,15 +21,15 @@
         </div>
 
         <div class="col-md-5">
-            <div class="card option-card h-100 p-3">
+            <div class="card option-card h-100 p-3 bg-dark border-secondary">
                 <div class="card-body text-center">
                     <div class="option-icon mb-3"
-                        style="background: linear-gradient(180deg,#fef08a,#f59e0b); color: #2b1500;">
+                        style="background: linear-gradient(180deg,#fef08a,#f59e0b); color: #2b1500; width: 60px; height: 60px; line-height: 60px; border-radius: 50%; margin: 0 auto; font-size: 1.5rem;">
                         ⚽
                     </div>
-                    <h5 class="card-title">Gestionar Equipos</h5>
-                    <p class="card-text">Ver listado para editar datos o dar de baja a un equipo</p>
-                    <button class="btn btn-warning w-100 mt-3" onclick="navigateTo('ModifyTeam.html')">
+                    <h5 class="card-title text-white">Gestionar Equipos</h5>
+                    <p class="card-text text-white-50">Ver listado para editar datos o dar de baja a un equipo</p>
+                    <button class="btn btn-warning w-100 mt-3 fw-bold" onclick="navigateTo('/teams')">
                         Ir al Listado
                     </button>
                 </div>
@@ -37,8 +37,8 @@
         </div>
     </div>
 
-    <div class="mt-5">
-        <a href="Admin_Page.html" class="btn btn-outline-secondary">
+    <div class="mt-5 text-center">
+        <a href="/admin" class="btn btn-outline-secondary">
             Volver al Panel Principal
         </a>
     </div>
@@ -49,10 +49,10 @@
 
 <script>
     /**
-     * Navegación simple para coincidir con Match_Management
+     * Navegación corregida para rutas controladas por Spring
      */
-    function navigateTo(page) {
-        window.location.href = page;
+    function navigateTo(url) {
+        window.location.href = url;
     }
 </script>
 

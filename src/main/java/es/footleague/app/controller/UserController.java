@@ -141,4 +141,16 @@ public class UserController {
 
         return "redirect:/profile/" + updatedUser.getUsername();
     }
+
+    @GetMapping("/")
+    public String home(Model model) {
+        model.addAttribute("teams", teamService.findAllOrderByPoints());
+        return "index";
+    }
+
+    @GetMapping("/classification")
+    public String classification(Model model) {
+        model.addAttribute("teams", teamService.findAllOrderByPoints());
+        return "classification";
+    }
 }

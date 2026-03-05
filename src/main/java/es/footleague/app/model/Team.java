@@ -1,6 +1,7 @@
 package es.footleague.app.model;
 
 import jakarta.persistence.*;
+import java.util.Base64;
 
 @Entity
 @Table(name = "teams")
@@ -19,7 +20,16 @@ public class Team {
     private int points;
 
     @Column(nullable = false)
-    private int goals;
+    private int playedMatchs;
+
+    @Column(nullable = false)
+    private int wins;
+
+    @Column(nullable = false)
+    private int draws;
+
+    @Column(nullable = false)
+    private int losses;
 
     @Lob
     @Column(name = "logo_data", columnDefinition = "LONGBLOB")
@@ -32,7 +42,20 @@ public class Team {
         this.name = name;
         this.stadiumName = stadiumName;
         this.points = 0;
-        this.goals = 0;
+        this.playedMatchs = 0;
+        this.wins = 0;
+        this.draws = 0;
+        this.losses = 0;
+    }
+
+    /**
+     * Helper para Mustache
+     */
+    public String getLogoBase64() {
+        if (this.logoData != null && this.logoData.length > 0) {
+            return Base64.getEncoder().encodeToString(this.logoData);
+        }
+        return null;
     }
 
     // --- GETTERS Y SETTERS ---
@@ -76,12 +99,35 @@ public class Team {
         this.points = points;
     }
 
-    public int getGoals() {
-        return goals;
+    public int getPlayedMatches() {
+        return this.playedMatchs;
     }
 
-    public void setGoals(int goals) {
-        this.goals = goals;
+    public void setPlayedMatches(int playedMatches) {
+        this.playedMatchs = playedMatches;
     }
 
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public int getDraws() {
+        return draws;
+    }
+
+    public void setDraws(int draws) {
+        this.draws = draws;
+    }
+
+    public int getLosses() {
+        return losses;
+    }
+
+    public void setLosses(int losses) {
+        this.losses = losses;
+    }
 }

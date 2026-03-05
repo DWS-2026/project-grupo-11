@@ -19,15 +19,6 @@ public class ViewController {
     @Autowired
     private TeamService teamService; // Inyectamos TeamService para buscar el equipo
 
-    @GetMapping("/")
-    public String home() {
-        return "index";
-    }
-
-    @GetMapping("/classification")
-    public String classification() {
-        return "classification";
-    }
 
     @GetMapping("/Admin_Page")
     public String Admin_Page() {

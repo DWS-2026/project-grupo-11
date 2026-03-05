@@ -1,90 +1,85 @@
 {{>fragments/header}}
 
 <div class="text-center mb-5 text-white">
-            <h1 class="display-4 fw-bold">FootLeague 2026</h1>
-            <p class="lead">La competición oficial donde los periodistas valoran cada jugada. Gestiona partidos, consulta la tabla y opina sobre los eventos clave de la temporada.</p>
-        </div>
+    <h1 class="display-4 fw-bold">FootLeague 2026</h1>
+    <p class="lead">La competición oficial donde los periodistas valoran cada jugada. Gestiona partidos, consulta la
+        tabla y opina sobre los eventos clave de la temporada.</p>
+</div>
 
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card option-card p-3">
-                    <h3 class="h5 text-white mb-3 text-center">Clasificación</h3>
-                    <table class="table table-sm table-dark table-borderless small">
-                        <thead>
-                            <tr><th>Pos</th><th>Equipo</th><th>Pts</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>1</td><td>Real Madrid</td><td>52</td></tr>
-                            <tr><td>2</td><td>FC Barcelona</td><td>48</td></tr>
-                            <tr><td>3</td><td>Atlético</td><td>45</td></tr>
-                        </tbody>
-                    </table>
-                    <a href="/classification" class="btn btn-outline-info btn-sm w-100">Ver tabla completa</a>
-                </div>
-            </div>
-
-            <div class="col-md-8">
-                <h3 class="h5 text-white mb-3">Destacados de la Semana</h3>
-                
-                <div class="card option-card p-3 mb-3" onclick="window.location.href='match-details.html'" role="button">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="text-center" style="width: 30%;">
-                            <img src="/src/main/resources/static/img/logo_realMadrid.png" width="35" class="mb-1 d-block mx-auto">
-                            <span class="text-white small">Real Madrid</span>
-                        </div>
-                        <div class="text-center">
-                            <span class="text-white fw-bold h4">2 - 1</span>
-                            <small class="text-success d-block" style="font-size: 0.7rem;">Finalizado</small>
-                        </div>
-                        <div class="text-center" style="width: 30%;">
-                            <img src="/src/main/resources/static/img/logo_barcelona.jpg" width="35" class="mb-1 d-block mx-auto">
-                            <span class="text-white small">Barça</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-3 text-end">
-                    <a href="/match-list" class="btn btn-primary btn-sm px-4">Ver todos los partidos →</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-3 mt-4 border-top pt-4 border-secondary">
-            <div class="col-6">
-                <div class="card option-card p-3 text-center" data-option="go-login">
-                    <h6 class="text-white mb-0 small">¿Ya tienes cuenta?</h6>
-                    <small class="text-muted">Login</small>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="card option-card p-3 text-center" data-option="go-register">
-                    <h6 class="text-white mb-0 small">¿Eres nuevo?</h6>
-                    <small class="text-muted">Registro</small>
-                </div>
-            </div>
-            <div class="card option-card p-3 text-center" data-option="go-admin">
-                <p class="small mb-2 text-warning-emphasis fw-bold">Modo Administrador</p>
-                <a href="/Admin_Page" class="btn btn-warning btn-sm w-100">Ir al Panel de Control</a>
-            </div>
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card option-card p-3">
+            <h3 class="h5 text-white mb-3 text-center">Clasificación</h3>
+            <table class="table table-sm table-dark table-borderless small">
+                <thead>
+                    <tr>
+                        <th>Pos</th>
+                        <th>Equipo</th>
+                        <th>Pts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#teams}}
+                    <tr>
+                        <td>-</td>
+                        <td>{{name}}</td>
+                        <td>{{points}}</td>
+                    </tr>
+                    {{/teams}}
+                </tbody>
+            </table>
+            <a href="/classification" class="btn btn-outline-info btn-sm w-100">Ver tabla completa</a>
         </div>
     </div>
 
-    <script>
-        const navigationPaths = {
-            'go-login': 'login.html',
-            'go-register': 'registration.html',
-            'go-admin': 'Admin_Page'
-        };
+    <div class="col-md-8">
+        <h3 class="h5 text-white mb-3">Destacados de la Semana</h3>
 
-        document.querySelectorAll('.option-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const option = card.getAttribute('data-option');
-                if (navigationPaths[option]) {
-                    window.location.href = navigationPaths[option];
-                }
-            });
-        });
-    </script>
+        <div class="card option-card p-3 mb-3" onclick="window.location.href='match-details.html'" role="button">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="text-center" style="width: 30%;">
+                    <img src="/src/main/resources/static/img/logo_realMadrid.png" width="35"
+                        class="mb-1 d-block mx-auto">
+                    <span class="text-white small">Real Madrid</span>
+                </div>
+                <div class="text-center">
+                    <span class="text-white fw-bold h4">2 - 1</span>
+                    <small class="text-success d-block" style="font-size: 0.7rem;">Finalizado</small>
+                </div>
+                <div class="text-center" style="width: 30%;">
+                    <img src="/src/main/resources/static/img/logo_barcelona.jpg" width="35"
+                        class="mb-1 d-block mx-auto">
+                    <span class="text-white small">Barça</span>
+                </div>
+            </div>
+        </div>
 
+        <div class="mt-3 text-end">
+            <a href="/match-list" class="btn btn-primary btn-sm px-4">Ver todos los partidos →</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mt-4 border-top pt-4 border-secondary">
+    {{^loggedUser}}
+    <div class="col-6">
+        <div class="card option-card p-3 text-center" data-option="go-login">
+            <h6 class="text-white mb-0 small">¿Ya tienes cuenta?</h6>
+            <small class="text-muted">Login</small>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card option-card p-3 text-center" data-option="go-register">
+            <h6 class="text-white mb-0 small">¿Eres nuevo?</h6>
+            <small class="text-muted">Registro</small>
+        </div>
+    </div>
+    {{/loggedUser}}
+    <div class="card option-card p-3 text-center" data-option="go-admin">
+        <p class="small mb-2 text-warning-emphasis fw-bold">Modo Administrador</p>
+        <a href="/Admin_Page" class="btn btn-warning btn-sm w-100">Ir al Panel de Control</a>
+    </div>
+</div>
+</div>
 
 {{>fragments/footer}}

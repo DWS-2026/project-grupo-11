@@ -33,6 +33,10 @@ public class TeamService {
         return teamRepository.existsById(id);
     }
 
+    public List<Team> findAllOrderByPoints() {
+        return teamRepository.findAllByOrderByPointsDesc();
+    }
+
     /**
      * Guarda un equipo. Sirve tanto para crear uno nuevo
      * como para actualizar uno existente.

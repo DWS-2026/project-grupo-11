@@ -21,6 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Usamos FormData para empaquetar texto y archivos binarios
         const formData = new FormData();
+        
+        // Si tienes un campo oculto con el ID (para edición), lo añadimos
+        const teamId = document.getElementById('teamId')?.value;
+        if (teamId) {
+            formData.append('id', teamId);
+        }
+
         formData.append('name', document.getElementById('teamName').value);
         formData.append('stadiumName', document.getElementById('stadiumName').value);
         
@@ -29,23 +36,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // IMPORTANTE: Al enviar FormData, NO debes poner 'Content-Type': 'application/json'
-            const response = await fetch('/api/teams', {
+            // Cambiamos la ruta de '/api/teams' a '/teams/save' que es el @PostMapping de tu Controller
+            const response = await fetch('/teams/save', {
                 method: 'POST',
-                body: formData 
+                body: formData,
+                redirect: 'follow'
+                // No ponemos cabecera Content-Type, el navegador la pone automáticamente como multipart/form-data
             });
 
-            if (response.ok) {
+            if (response.ok || response.redirected) {
                 Swal.fire({
-                    title: '¡Equipo Creado!',
-                    text: 'El equipo y su logo han sido guardados en la base de datos.',
+                    title: '¡Equipo Guardado!',
+                    text: 'Los datos del equipo han sido procesados correctamente.',
                     icon: 'success',
                     background: '#1e293b',
                     color: '#ffffff',
                     timer: 2000,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = 'Team_Management_Screen.html';
+                    // Redirigimos a la ruta del listado gestionada por Spring
+                    window.location.href = '/teams';
                 });
             } else {
                 throw new Error('Error en la respuesta del servidor');
@@ -54,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error al guardar:", error);
             Swal.fire({
                 title: 'Error',
-                text: 'No se pudo guardar el equipo. Revisa el tamaño de la imagen.',
+                text: 'No se pudo guardar el equipo. Verifica los datos y el tamaño de la imagen.',
                 icon: 'error',
                 background: '#1e293b',
                 color: '#ffffff'

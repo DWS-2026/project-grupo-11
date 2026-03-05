@@ -1,50 +1,50 @@
 {{>fragments/header}}
 
-<div class="form-container">
-    <h2 class="text-center mb-4 text-white"> Registrar Nuevo Equipo </h2>
+<div class="form-container container mt-4">
+    <h2 class="text-center mb-4 text-white"> 
+        {{#team.id}}Editar Equipo{{/team.id}}{{^team.id}}Registrar Nuevo Equipo{{/team.id}} 
+    </h2>
+    
     <form id="teamForm">
+        {{#team.id}}
+            <input type="hidden" id="teamId" value="{{team.id}}">
+        {{/team.id}}
+
         <div class="mb-3">
-            <label class="form-label">Nombre del Equipo</label>
-            <input type="text" class="form-control" id="teamName" required>
+            <label class="form-label text-white">Nombre del Equipo</label>
+            <input type="text" class="form-control bg-dark text-white" id="teamName" 
+                   value="{{#team.name}}{{team.name}}{{/team.name}}" required>
         </div>
+        
         <div class="mb-3">
-            <label class="form-label">Estadio</label>
-            <input type="text" class="form-control" id="stadiumName" required>
+            <label class="form-label text-white">Estadio</label>
+            <input type="text" class="form-control bg-dark text-white" id="stadiumName" 
+                   value="{{#team.stadiumName}}{{team.stadiumName}}{{/team.stadiumName}}" required>
         </div>
+        
         <div class="mb-4">
-            <label class="form-label">Logo (PNG/JPG)</label>
-            <input type="file" class="form-control" id="teamLogo" accept="image/*" required>
-            <div class="logo-preview" id="logoPreview"></div>
+            <label class="form-label text-white">Logo (PNG/JPG)</label>
+            <input type="file" class="form-control bg-dark text-white" id="teamLogo" accept="image/*" 
+                   {{^team.id}}required{{/team.id}}>
+            
+            <div class="logo-preview mt-3" id="logoPreview">
+                {{#team.logoBase64}}
+                    <p class="text-white-50 small">Logo actual:</p>
+                    <img src="data:image/png;base64,{{team.logoBase64}}" 
+                         style="max-width: 150px; border-radius: 8px; border: 2px solid #3b82f6;">
+                {{/team.logoBase64}}
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Guardar Equipo</button>
-        <a href="Team_Management_Screen" class="btn btn-secondary w-100 mt-2">Volver a Pantalla de Gestión</a>
+        
+        <button type="submit" class="btn btn-primary w-100 fw-bold">
+            {{#team.id}}Actualizar Cambios{{/team.id}}{{^team.id}}Guardar Equipo{{/team.id}}
+        </button>
+        
+        <a href="/teams" class="btn btn-secondary w-100 mt-2">Volver a Pantalla de Gestión</a>
     </form>
 </div>
-</div>
-<script>
-    const teamForm = document.getElementById('teamForm');
-
-    teamForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        // Succes message simulation
-        console.log("Datos del equipo guardados localmente");
-
-        Swal.fire({
-            title: '¡Recopilado!',
-            text: 'Datos guardados localmente. Volviendo al panel...',
-            icon: 'success',
-            background: '#1e293b',
-            color: '#ffffff',
-            timer: 1500,
-            showConfirmButton: false
-        }).then(() => {
-            //Redirect to Team Management Screen
-            window.location.href = 'Team_Management_Screen';
-        });
-    });
-</script>
 
 {{>fragments/footer}}
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/create_team.js"></script>

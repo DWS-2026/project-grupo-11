@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Optional;
 import es.footleague.app.model.Team;
+import java.util.List;
 
 @Controller
 public class MatchController {
@@ -98,10 +99,7 @@ public class MatchController {
             model.addAttribute("match", match);
             model.addAttribute("teams", teamService.findAll());
 
-            // --- LÓGICA AÑADIDA PARA EL CLIMA EN MUSTACHE ---
-            // Esto activa el atributo "selected" en el <select> del HTML
             if (match.getWeather() != null) {
-                // Si el clima es "Lluvia", añade al modelo "climaLluvia" = true
                 model.addAttribute("clima" + match.getWeather(), true);
             }
             

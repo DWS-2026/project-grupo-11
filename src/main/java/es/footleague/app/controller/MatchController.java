@@ -111,18 +111,22 @@ public class MatchController {
     @PostMapping("/match/save")
     public String saveMatch(@ModelAttribute Match match, RedirectAttributes redirectAttributes) {
         try {
-            //Find local Team
-            Optional<Team> localOpt = teamService.findById(match.getLocalTeam().getId());
-
-            if(localOpt.isPresent()){
-                Team local = localOpt.get();
-                match.setStadium(local.getStadiumName());
+            // 1. Asignar el estadio
+            if (match.getLocalTeam() != null && match.getLocalTeam().getId() != null) {
+                teamService.findById(match.getLocalTeam().getId()).ifPresent(t -> {
+                    match.setStadium(t.getStadiumName());
+                });
+            }
+        // 2. VINCULACIÓN CRÍTICA: Cada evento debe conocer a su padre (match)
+            if (match.getEvents() != null) {
+                match.getEvents().forEach(event -> event.setMatch(match));
             }
 
             matchService.save(match);
             redirectAttributes.addFlashAttribute("mensaje", "Partido guardado con éxito");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al guardar: " + e.getMessage());
+            e.printStackTrace(); // Esto te dirá el error real en la consola de Java
         }
         return "redirect:/match-list";
     }

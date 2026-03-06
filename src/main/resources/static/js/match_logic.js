@@ -8,7 +8,6 @@ function addEventField() {
     
     const clone = template.content.cloneNode(true);
     container.appendChild(clone);
-    // Recalculamos por si el template viene con un gol por defecto
     calculateScore();
 }
 
@@ -24,7 +23,6 @@ function calculateScore() {
     let homeScore = 0;
     let awayScore = 0;
 
-    // Escaneamos todas las filas de eventos
     document.querySelectorAll('.event-row').forEach(row => {
         const type = row.querySelector('.event-type').value;
         const teamSelector = row.querySelector('.team-selector');
@@ -36,86 +34,92 @@ function calculateScore() {
         }
     });
 
-    // A. Actualizamos los inputs ocultos para MySQL
     const displayHomeInput = document.getElementById('displayHomeScore');
     const displayAwayInput = document.getElementById('displayAwayScore');
     if (displayHomeInput) displayHomeInput.value = homeScore;
     if (displayAwayInput) displayAwayInput.value = awayScore;
 
-    // B. ACTUALIZACIÓN VISUAL (Marcador de números grandes)
     const scoreHomeDiv = document.getElementById('scoreHome');
     const scoreAwayDiv = document.getElementById('scoreAway');
     if (scoreHomeDiv) scoreHomeDiv.innerText = homeScore;
     if (scoreAwayDiv) scoreAwayDiv.innerText = awayScore;
 }
 
-/**
- * Actualiza los nombres de los equipos en el marcador
- */
 function updateScoreLabels() {
     const homeSelect = document.getElementById('homeTeam');
     const awaySelect = document.getElementById('awayTeam');
     const homeBadge = document.getElementById('homeBadge');
     const awayBadge = document.getElementById('awayBadge');
 
-    if (homeSelect.selectedIndex > 0) {
+    if (homeSelect?.selectedIndex > 0) {
         homeBadge.innerText = homeSelect.options[homeSelect.selectedIndex].text;
     }
-    if (awaySelect.selectedIndex > 0) {
+    if (awaySelect?.selectedIndex > 0) {
         awayBadge.innerText = awaySelect.options[awaySelect.selectedIndex].text;
     }
 }
 
 /**
- * 3. ENVÍO DE DATOS AL SERVIDOR
+ * 3. ENVÍO DE DATOS AL SERVIDOR (Corregido)
  */
 document.getElementById('createMatchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    // Aseguramos que el marcador esté actualizado antes de enviar
     calculateScore();
 
-    const matchPayload = {
-        id: document.getElementById('matchId')?.value || null,
-        localTeam: { id: parseInt(document.getElementById('homeTeam').value) },
-        visitorTeam: { id: parseInt(document.getElementById('awayTeam').value) },
-        localGoals: parseInt(document.getElementById('displayHomeScore').value),
-        visitorGoals: parseInt(document.getElementById('displayAwayScore').value),
-        matchDate: document.getElementById('matchDate').value,
-        matchTime: document.getElementById('matchTime').value,
-        weather: document.getElementById('weather').value,
+    const formData = new URLSearchParams();
+    
+    // 1. Campos básicos del partido
+    const matchId = document.getElementById('matchId')?.value;
+    if (matchId) formData.append('id', matchId);
+
+    formData.append('localTeam.id', document.getElementById('homeTeam').value);
+    formData.append('visitorTeam.id', document.getElementById('awayTeam').value);
+    formData.append('localGoals', document.getElementById('displayHomeScore').value);
+    formData.append('visitorGoals', document.getElementById('displayAwayScore').value);
+    formData.append('matchDate', document.getElementById('matchDate').value);
+    formData.append('matchTime', document.getElementById('matchTime').value);
+    formData.append('weather', document.getElementById('weather').value);
+
+    // 2. Campos dinámicos de eventos (Indexados para Spring)
+    document.querySelectorAll('.event-row').forEach((row, index) => {
+        const type = row.querySelector('.event-type').value;
+        const role = row.querySelector('.team-selector').value;
+        const isSub = (type === 'SUBSTITUTION');
         
-        events: Array.from(document.querySelectorAll('.event-row')).map(row => {
-            const type = row.querySelector('.event-type').value;
-            const isSub = (type === 'SUBSTITUTION');
-            
-            return {
-                minute: parseInt(row.querySelector('.event-min').value) || 0,
-                type: type,
-                namePlayer: !isSub ? row.querySelector('.event-player').value : null,
-                namePlayerIn: isSub ? row.querySelector('.event-in').value : null,
-                namePlayerOut: isSub ? row.querySelector('.event-out').value : null,
-                teamRole: row.querySelector('.team-selector').value
-            };
-        })
-    };
+        // Obtenemos el ID del equipo real según el rol seleccionado
+        const teamId = (role === 'LOCAL') 
+            ? document.getElementById('homeTeam').value 
+            : document.getElementById('awayTeam').value;
+
+        formData.append(`events[${index}].minute`, row.querySelector('.event-min').value || 0);
+        formData.append(`events[${index}].type`, type);
+        formData.append(`events[${index}].team.id`, teamId); // Vinculación necesaria para la DB
+        
+        if (!isSub) {
+            formData.append(`events[${index}].namePlayer`, row.querySelector('.event-player').value);
+        } else {
+            formData.append(`events[${index}].namePlayerIn`, row.querySelector('.event-in').value);
+            formData.append(`events[${index}].namePlayerOut`, row.querySelector('.event-out').value);
+        }
+    });
 
     try {
-        const response = await fetch('/api/matches', {
+        const response = await fetch('/match/save', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(matchPayload)
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData.toString()
         });
 
-        if (response.ok) {
+        // Manejo de la redirección del controlador convencional
+        if (response.redirected) {
             Swal.fire({
-                title: '¡Partido Guardado!',
-                text: `Marcador final: ${matchPayload.localGoals} - ${matchPayload.visitorGoals}`,
+                title: '¡Guardado!',
+                text: 'El partido y sus eventos se han registrado.',
                 icon: 'success',
-                background: '#1e293b',
-                color: '#fff'
+                timer: 1500,
+                showConfirmButton: false
             }).then(() => {
-                window.location.href = '/matches';
+                window.location.href = response.url;
             });
         } else {
             throw new Error("Error en el servidor");
@@ -123,10 +127,8 @@ document.getElementById('createMatchForm').addEventListener('submit', async (e) 
     } catch (err) {
         Swal.fire({
             title: 'Error',
-            text: 'No se pudo guardar en MySQL. Revisa la conexión.',
-            icon: 'error',
-            background: '#1e293b',
-            color: '#fff'
+            text: 'No se pudo guardar. Revisa que todos los campos obligatorios estén llenos.',
+            icon: 'error'
         });
     }
 });

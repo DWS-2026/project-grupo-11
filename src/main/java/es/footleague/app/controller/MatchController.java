@@ -26,7 +26,8 @@ public class MatchController {
     @Autowired
     private MatchEventService matchEventService;
 
-    @GetMapping("/match-list")
+    // SE HA CAMBIADO /match-list A /matches PARA EVITAR EL CONFLICTO
+    @GetMapping("/matches")
     public String listMatches(Model model) {
         model.addAttribute("matches", matchService.findAll());
         return "match-list";
@@ -51,36 +52,26 @@ public class MatchController {
 
     @GetMapping("/match/{matchId}/event/new")
     public String showCreateEventForm(@PathVariable Long matchId, Model model) {
-
         Match match = matchService.findById(matchId).orElseThrow(() -> new RuntimeException("Partido no encontrado"));
-
         model.addAttribute("match", match);
         model.addAttribute("event", new MatchEvent());
-
         return "create-event";
     }
 
     @PostMapping("/match/{matchId}/event/save")
     public String createEvent(@PathVariable Long matchId, @RequestParam String type, @RequestParam int minute, @RequestParam String namePlayer, @RequestParam Long teamId) {
-
         Match match = matchService.findById(matchId).orElseThrow(() -> new RuntimeException("Partido no encontrado"));
-
         Team team = teamService.findById(teamId).orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
-
         MatchEvent event = new MatchEvent(type, minute, namePlayer, match, team);
-
         matchEventService.save(event);
-
         return "redirect:/match/" + matchId;
     }
 
     @PostMapping("/event/{eventId}/delete")
     public String deleteEvent(@PathVariable Long eventId){
         MatchEvent matchEvent = matchEventService.findById(eventId).orElseThrow(() -> new RuntimeException("Evento no encontrado"));
-
         Long matchId = matchEvent.getMatch().getId();
         matchEventService.deleteById(eventId);
-
         return "redirect:/match/" + matchId;
     }
 
@@ -111,13 +102,12 @@ public class MatchController {
     @PostMapping("/match/save")
     public String saveMatch(@ModelAttribute Match match, RedirectAttributes redirectAttributes) {
         try {
-            // 1. Asignar el estadio
             if (match.getLocalTeam() != null && match.getLocalTeam().getId() != null) {
                 teamService.findById(match.getLocalTeam().getId()).ifPresent(t -> {
                     match.setStadium(t.getStadiumName());
                 });
             }
-        // 2. VINCULACIÓN CRÍTICA: Cada evento debe conocer a su padre (match)
+
             if (match.getEvents() != null) {
                 match.getEvents().forEach(event -> event.setMatch(match));
             }
@@ -126,14 +116,15 @@ public class MatchController {
             redirectAttributes.addFlashAttribute("mensaje", "Partido guardado con éxito");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al guardar: " + e.getMessage());
-            e.printStackTrace(); // Esto te dirá el error real en la consola de Java
+            e.printStackTrace(); 
         }
-        return "redirect:/match-list";
+        // REDIRIGE A LA NUEVA RUTA
+        return "redirect:/matches";
     }
 
     @PostMapping("/match/{id}/delete")
     public String deleteMatch(@PathVariable Long id) {
         matchService.deleteById(id);
-        return "redirect:/match-list";
+        return "redirect:/matches";
     }
 }

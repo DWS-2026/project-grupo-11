@@ -12,26 +12,26 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/teams")
+@RequestMapping("/admin/teams")
 public class TeamController {
 
     @Autowired
     private TeamService teamService;
 
-    @GetMapping
+    @GetMapping("/list-teams")
     public String listTeams(Model model) {
         model.addAttribute("teams", teamService.findAll());
-        return "ModifyTeam"; 
+        return "ModifyTeam";
     }
 
     /**
-     * FORMULARIO NUEVO: Accede a /teams/new
+     * FORMULARIO NUEVO: Accede a /admin/teams/new
      * El archivo debe ser: src/main/resources/templates/CreateTeam.mustache
      */
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("team", new Team());
-        return "CreateTeam"; 
+        return "CreateTeam";
     }
 
     /**
@@ -60,11 +60,11 @@ public class TeamController {
         }
 
         teamService.save(team); // Persistencia en MySQL
-        return "redirect:/teams";
+        return "redirect:/admin/teams";
     }
 
     /**
-     * EDITAR: Accede a /teams/edit/1
+     * EDITAR: Accede a /admin/teams/edit/1
      * Reutiliza la plantilla de creación
      */
     @GetMapping("/edit/{id}")
@@ -72,17 +72,17 @@ public class TeamController {
         Optional<Team> teamOpt = teamService.findById(id);
         if (teamOpt.isPresent()) {
             model.addAttribute("team", teamOpt.get());
-            return "CreateTeam"; 
+            return "CreateTeam";
         }
-        return "redirect:/teams";
+        return "redirect:/admin/teams";
     }
 
     /**
-     * ELIMINAR: Accede a /teams/delete/1
+     * ELIMINAR: Accede a /admin/teams/delete/1
      */
     @GetMapping("/delete/{id}")
     public String deleteTeam(@PathVariable Long id) {
         teamService.deleteById(id);
-        return "redirect:/teams";
+        return "redirect:/admin/teams";
     }
 }

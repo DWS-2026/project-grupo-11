@@ -18,32 +18,34 @@
                 </tr>
             </thead>
             <tbody id="userTableBody">
+                {{#users}}
                 <tr>
                     <td>
-                        <img src="/images/Juan_Perez_Avatar.PNG" alt="Jaun perez"
-                            style="width: 45px; height: 45px; object-fit: contain;">
+                        <img src="{{#avatarPath}}{{avatarPath}}{{/avatarPath}}{{^avatarPath}}/images/default-avatar.png{{/avatarPath}}"
+                            alt="Jaun perez" style="width: 45px; height: 45px; object-fit: contain;">
                     </td>
-                    </td>
-                    <td class="text-white">Juan Pérez</td>
-                    <td class="text-white-50">juan.perez@prensa.com</td>
-                    <td><span class="badge bg-primary">Real Madrid FC</span></td>
+                    <td class="text-white">{{username}}</td>
+                    <td class="text-white-50">{{email}}</td>
+                    <td><span class="badge bg-primary">{{#favouriteTeam}}{{name}}{{/favouriteTeam}}
+                            {{^favouriteTeam}}Sin equipo{{/favouriteTeam}}</span></td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center gap-2">
-                            <button class="btn btn-sm btn-warning" onclick="editUser('edit-profile.html')">
+                            <button class="btn btn-sm btn-warning" onclick="editUser('/profile/{{username}}/edit')">
                                 Editar
                             </button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteUser('Juan Pérez')">
+                            <button class="btn btn-sm btn-danger" onclick="deleteUser('{{username}}')">
                                 Borrar
                             </button>
                         </div>
                     </td>
                 </tr>
+                {{/users}}
             </tbody>
         </table>
     </div>
 
     <div class="d-grid gap-2 mt-4">
-        <a href="Account_Management_Screen.html" class="btn btn-outline-secondary">
+        <a href="/admin/accounts" class="btn btn-outline-secondary">
             Volver al Panel de Control
         </a>
     </div>
@@ -90,7 +92,11 @@
                     background: '#1e293b',
                     color: '#ffffff'
                 });
-                // Aquí iría la lógica para quitar la fila de la tabla
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/admin/users/delete/' + userName;
+                document.body.appendChild(form);
+                form.submit();
             }
         });
     }

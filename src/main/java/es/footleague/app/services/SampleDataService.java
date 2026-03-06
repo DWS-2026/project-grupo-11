@@ -40,10 +40,15 @@ public class SampleDataService {
         //1. Crear equipos
         Team madridTeam = new Team("Real Madrid", "Santiago Bernabeu");
         Team barsaTeam = new Team("FC Barcelona", "Camp Nou");
+        barsaTeam.setPlayedMatches(1);
+        madridTeam.setPlayedMatches(1);
+        madridTeam.setWins(1);
+        barsaTeam.setLosses(1);
+        madridTeam.setPoints(3);
         teamRepository.save(madridTeam);
         teamRepository.save(barsaTeam);
         //2. Crear usuarios
-        User user1 = new User("Juan Perez", "password123", "juanperez@prensa.com", madridTeam);
+        User user1 = new User("JuanPerez", "password123", "juanperez@prensa.com", madridTeam);
         User user2 = new User("admin", "admin123", "admin@footleague.es", barsaTeam);
         userRepository.save(user1);
         userRepository.save(user2);

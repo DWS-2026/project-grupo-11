@@ -32,7 +32,7 @@ public class User {
     @JoinColumn(name = "favourite_team_id", nullable = false)
     private Team favouriteTeam;
 
-    protected User() {
+    public User() {
     }
 
     public User(String username, String password, String email, Team favouriteTeam) {

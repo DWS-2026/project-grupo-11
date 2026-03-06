@@ -40,19 +40,15 @@ public class RatingController {
     @PostMapping("/rating/save")
     public String saveRating(@RequestParam Long eventId, @RequestParam int score, @RequestParam String comment,
             RedirectAttributes info) {
-        // 1. Buscamos el evento al que pertenece la valoración
-        MatchEvent event = matchEventService.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
-        // 2. Creamos el objeto Rating y le asignamos todo
+        MatchEvent event = matchEventService.findById(eventId).orElseThrow(() -> new RuntimeException("Evento no encontrado"));
+        
         Rating newRating = new Rating();
         newRating.setScore(score);
         newRating.setComment(comment);
         newRating.setEvent(event);
 
-        // 3. Guardamos a través del Service
         ratingService.save(newRating);
 
-        // 4. Mensaje de feedback y redirección
         info.addFlashAttribute("mensaje", "⭐ ¡Tu valoración se ha guardado correctamente!");
 
         return "redirect:/my-ratings";

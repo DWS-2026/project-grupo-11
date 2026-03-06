@@ -49,6 +49,10 @@ public class ViewController {
     public String listado() {
         return "ModifyTeam";
     }
+    @GetMapping("/match-list")
+    public String showMatchList() {
+        return "match-list";
+    }
 
     @GetMapping("/EditTeam/{id}")
     public String formulario(@PathVariable Long id, Model model) {

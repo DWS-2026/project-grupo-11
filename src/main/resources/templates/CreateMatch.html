@@ -10,13 +10,27 @@
             <input type="hidden" name="id" id="matchId" value="{{match.id}}">
         {{/match.id}}
 
-        <input type="hidden" id="displayHomeScore" value="{{#match.localGoals}}{{match.localGoals}}{{/match.localGoals}}{{^match.localGoals}}0{{/match.localGoals}}">
-        <input type="hidden" id="displayAwayScore" value="{{#match.visitorGoals}}{{match.visitorGoals}}{{/match.visitorGoals}}{{^match.visitorGoals}}0{{/match.visitorGoals}}">
+        <div class="row mb-4 text-center bg-dark p-3 rounded border border-info shadow">
+            <div class="col-5">
+                <h1 id="scoreHome" class="display-1 fw-bold text-primary">0</h1>
+                <span id="homeBadge" class="badge bg-primary fs-5">Local</span>
+            </div>
+            <div class="col-2 align-self-center">
+                <h1 class="display-3 text-white">-</h1>
+            </div>
+            <div class="col-5">
+                <h1 id="scoreAway" class="display-1 fw-bold text-danger">0</h1>
+                <span id="awayBadge" class="badge bg-danger fs-5">Visitante</span>
+            </div>
+        </div>
+
+        <input type="hidden" id="displayHomeScore" name="localGoals" value="{{#match.localGoals}}{{match.localGoals}}{{/match.localGoals}}{{^match.localGoals}}0{{/match.localGoals}}">
+        <input type="hidden" id="displayAwayScore" name="visitorGoals" value="{{#match.visitorGoals}}{{match.visitorGoals}}{{/match.visitorGoals}}{{^match.visitorGoals}}0{{/match.visitorGoals}}">
 
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label text-info">Equipo Local</label>
-                <select id="homeTeam" class="form-select bg-dark text-white border-info" name="localTeam" required>
+                <select id="homeTeam" class="form-select bg-dark text-white border-info" name="localTeam.id" required onchange="updateScoreLabels()">
                     <option value="" disabled {{^match.localTeam}}selected{{/match.localTeam}}>Seleccione equipo local...</option>
                     {{#teams}}
                         <option value="{{id}}">{{name}}</option>
@@ -26,7 +40,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label text-info">Equipo Visitante</label>
-                <select id="awayTeam" class="form-select bg-dark text-white border-info" name="visitorTeam" required>
+                <select id="awayTeam" class="form-select bg-dark text-white border-info" name="visitorTeam.id" required onchange="updateScoreLabels()">
                     <option value="" disabled {{^match.visitorTeam}}selected{{/match.visitorTeam}}>Seleccione equipo visitante...</option>
                     {{#teams}}
                         <option value="{{id}}">{{name}}</option>
@@ -59,34 +73,7 @@
         <div class="mt-4">
             <h4 class="text-info border-bottom border-info pb-2">Eventos del Partido</h4>
             <div id="eventsContainer">
-                {{#match.events}}
-                <div class="event-row row g-2 mb-3 align-items-end border-start border-info ps-2">
-                    <div class="col-md-2">
-                        <input type="number" class="form-control event-min" value="{{minute}}" placeholder="Min">
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-select event-type" onchange="toggleEditSubFields(this); calculateScore();">
-                            <option value="GOAL" {{#isGoal}}selected{{/isGoal}}>⚽ Gol</option>
-                            <option value="YELLOW CARD" {{#isYellow}}selected{{/isYellow}}>🟨 T. Amarilla</option>
-                            <option value="RED_CARD" {{#isRed}}selected{{/isRed}}>🟥 T. Roja</option>
-                            <option value="SUBSTITUTION">🔄 Cambio</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="player-container">
-                            <input type="text" class="form-control event-player" value="{{namePlayer}}" placeholder="Ej: Lionel Messi (10)">
-                            <div class="sub-fields d-none">
-                                <input type="text" class="form-control mb-1 event-in" value="{{namePlayerIn}}" placeholder="🟢 Entra...">
-                                <input type="text" class="form-control event-out" value="{{namePlayerOut}}" placeholder="🔴 Sale...">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn btn-danger" onclick="removeEvent(this)">×</button>
-                    </div>
                 </div>
-                {{/match.events}}
-            </div>
             <button type="button" class="btn btn-outline-info btn-sm mt-2" onclick="addEventField()">
                 + Añadir Evento (Gol, Tarjeta, etc.)
             </button>
@@ -110,10 +97,10 @@
                 <div class="col-md-4">
                     <label class="small text-white-50">Jugador / Cambios</label>
                     <div class="player-container">
-                        <input type="text" class="form-control form-control-sm bg-dark text-white event-player" placeholder="Ej: Lionel Messi (10)" required>
+                        <input type="text" class="form-control form-control-sm bg-dark text-white event-player" placeholder="Nombre Jugador" required>
                         <div class="sub-fields d-none">
-                            <input type="text" class="form-control form-control-sm bg-dark text-success mb-1 event-in" placeholder="🟢 Entra: Ej: Pedri (8)">
-                            <input type="text" class="form-control form-control-sm bg-dark text-danger event-out" placeholder="🔴 Sale: Ej: Gavi (6)">
+                            <input type="text" class="form-control form-control-sm bg-dark text-success mb-1 event-in" placeholder="🟢 Entra">
+                            <input type="text" class="form-control form-control-sm bg-dark text-danger event-out" placeholder="🔴 Sale">
                         </div>
                     </div>
                 </div>
@@ -131,7 +118,7 @@
         </template>
 
         <div class="d-grid gap-2 mt-4">
-            <button type="submit" class="btn btn-primary p-3 fw-bold">Guardar Partido</button>
+            <button type="submit" class="btn btn-primary p-3 fw-bold shadow">Guardar Partido</button>
             <a href="/match-list" class="btn btn-secondary py-2">Cancelar</a>
         </div>
     </form>

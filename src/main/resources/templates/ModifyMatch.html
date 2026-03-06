@@ -1,8 +1,8 @@
 {{>fragments/header}}
 
 {{#mensaje}}
-<div class="alert alert-success mt-3 mx-auto" style="max-width: 1100px;">
-    {{mensaje}}
+<div class="alert alert-success mt-3 mx-auto shadow" style="max-width: 1100px;">
+    <i class="bi bi-check-circle-fill me-2"></i> {{mensaje}}
 </div>
 {{/mensaje}}
 
@@ -12,9 +12,9 @@
         <p class="text-white-50">Historial de marcadores y detalles de la Liga Pro</p>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-dark table-hover align-middle border-secondary">
-            <thead class="text-info">
+    <div class="table-responsive shadow-lg rounded">
+        <table class="table table-dark table-hover align-middle border-secondary mb-0">
+            <thead class="text-info border-bottom border-info">
                 <tr>
                     <th>Fecha</th>
                     <th>Encuentro</th>
@@ -27,22 +27,39 @@
             <tbody id="matchTableBody">
                 {{#matches}}
                 <tr>
-                    <td class="text-white-50 small">{{formattedDate}}</td>
+                    <td class="text-white-50 small">{{matchDate}}</td>
                     <td class="text-white">
-                        <span class="fw-bold">{{localTeam.name}}</span> vs <span class="fw-bold">{{visitorTeam.name}}</span>
+                        <span class="fw-bold text-info">{{localTeam.name}}</span> 
+                        <span class="mx-1 text-white-50">vs</span> 
+                        <span class="fw-bold text-danger">{{visitorTeam.name}}</span>
                     </td>
                     <td class="text-center">
-                        <span class="badge bg-dark border border-info px-3 py-2 fs-6">{{scoreBoard}}</span>
+                        <span class="badge bg-dark border border-info px-3 py-2 fs-6">
+                            {{localGoals}} - {{visitorGoals}}
+                        </span>
                     </td>
-                    <td class="small">{{stadium}}</td>
-                    <td><span class="badge bg-info text-dark">{{weather}}</span></td>
+                    <td class="small text-white-50">{{stadium}}</td>
+                    <td>
+                        <span class="badge bg-secondary border border-light">{{weather}}</span>
+                    </td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center gap-2">
-                            <button class="btn btn-sm btn-warning" onclick="editMatch('{{id}}')">Editar</button>
-                            <button class="btn btn-sm btn-danger" onclick="confirmDelete('{{id}}', '{{localTeam.name}} vs {{visitorTeam.name}}')">Borrar</button>
+                            <button class="btn btn-sm btn-warning" onclick="editMatch('{{id}}')">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="confirmDelete('{{id}}', '{{localTeam.name}} vs {{visitorTeam.name}}')">
+                                <i class="bi bi-trash"></i> Borrar
+                            </button>
                             
                             <form id="delete-form-{{id}}" action="/match/{{id}}/delete" method="post" style="display:none;"></form>
                         </div>
+                    </td>
+                </tr>
+                {{/matches}}
+                {{^matches}}
+                <tr>
+                    <td colspan="6" class="text-center py-5 text-white-50">
+                        No hay partidos registrados. <a href="/match/new" class="text-info">Registra el primero aquí</a>.
                     </td>
                 </tr>
                 {{/matches}}
@@ -50,9 +67,12 @@
         </table>
     </div>
 
-    <div class="d-grid gap-2 mt-4 text-center">
+    <div class="d-flex justify-content-between mt-4">
         <a href="/admin-matches" class="btn btn-outline-secondary">
-            Volver a Administración
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+        <a href="/match/new" class="btn btn-primary px-4 fw-bold">
+            <i class="bi bi-plus-lg"></i> Nuevo Partido
         </a>
     </div>
 </div>
@@ -60,40 +80,39 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     /**
-     * Navega a la pantalla de edición usando la ruta del MatchController
+     * Navega a la pantalla de edición
      */
     function editMatch(matchId) {
         Swal.fire({
-            title: 'Cargando acta...',
+            title: 'Abriendo acta...',
             background: '#1e293b',
             color: '#ffffff',
-            timer: 700,
+            timer: 500,
             showConfirmButton: false,
             didOpen: () => { Swal.showLoading(); }
         }).then(() => {
-            // CAMBIO: La ruta debe ser /match/{id}/edit según tu MatchController
+            // Ruta configurada en MatchController
             window.location.href = '/match/' + matchId + '/edit';
         });
     }
 
     /**
-     * Muestra confirmación y ejecuta el borrado vía POST
+     * Muestra confirmación de borrado
      */
     function confirmDelete(matchId, matchName) {
         Swal.fire({
             title: '¿Eliminar partido?',
-            text: `Se borrarán los datos del encuentro: ${matchName}`,
+            text: `Se borrarán permanentemente los datos de: ${matchName}`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#ef4444',
             cancelButtonColor: '#64748b',
-            confirmButtonText: 'Sí, borrar',
+            confirmButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar',
             background: '#1e293b',
             color: '#ffffff'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Ejecuta el submit del formulario oculto
                 document.getElementById('delete-form-' + matchId).submit();
             }
         });

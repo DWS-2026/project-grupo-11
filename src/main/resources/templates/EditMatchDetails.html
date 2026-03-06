@@ -1,19 +1,23 @@
 {{>fragments/header}}
 
-<div class="form-container">
+<div class="form-container container mt-4">
     <h2 class="text-center mb-4 text-white">Editar Acta del Encuentro</h2>
 
     <form id="editMatchForm">
+        <input type="hidden" id="matchId" value="{{match.id}}">
+
         <div class="row mb-3">
             <div class="col-md-6 mb-3">
                 <label class="form-label text-info small">Equipo Local</label>
-                <input type="text" class="form-control bg-dark text-white border-secondary" id="homeTeam"
-                    value="Real Madrid" required>
+                <select id="homeTeam" class="form-select bg-dark text-white border-secondary" disabled>
+                    <option value="{{match.localTeam.id}}" selected>{{match.localTeam.name}}</option>
+                </select>
             </div>
             <div class="col-md-6 mb-3">
                 <label class="form-label text-info small">Equipo Visitante</label>
-                <input type="text" class="form-control bg-dark text-white border-secondary" id="awayTeam"
-                    value="FC Barcelona" required>
+                <select id="awayTeam" class="form-select bg-dark text-white border-secondary" disabled>
+                    <option value="{{match.visitorTeam.id}}" selected>{{match.visitorTeam.name}}</option>
+                </select>
             </div>
         </div>
 
@@ -21,31 +25,59 @@
             <div class="col-md-4 mb-3">
                 <label class="form-label text-info small">Fecha del encuentro</label>
                 <input type="date" class="form-control bg-dark text-white border-secondary" id="matchDate"
-                    value="2026-02-01" required>
+                    value="{{match.matchDate}}" required>
             </div>
             <div class="col-md-4 mb-3">
                 <label class="form-label text-info small">Hora de inicio</label>
-                <input type="time" class="form-control bg-dark text-white border-secondary" id="matchTime" value="16:15"
-                    required>
+                <input type="time" class="form-control bg-dark text-white border-secondary" id="matchTime" 
+                    value="{{match.matchTime}}" required>
             </div>
             <div class="col-md-4 mb-3">
-                <label class="form-label text-info small">Estadio</label>
-                <input type="text" class="form-control bg-dark text-white border-secondary" id="stadium"
-                    value="Santiago Bernabéu" required>
+                <label class="form-label text-info small">Temporal (Clima)</label>
+                <select id="weather" class="form-select bg-dark text-white border-secondary">
+                    <option value="Despejado" {{#climaDespejado}}selected{{/climaDespejado}}>☀️ Despejado</option>
+                    <option value="Nublado" {{#climaNublado}}selected{{/climaNublado}}>☁️ Nublado</option>
+                    <option value="Lluvia" {{#climaLluvia}}selected{{/climaLluvia}}>🌧️ Lluvia</option>
+                </select>
             </div>
         </div>
 
-        <div class="text-center mb-4 p-3 rounded"
-            style="background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8;">
+        <div class="text-center mb-4 p-3 rounded" style="background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8;">
             <h5 class="text-white-50 mb-1 small text-uppercase">Marcador Actual</h5>
             <div class="h1 text-info fw-bold mb-0">
-                <span id="displayHomeScore">2</span> - <span id="displayAwayScore">1</span>
+                <span id="displayHomeScore">{{match.localGoals}}</span> - <span id="displayAwayScore">{{match.visitorGoals}}</span>
             </div>
         </div>
 
         <div class="p-3 mb-4 rounded" style="background: rgba(255,255,255,0.05)">
             <h6 class="text-white border-bottom border-secondary pb-2 mb-3">Sucesos del Partido</h6>
             <div id="eventsContainer">
+                {{#match.events}}
+                <div class="event-row row g-2 mb-3 align-items-end border-start border-info ps-2">
+                    <div class="col-md-2">
+                        <select class="form-select form-select-sm team-selector bg-dark text-white" onchange="calculateScore()">
+                            <option value="LOCAL" {{#isLocal}}selected{{/isLocal}}>Local</option>
+                            <option value="VISITOR" {{#isVisitor}}selected{{/isVisitor}}>Visitante</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select form-select-sm event-type bg-dark text-white" onchange="calculateScore()">
+                            <option value="GOAL" {{#isGoal}}selected{{/isGoal}}>⚽ Gol</option>
+                            <option value="YELLOW CARD" {{#isYellow}}selected{{/isYellow}}>🟨 Tarjeta Amarilla</option>
+                            <option value="RED_CARD" {{#isRed}}selected{{/isRed}}>🟥 Tarjeta Roja</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" class="form-control form-control-sm bg-dark text-white event-min" value="{{minute}}" placeholder="Min">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control form-control-sm bg-dark text-white event-player" value="{{namePlayer}}" placeholder="Jugador">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-danger btn-sm w-100" onclick="this.parentElement.parentElement.remove(); calculateScore();">×</button>
+                    </div>
+                </div>
+                {{/match.events}}
             </div>
             <button type="button" class="btn btn-outline-info btn-sm mt-2" onclick="addEventField()">
                 + Añadir Suceso
@@ -54,103 +86,36 @@
 
         <div class="d-grid gap-2">
             <button type="submit" class="btn btn-warning p-3 fw-bold text-dark shadow">Guardar Cambios en Acta</button>
-            <a href="ModifyMatch.html" class="btn btn-secondary text-center py-2">Cancelar y Volver</a>
+            <a href="/matches" class="btn btn-secondary text-center py-2">Cancelar y Volver</a>
         </div>
     </form>
-</div>
 </div>
 
 <template id="eventTemplate">
     <div class="event-row row g-2 mb-3 align-items-end border-start border-info ps-2">
         <div class="col-md-2">
             <select class="form-select form-select-sm team-selector bg-dark text-white" onchange="calculateScore()">
-                <option value="local">Local</option>
-                <option value="visitante">Visitante</option>
+                <option value="LOCAL">Local</option>
+                <option value="VISITOR">Visitante</option>
             </select>
         </div>
         <div class="col-md-3">
             <select class="form-select form-select-sm event-type bg-dark text-white" onchange="calculateScore()">
-                <option value="⚽">⚽ Gol</option>
-                <option value="🟨">🟨 Tarjeta Amarilla</option>
-                <option value="🟥">🟥 Tarjeta Roja</option>
-                <option value="🟢">🟢 ➡️ Entra</option>
-                <option value="🔴">🔴 ⬅️ Sale</option>
+                <option value="GOAL">⚽ Gol</option>
+                <option value="YELLOW CARD">🟨 Tarjeta Amarilla</option>
+                <option value="RED_CARD">🟥 Tarjeta Roja</option>
             </select>
         </div>
         <div class="col-md-2">
-            <input type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Min" min="1">
+            <input type="number" class="form-control form-control-sm bg-dark text-white event-min" placeholder="Min">
         </div>
         <div class="col-md-4">
-            <input type="text" class="form-control form-control-sm bg-dark text-white" placeholder="Jugador (Dorsal)">
+            <input type="text" class="form-control form-control-sm bg-dark text-white event-player" placeholder="Jugador">
         </div>
         <div class="col-md-1">
-            <button type="button" class="btn btn-danger btn-sm w-100"
-                onclick="this.parentElement.parentElement.remove(); calculateScore();">×</button>
+            <button type="button" class="btn btn-danger btn-sm w-100" onclick="this.parentElement.parentElement.remove(); calculateScore();">×</button>
         </div>
     </div>
 </template>
-
-<script>
-    // Función para añadir sucesos con datos precargados para la simulación
-    function addEventField(type = '⚽', team = 'local', min = '', player = '', pIn = '', pOut = '') {
-        const container = document.getElementById('eventsContainer');
-        const template = document.getElementById('eventTemplate');
-        const clone = template.content.cloneNode(true);
-        const row = clone.querySelector('.event-row');
-
-        row.querySelector('.event-type').value = type;
-        row.querySelector('.team-selector').value = team;
-        row.querySelector('.event-min').value = min;
-
-        if (type === '🔄') {
-            row.querySelector('.event-player').classList.add('d-none');
-            row.querySelector('.sub-fields').classList.remove('d-none');
-            row.querySelector('.event-in').value = pIn;
-            row.querySelector('.event-out').value = pOut;
-        } else {
-        row.querySelector('.event-player').value = player;
-        }
-
-        container.appendChild(clone);
-        calculateScore();
-    }
-
-    function toggleEditSubFields(select) {
-        const row = select.closest('.event-row');
-        const isSub = select.value === '🔄';
-        row.querySelector('.event-player').classList.toggle('d-none', isSub);
-        row.querySelector('.sub-fields').classList.toggle('d-none', !isSub);
-    }
-
-    // Cargamos los sucesos de tu página de detalle al iniciar
-    window.onload = () => {
-        addEventField('⚽', 'local', '23', 'Vinícius Jr.');
-        addEventField('🟨', 'visitante', '40', 'Gavi');
-        addEventField('⚽', 'visitante', '67', 'Lewandowski');
-        addEventField('⚽', 'local', '89', 'Bellingham');
-    };
-
-    function calculateScore() {
-        let h = 0, a = 0;
-        document.querySelectorAll('.event-row').forEach(row => {
-            if (row.querySelector('.event-type').value === '⚽') {
-                row.querySelector('.team-selector').value === 'local' ? h++ : a++;
-            }
-        });
-        document.getElementById('displayHomeScore').innerText = h;
-        document.getElementById('displayAwayScore').innerText = a;
-    }
-
-    document.getElementById('editMatchForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        Swal.fire({
-            title: '¡Acta Actualizada!',
-            text: 'La información del partido ha sido modificada con éxito.',
-            icon: 'success',
-            background: '#1e293b', color: '#ffffff',
-            timer: 1500, showConfirmButton: false
-        }).then(() => { window.location.href = 'ModifyMatch.html'; });
-    });
-</script>
 
 {{>fragments/footer}}

@@ -27,17 +27,12 @@ public class AdminController {
         return "Admin_Page";
     }
 
-    @GetMapping("/CreateMatch")
-    public String CreateMatch() {
-        return "CreateMatch";
-    }
-
-    @GetMapping("/admin/teams")
+    @GetMapping("/teams")
     public String showTeamManagement() {
         return "Team_Management_Screen";
     }
 
-    @GetMapping("/Match_Management_Screen")
+    @GetMapping("/matches")
     public String showMatchManagement() {
         return "Match_Management_Screen";
     }

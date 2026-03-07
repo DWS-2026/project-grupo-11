@@ -18,7 +18,6 @@ public class MatchEvent {
     @Column(nullable = false)
     private String type; // "GOAL", "CARD", "SUBSTITUTION"
 
-    @Column(nullable = false)
     private String namePlayer;
     private String namePlayerOut;
     private String namePlayerIn;
@@ -91,6 +90,30 @@ public class MatchEvent {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public String getNamePlayerOut() {
+        return namePlayerOut;
+    }
+
+    public void setNamePlayerOut(String namePlayerOut) {
+        this.namePlayerOut = namePlayerOut;
+    }
+
+    public String getNamePlayerIn() {
+        return namePlayerIn;
+    }
+
+    public void setNamePlayerIn(String namePlayerIn) {
+        this.namePlayerIn = namePlayerIn;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
     }
 
     // Método para devolver el icono según el tipo de evento

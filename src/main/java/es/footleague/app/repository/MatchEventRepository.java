@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MatchEventRepository extends JpaRepository<MatchEvent, Long> {
+    
 }

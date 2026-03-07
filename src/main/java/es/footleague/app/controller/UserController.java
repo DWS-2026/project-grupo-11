@@ -150,6 +150,11 @@ public class UserController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("teams", teamService.findAllOrderByPoints());
+        Optional<Match> featuredMatchOpt = matchService.findFirst();
+        if (featuredMatchOpt.isPresent()) {
+            Match featuredMatch = featuredMatchOpt.get();
+            model.addAttribute("match", featuredMatch);
+        }
         return "index";
     }
 
@@ -165,11 +170,11 @@ public class UserController {
         return "match-list";
     }
 
-        @GetMapping("/match/{id}")
-    public String matchDetail(@PathVariable Long id, Model model){
+    @GetMapping("/match/{id}")
+    public String matchDetail(@PathVariable Long id, Model model) {
         Optional<Match> matchOpt = matchService.findById(id);
 
-        if(matchOpt.isPresent()){
+        if (matchOpt.isPresent()) {
             Match match = matchOpt.get();
             model.addAttribute("match", match);
             model.addAttribute("events", match.getEvents());

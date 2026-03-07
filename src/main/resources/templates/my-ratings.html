@@ -17,7 +17,7 @@
                 <div>
                     <h6 class="text-white mb-1">{{event.description}} - {{event.team.name}}</h6>
                     <small class="text-white-50">
-                        Minuto {{event.minute}} | {{match.localTeam.name}} {{match.localGoals}} - {{match.visitorGoals}} {{match.visitorTeam.name}}
+                        Minuto {{event.minute}} | {{event.match.localTeam.name}} {{event.match.localGoals}} - {{event.match.visitorGoals}} {{event.match.visitorTeam.name}}
                     </small>
                     <p class="mt-2 text-muted mb-0 small italic">{{comment}}</p>
                 </div>
@@ -44,7 +44,7 @@
     {{/ratings}}
 
     <div class="d-grid gap-2 mt-4">
-        <a href="/player-ratings" class="btn btn-primary">Valorar otro evento</a>
+        <a href="/match-list" class="btn btn-primary">Valorar otro evento</a>
         <a href="/" class="btn btn-return text-center py-2">Volver al Inicio</a>
     </div>
 </div>

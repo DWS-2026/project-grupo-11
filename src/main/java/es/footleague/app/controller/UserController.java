@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import es.footleague.app.model.Match;
+import es.footleague.app.model.MatchEvent;
 import es.footleague.app.model.User;
+import es.footleague.app.services.MatchService;
 import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
 import es.footleague.app.services.UserSession;
@@ -22,6 +25,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private TeamService teamService;
+    @Autowired
+    private MatchService matchService;
     @Autowired
     private UserSession userSession;
 
@@ -152,5 +157,28 @@ public class UserController {
     public String classification(Model model) {
         model.addAttribute("teams", teamService.findAllOrderByPoints());
         return "classification";
+    }
+
+    @GetMapping("/match-list")
+    public String showMatchList(Model model) {
+        model.addAttribute("matches", matchService.findAll());
+        return "match-list";
+    }
+
+        @GetMapping("/match/{id}")
+    public String matchDetail(@PathVariable Long id, Model model){
+        Optional<Match> matchOpt = matchService.findById(id);
+
+        if(matchOpt.isPresent()){
+            Match match = matchOpt.get();
+            model.addAttribute("match", match);
+            model.addAttribute("events", match.getEvents());
+            model.addAttribute("teams", teamService.findAll());
+
+            model.addAttribute("newEvent", new MatchEvent());
+
+            return "match-details";
+        }
+        return "match-not-found";
     }
 }

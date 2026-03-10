@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MatchRepository extends JpaRepository<Match, Long> {
     Optional<Match> findFirstByOrderByIdDesc();
+
+    // Cuenta partidos donde el equipo sea LOCAL o VISITANTE
+    long countByLocalTeamIdOrVisitorTeamId(Long localId, Long visitorId);
 }

@@ -1,12 +1,14 @@
 package es.footleague.app.controller;
 
 import es.footleague.app.model.Team;
+import es.footleague.app.repository.TeamRepository;
 import es.footleague.app.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -15,8 +17,13 @@ import java.util.Optional;
 @RequestMapping("/admin/teams")
 public class TeamController {
 
+    private final TeamRepository teamRepository;
     @Autowired
     private TeamService teamService;
+
+    TeamController(TeamRepository teamRepository) {
+        this.teamRepository = teamRepository;
+    }
 
     @GetMapping("/list-teams")
     public String listTeams(Model model) {
@@ -81,8 +88,20 @@ public class TeamController {
      * ELIMINAR: Accede a /admin/teams/delete/1
      */
     @GetMapping("/delete/{id}")
-    public String deleteTeam(@PathVariable Long id) {
-        teamService.deleteById(id);
-        return "redirect:/admin/teams";
+    public String deleteTeam(@PathVariable Long id, RedirectAttributes info) {
+        if (!teamService.canDelete(id)) {
+            // Enviamos un mensaje de error que Mustache podrá leer
+            info.addFlashAttribute("error",
+                    "No se puede eliminar: El equipo ya tiene partidos registrados en la liga.");
+            return "redirect:/admin/teams/list-teams";
+        }
+        try {
+            teamService.deleteById(id);
+            info.addFlashAttribute("mensaje", "Equipo eliminado correctamente.");
+        } catch (Exception e) {
+            info.addFlashAttribute("error", "No se pudo eliminar el equipo debido a un error interno.");
+        }
+
+        return "redirect:/admin/teams/list-teams";
     }
 }

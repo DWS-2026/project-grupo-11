@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -28,8 +31,9 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings = new ArrayList<>();
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "favourite_team_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "favourite_team_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Team favouriteTeam;
 
     public User() {

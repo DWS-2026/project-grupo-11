@@ -4,7 +4,7 @@ function editTeam(id) {
 async function confirmDeleteTeam(id, teamName) {
     const result = await Swal.fire({
         title: '¿Eliminar equipo?',
-        text: `Estás a punto de borrar al ${teamName}.`,
+        text: `Estás a punto de borrar al ${teamName}. Esta acción no se puede deshacer.`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#ef4444',
@@ -15,27 +15,7 @@ async function confirmDeleteTeam(id, teamName) {
     });
 
     if (result.isConfirmed) {
-        // Redirigimos a la ruta del Controller que creamos antes
-        // El navegador se encargará de borrar y recargar la página solo
-        window.location.href = `/teams/delete/${id}`;
-    }
-    function confirmDeleteTeam(id, name) {
-        Swal.fire({
-            title: '¿Eliminar equipo?',
-            text: `Estás a punto de borrar al ${name}. Esta acción no se puede deshacer.`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#64748b',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar',
-            background: '#1e293b',
-            color: '#ffffff'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Ejecutamos el borrado redirigiendo a la ruta del Controller
-                window.location.href = '/admin/teams/delete/' + id;
-            }
-        });
+        // AHORA SÍ: Redirigimos a la ruta de borrado con el ID
+        window.location.href = `/admin/teams/delete/${id}`;
     }
 }

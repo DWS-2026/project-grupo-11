@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.footleague.app.model.Team;
+import es.footleague.app.repository.MatchRepository;
 import es.footleague.app.repository.TeamRepository;
 
 @Service
@@ -14,6 +15,9 @@ public class TeamService {
 
     @Autowired
     private TeamRepository teamRepository;
+
+    @Autowired
+    private MatchRepository matchRepository;
 
     /**
      * Obtiene la lista de todos los equipos registrados.
@@ -35,6 +39,11 @@ public class TeamService {
 
     public List<Team> findAllOrderByPoints() {
         return teamRepository.findAllByOrderByPointsDesc();
+    }
+
+    public boolean canDelete(Long teamId) {
+        // Si el conteo es 0, el equipo está "limpio" y se puede borrar
+        return matchRepository.countByLocalTeamIdOrVisitorTeamId(teamId, teamId) == 0;
     }
 
     /**

@@ -27,26 +27,19 @@ function calculateScore() {
         const typeEl = row.querySelector('.event-type');
         const teamEl = row.querySelector('.team-selector');
         
-        if (typeEl && teamEl) {
-            const type = typeEl.value;
-            const team = teamEl.value;
-
-            if (type === 'GOAL') {
-                if (team === 'LOCAL') homeScore++;
-                else if (team === 'VISITOR') awayScore++;
-            }
+        if (typeEl && teamEl && typeEl.value === 'GOAL') {
+            if (teamEl.value === 'LOCAL') homeScore++;
+            else if (teamEl.value === 'VISITOR') awayScore++;
         }
     });
 
-    const homeDisplay = document.getElementById('displayHomeScore');
-    const awayDisplay = document.getElementById('displayAwayScore');
+    // 1. Actualizar Inputs ocultos (para el envío del form)
+    document.getElementById('displayHomeScore').value = homeScore;
+    document.getElementById('displayAwayScore').value = awayScore;
 
-    if (homeDisplay) {
-        homeDisplay.tagName === 'INPUT' ? homeDisplay.value = homeScore : homeDisplay.innerText = homeScore;
-    }
-    if (awayDisplay) {
-        awayDisplay.tagName === 'INPUT' ? awayDisplay.value = awayScore : awayDisplay.innerText = awayScore;
-    }
+    // 2. ACTUALIZAR INTERFAZ VISUAL (lo que el usuario ve)
+    document.getElementById('scoreHome').innerText = homeScore;
+    document.getElementById('scoreAway').innerText = awayScore;
 }
 
 /**
@@ -117,7 +110,7 @@ if (form) {
 
             if (response.ok) {
                 Swal.fire({ title: '¡Guardado!', icon: 'success', timer: 1500, showConfirmButton: false })
-                    .then(() => window.location.href = '/admin/list-matches'); 
+                    .then(() => window.location.href = '/admin/ModifyMatch'); 
             } else {
                 throw new Error("Error en el servidor");
             }

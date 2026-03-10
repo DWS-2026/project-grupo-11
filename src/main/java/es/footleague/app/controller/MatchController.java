@@ -4,11 +4,13 @@ import es.footleague.app.model.Match;
 import es.footleague.app.services.MatchService;
 import es.footleague.app.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Optional;
+import java.util.Map;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/admin")
@@ -18,7 +20,7 @@ public class MatchController {
     private MatchService matchService;
 
     @Autowired
-    private TeamService teamService; 
+    private TeamService teamService;
 
     @GetMapping("/ModifyMatch")
     public String adminListMatches(Model model) {
@@ -26,48 +28,60 @@ public class MatchController {
         return "ModifyMatch";
     }
 
-    // CAMBIO: Usamos /match-create para que no choque con /match/{id}
     @GetMapping("/match-create")
     public String showCreateForm(Model model) {
         model.addAttribute("match", new Match());
-        model.addAttribute("teams", teamService.findAll()); 
+        model.addAttribute("teams", teamService.findAll());
         return "CreateMatch";
     }
-    
-    @GetMapping("/match-edit/{id}") // CAMBIO: Ruta más clara
+
+    @GetMapping("/match-edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Optional<Match> matchOpt = matchService.findById(id);
         if (matchOpt.isPresent()) {
             Match match = matchOpt.get();
             model.addAttribute("match", match);
-            model.addAttribute("events", match.getEvents());
             model.addAttribute("teams", teamService.findAll());
-            return "CreateMatch"; // Reutilizamos CreateMatch
+            // Atributos para pre-seleccionar clima en el select si usas condiciones en el HTML
+            model.addAttribute("clima" + match.getWeather(), true);
+            return "CreateMatch";
         }
-        return "redirect:/admin/list-matches";
+        return "redirect:/admin/ModifyMatch";
     }
 
     @PostMapping("/match/save")
-    public String saveMatch(@ModelAttribute Match match, RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public ResponseEntity<?> saveMatch(@ModelAttribute Match match) {
         try {
-            // Lógica de estadio
+            // 1. Validar y asignar Estadio basado en el equipo local
             if (match.getLocalTeam() != null && match.getLocalTeam().getId() != null) {
                 teamService.findById(match.getLocalTeam().getId()).ifPresent(t -> {
                     match.setStadium(t.getStadiumName());
                 });
             }
 
-            // Lógica de eventos (MUY IMPORTANTE para evitar Error 500)
+            // 2. Vincular eventos al partido (evita errores de integridad en MySQL)
             if (match.getEvents() != null) {
-                match.getEvents().forEach(event -> event.setMatch(match));
+                match.getEvents().forEach(event -> {
+                    if (event != null) {
+                        event.setMatch(match);
+                    }
+                });
             }
 
+            // 3. Guardar en MySQL
             matchService.save(match);
-            redirectAttributes.addFlashAttribute("mensaje", "¡Partido guardado!");
+
+            // 4. Respuesta de éxito para el fetch
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "Partido guardado correctamente");
+            return ResponseEntity.ok(response);
+
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.internalServerError()
+                .body(Map.of("status", "error", "message", e.getMessage()));
         }
-        // CAMBIO: Redirige a la lista real que existe en este controller
-        return "redirect:/admin/list-matches"; 
     }
 }

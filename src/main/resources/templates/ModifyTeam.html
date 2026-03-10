@@ -20,7 +20,7 @@
                 {{#teams}}
                 <tr>
                     <td>
-                        <img src="{{#logoBase64}}data:image/png;base64,{{logoBase64}}{{/logoBase64}}{{^logoBase64}}/images/default-logo.png{{/logoBase64}}" 
+                        <img src="{{#logoData}}data:image/png;base64,{{.}}{{/logoData}}{{^logoData}}/images/default-logo.png{{/logoData}}" 
                              alt="Logo" 
                              style="width: 45px; height: 45px; object-fit: contain; border-radius: 4px;">
                     </td>
@@ -34,8 +34,6 @@
                                     onclick="confirmDeleteTeam('{{id}}', '{{name}}')">
                                 Borrar
                             </button>
-                            
-                            <form id="delete-team-form-{{id}}" action="/admin/teams/delete/{{id}}" method="get" style="display:none;"></form>
                         </div>
                     </td>
                 </tr>
@@ -51,11 +49,11 @@
     </div>
 
     <div class="d-grid gap-2 mt-4 text-center">
-        <a href="/admin/teams/list-teams" class="btn btn-outline-secondary">
-            Actualizar Lista
-        </a>
+        <a href="/admin/teams/new" class="btn btn-primary mb-2">Añadir Nuevo Equipo</a>
+        <a href="/admin/teams/list-teams" class="btn btn-outline-secondary">Actualizar Lista</a>
     </div>
 </div>
+
+{{>fragments/footer}}
 <script src="/js/Team_Management.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-{{>fragments/footer}}

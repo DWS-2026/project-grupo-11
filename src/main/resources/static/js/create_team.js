@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showConfirmButton: false
                 }).then(() => {
                     // Redirigimos a la ruta del listado gestionada por Spring
-                    window.location.href = '/teams';
+                    window.location.href = '/admin/teams';
                 });
             } else {
                 throw new Error('Error en la respuesta del servidor');

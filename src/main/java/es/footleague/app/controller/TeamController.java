@@ -21,7 +21,7 @@ public class TeamController {
     @GetMapping("/list-teams")
     public String listTeams(Model model) {
         model.addAttribute("teams", teamService.findAll());
-        return "ModifyTeam";
+        return "ModifyTeam"; // El nombre de tu archivo .mustache o .html
     }
 
     /**

@@ -58,7 +58,7 @@ public class SampleDataService {
         matchRepository.save(match);
         //4. Crear eventos
         MatchEvent goal1 = new MatchEvent("GOAL", 23, "Vinicius Jr.", match, madridTeam);
-        MatchEvent card = new MatchEvent("YELLOW CARD", 40, "Gavi", match, barsaTeam);
+        MatchEvent card = new MatchEvent("YELLOW_CARD", 40, "Gavi", match, barsaTeam);
         MatchEvent goal2 = new MatchEvent("GOAL", 67, "Lewandowski", match, barsaTeam);
         MatchEvent goal3 = new MatchEvent("GOAL", 89, "Bellingham", match, madridTeam);
         matchEventRepository.save(goal1);

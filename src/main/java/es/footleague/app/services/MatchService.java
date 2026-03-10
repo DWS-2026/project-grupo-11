@@ -28,6 +28,10 @@ public class MatchService {
         matchRepository.save(match);
     }
 
+    public Optional<Match> findFirst(){
+        return matchRepository.findFirstByOrderByIdDesc();
+    }
+
     public Optional<Match> findById(Long id) {
         return matchRepository.findById(id);
     }

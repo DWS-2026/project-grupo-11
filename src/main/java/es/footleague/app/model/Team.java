@@ -25,7 +25,6 @@ public class Team {
     @Column(nullable = false)
     private int wins;
 
-    @Column(nullable = false)
     private int draws;
 
     @Column(nullable = false)

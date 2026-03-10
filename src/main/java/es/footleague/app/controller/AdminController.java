@@ -32,7 +32,7 @@ public class AdminController {
         return "CreateMatch";
     }
 
-    @GetMapping("/admin/teams")
+    @GetMapping("/teams")
     public String showTeamManagement() {
         return "Team_Management_Screen";
     }

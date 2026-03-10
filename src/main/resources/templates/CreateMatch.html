@@ -83,6 +83,7 @@
 
         <template id="eventTemplate">
             <div class="event-row row g-2 mb-3 align-items-end border-start border-info ps-2">
+                <input type="hidden" class="event-id" value="">
                 <div class="col-md-2">
                     <label class="small text-white-50">Minuto</label>
                     <input type="number" class="form-control form-control-sm bg-dark text-white event-min" placeholder="Min" min="1" required>
@@ -91,7 +92,7 @@
                     <label class="small text-white-50">Tipo</label>
                     <select class="form-select form-select-sm event-type bg-dark text-white" onchange="toggleEditSubFields(this); calculateScore();">
                         <option value="GOAL">⚽ Gol</option>
-                        <option value="YELLOW CARD">🟨 Tarjeta Amarilla</option>
+                        <option value="YELLOW_CARD">🟨 Tarjeta Amarilla</option>
                         <option value="RED_CARD">🟥 Tarjeta Roja</option>
                         <option value="SUBSTITUTION">🔄 Cambio</option>
                     </select>

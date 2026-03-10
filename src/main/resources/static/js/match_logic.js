@@ -74,9 +74,20 @@ if (form) {
         formData.append('matchTime', document.getElementById('matchTime').value);
         formData.append('weather', document.getElementById('weather').value);
         
-        // Campo stadium (obligatorio en Java)
+        // ... dentro del form.addEventListener('submit' ...
+
+        // 1. Captura del Estadio (Lo que preguntaste)
         const stadiumValue = document.getElementById('stadium')?.value || "Estadio Municipal";
         formData.append('stadium', stadiumValue);
+
+        // 2. Captura de Eventos con ID (Asegúrate de que el bucle se vea así)
+        document.querySelectorAll('.event-row').forEach((row, index) => {
+            const eventId = row.querySelector('.event-id')?.value;
+            if (eventId) {
+                formData.append(`events[${index}].id`, eventId); // VITAL para editar sin duplicar
+            }
+        // ... resto de tu lógica de campos ...
+        });
 
         document.querySelectorAll('.event-row').forEach((row, index) => {
             // 1. Capturar el ID del evento si existe (para edición)

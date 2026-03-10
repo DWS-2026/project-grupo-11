@@ -44,7 +44,7 @@ public class MatchController {
             model.addAttribute("teams", teamService.findAll());
             // Atributos para pre-seleccionar clima en el select si usas condiciones en el HTML
             model.addAttribute("clima" + match.getWeather(), true);
-            return "CreateMatch";
+            return "EditMatchDetails";
         }
         return "redirect:/admin/ModifyMatch";
     }

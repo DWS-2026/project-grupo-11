@@ -79,8 +79,13 @@ if (form) {
         formData.append('stadium', stadiumValue);
 
         document.querySelectorAll('.event-row').forEach((row, index) => {
+            // 1. Capturar el ID del evento si existe (para edición)
             const eventId = row.querySelector('.event-id')?.value;
+            if (eventId) {
+                formData.append(`events[${index}].id`, eventId);
+            }
             const type = row.querySelector('.event-type').value;
+            // ... resto de tu lógica de capturar tipo, equipo, minuto ...
             const role = row.querySelector('.team-selector').value;
             const teamId = (role === 'LOCAL')
                 ? document.getElementById('homeTeam').value

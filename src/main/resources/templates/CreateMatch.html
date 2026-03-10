@@ -1,7 +1,9 @@
 {{>fragments/header}}
 <div class="form-container container mt-4">
     <h2 class="text-center mb-4 text-white">
-        {{#match.id}}Editar{{/match.id}}{{^match.id}}Registrar{{/match.id}} Partido y Sucesos
+        {{#match.id}}
+            <input type="hidden" name="id" id="matchId" value="{{match.id}}">
+        {{/match.id}}
     </h2>
 
     <form id="createMatchForm" action="/match/save" method="post">

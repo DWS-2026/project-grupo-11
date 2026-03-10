@@ -20,7 +20,7 @@ public class MatchController {
     @Autowired
     private TeamService teamService; 
 
-    @GetMapping("/list-matches")
+    @GetMapping("/ModifyMatch")
     public String adminListMatches(Model model) {
         model.addAttribute("matches", matchService.findAll());
         return "ModifyMatch";

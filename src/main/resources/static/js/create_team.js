@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Cambiamos la ruta de '/api/teams' a '/teams/save' que es el @PostMapping de tu Controller
-            const response = await fetch('/teams/save', {
+            const response = await fetch('/admin/teams/save', {
                 method: 'POST',
                 body: formData,
                 redirect: 'follow'

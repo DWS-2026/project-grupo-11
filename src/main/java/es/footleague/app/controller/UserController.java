@@ -1,17 +1,27 @@
 package es.footleague.app.controller;
 
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Optional;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import es.footleague.app.model.Match;
 import es.footleague.app.model.MatchEvent;
+import es.footleague.app.model.Team;
 import es.footleague.app.model.User;
 import es.footleague.app.services.MatchService;
 import es.footleague.app.services.TeamService;
@@ -62,7 +72,15 @@ public class UserController {
 
     // 3. PROCESS RECORD (Logic)
     @PostMapping("/register")
-    public String processRegister(User user) {
+    public String processRegister(User user, MultipartFile imageFile) throws IOException {
+        if (!imageFile.isEmpty()) {
+            try {
+                // Convertimos los bytes del archivo a un Blob
+                user.setAvatarData(new javax.sql.rowset.serial.SerialBlob(imageFile.getBytes()));
+            } catch (Exception e) {
+                throw new IOException("Error al crear el blob del avatar", e);
+            }
+        }
         userService.save(user);
         userSession.setUser(user);
         return "redirect:/profile/" + user.getUsername();
@@ -107,7 +125,10 @@ public class UserController {
 
     @GetMapping("/profile/{username}/edit")
     public String editProfileForm(@PathVariable String username, Model model) {
-        if (!userSession.isLoggedIn() || !userSession.getUser().getUsername().equalsIgnoreCase(username)) {
+        User currentUser = userSession.getUser();
+        boolean isOwner = currentUser != null && currentUser.getUsername().equalsIgnoreCase(username);
+        boolean isAdmin = currentUser != null && currentUser.getUsername().equals("admin");
+        if (!userSession.isLoggedIn() || !(isOwner || isAdmin)) {
             return "redirect:/profile/" + username;
         }
         Optional<User> user = userService.findByUsernameIgnoreCase(username);
@@ -145,6 +166,39 @@ public class UserController {
         }
 
         return "redirect:/profile/" + updatedUser.getUsername();
+    }
+
+    @GetMapping("/user/{id}/avatar")
+    public ResponseEntity<Object> downloadAvatar(@PathVariable String username) throws SQLException {
+        Optional<User> user = userService.findByUsernameIgnoreCase(username);
+        if (user.isPresent() && user.get().getAvatarData() != null) {
+            Blob image = user.get().getAvatarData();
+            // Convertimos el flujo binario del Blob en un recurso descargable [cite: 238]
+            Resource file = new InputStreamResource(image.getBinaryStream());
+
+            // Detectamos automáticamente si es PNG, JPG, etc. [cite: 239, 240]
+            MediaType mediaType = MediaTypeFactory.getMediaType(file).orElse(MediaType.IMAGE_JPEG);
+
+            return ResponseEntity.ok()
+                    .contentType(mediaType) // Establecemos el tipo de contenido [cite: 244]
+                    .body(file);
+        }
+        return ResponseEntity.notFound().build(); // Si no hay imagen, devuelve 404 [cite: 246]
+    }
+
+    @GetMapping("/team/{id}/logo")
+    public ResponseEntity<Object> downloadLogo(@PathVariable long id) throws SQLException {
+        Optional<Team> team = teamService.findById(id);
+
+        if (team.isPresent() && team.get().getLogoData() != null) {
+            Blob image = team.get().getLogoData();
+            Resource file = new InputStreamResource(image.getBinaryStream());
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG) // O usa MediaType.IMAGE_JPEG
+                    .body(file);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/")

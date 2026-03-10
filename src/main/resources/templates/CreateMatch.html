@@ -1,7 +1,9 @@
 {{>fragments/header}}
 <div class="form-container container mt-4">
     <h2 class="text-center mb-4 text-white">
-        {{#match.id}}Editar{{/match.id}}{{^match.id}}Registrar{{/match.id}} Partido y Sucesos
+        {{#match.id}}
+            <input type="hidden" name="id" id="matchId" value="{{match.id}}">
+        {{/match.id}}
     </h2>
 
     <form id="createMatchForm" action="/match/save" method="post">
@@ -81,6 +83,7 @@
 
         <template id="eventTemplate">
             <div class="event-row row g-2 mb-3 align-items-end border-start border-info ps-2">
+                <input type="hidden" class="event-id" value="">
                 <div class="col-md-2">
                     <label class="small text-white-50">Minuto</label>
                     <input type="number" class="form-control form-control-sm bg-dark text-white event-min" placeholder="Min" min="1" required>
@@ -89,7 +92,7 @@
                     <label class="small text-white-50">Tipo</label>
                     <select class="form-select form-select-sm event-type bg-dark text-white" onchange="toggleEditSubFields(this); calculateScore();">
                         <option value="GOAL">⚽ Gol</option>
-                        <option value="YELLOW CARD">🟨 Tarjeta Amarilla</option>
+                        <option value="YELLOW_CARD">🟨 Tarjeta Amarilla</option>
                         <option value="RED_CARD">🟥 Tarjeta Roja</option>
                         <option value="SUBSTITUTION">🔄 Cambio</option>
                     </select>
@@ -119,7 +122,7 @@
 
         <div class="d-grid gap-2 mt-4">
             <button type="submit" class="btn btn-primary p-3 fw-bold shadow">Guardar Partido</button>
-            <a href="/match-list" class="btn btn-secondary py-2">Cancelar</a>
+            <a href="/admin/ModifyMatch" class="btn btn-secondary py-2">Cancelar</a>
         </div>
     </form>
 </div>

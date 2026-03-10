@@ -21,7 +21,7 @@
                 {{#users}}
                 <tr>
                     <td>
-                        <img src="{{#avatarPath}}{{avatarPath}}{{/avatarPath}}{{^avatarPath}}/images/default-avatar.png{{/avatarPath}}"
+                        <img src="{{#avatarData}}/user/{{id}}/avatar{{/avatarData}}{{^avatarData}}/images/default-avatar.png{{/avatarData}}"
                             alt="Jaun perez" style="width: 45px; height: 45px; object-fit: contain;">
                     </td>
                     <td class="text-white">{{username}}</td>
@@ -51,7 +51,7 @@
     </div>
 </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     /**
      * Logic for user management actions.

@@ -14,7 +14,7 @@
         <div class="card option-card p-4 bg-dark border-secondary">
             <div class="row align-items-center">
                 <div class="col-4 text-center text-white">
-                    <img src="{{#localTeam.logoBase64}}data:image/png;base64,{{localTeam.logoBase64}}{{/localTeam.logoBase64}}{{^localTeam.logoBase64}}/images/default-logo.png{{/localTeam.logoBase64}}" 
+                    <img src="{{#localTeam.logoData}}/admin/teams/team/{{id}}/logo{{/localTeam.logoData}}{{^localTeam.logoData}}/images/default-logo.png{{/localTeam.logoData}}" 
                          alt="{{localTeam.name}}" class="mb-2 d-block mx-auto"
                          style="width: 45px; height: 45px; object-fit: contain;">
                     <h6 class="mb-0">{{localTeam.name}}</h6>
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="col-4 text-center text-white">
-                    <img src="{{#visitorTeam.logoBase64}}data:image/png;base64,{{visitorTeam.logoBase64}}{{/visitorTeam.logoBase64}}{{^visitorTeam.logoBase64}}/images/default-logo.png{{/visitorTeam.logoBase64}}" 
+                    <img src="{{#visitorTeam.logoData}}/admin/teams/team/{{id}}/logo{{/visitorTeam.logoData}}{{^visitorTeam.logoData}}/images/default-logo.png{{/visitorTeam.logoData}}" 
                          alt="{{visitorTeam.name}}" class="mb-2 d-block mx-auto"
                          style="width: 45px; height: 45px; object-fit: contain;">
                     <h6 class="mb-0">{{visitorTeam.name}}</h6>

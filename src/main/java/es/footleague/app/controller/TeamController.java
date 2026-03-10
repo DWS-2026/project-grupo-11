@@ -3,6 +3,7 @@ package es.footleague.app.controller;
 import es.footleague.app.model.Team;
 import es.footleague.app.repository.TeamRepository;
 import es.footleague.app.services.TeamService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,9 +64,13 @@ public class TeamController {
         team.setStadiumName(stadiumName);
 
         if (file != null && !file.isEmpty()) {
-            team.setLogoData(file.getBytes());
+            try {
+                team.setLogoData(new javax.sql.rowset.serial.SerialBlob(file.getBytes()));
+            } catch (Exception e) {
+                // Manejo de error al crear el objeto binario [cite: 74]
+                throw new IOException("Error al crear el blob del logo", e);
+            }
         }
-
         teamService.save(team); // Persistencia en MySQL
         return "redirect:/admin/teams";
     }

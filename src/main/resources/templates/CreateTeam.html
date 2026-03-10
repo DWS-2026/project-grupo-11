@@ -28,11 +28,11 @@
                 required>{{^team.id}}{{/team.id}}
 
             <div class="logo-preview mt-3" id="logoPreview">
-                {{#team.logoBase64}}
+                {{#team.logoData}}
                 <p class="text-white-50 small">Logo actual:</p>
-                <img src="data:image/png;base64,{{team.logoBase64}}"
+                <img src="/team/{{id}}/logo"
                     style="max-width: 150px; border-radius: 8px; border: 2px solid #3b82f6;">
-                {{/team.logoBase64}}
+                {{/team.logoData}}
             </div>
         </div>
 

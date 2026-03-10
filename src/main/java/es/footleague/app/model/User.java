@@ -2,6 +2,7 @@ package es.footleague.app.model;
 
 import jakarta.persistence.*;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class User {
 
     @Lob
     @Column(name = "avatar_data", columnDefinition = "LONGBLOB")
-    private byte[] avatarData;
+    private Blob avatarData;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings = new ArrayList<>();
@@ -89,4 +90,13 @@ public class User {
     public void setFavouriteTeam(Team favouriteTeam) {
         this.favouriteTeam = favouriteTeam;
     }
+
+    public Blob getAvatarData() {
+        return avatarData;
+    }
+
+    public void setAvatarData(Blob avatarData) {
+        this.avatarData = avatarData;
+    }
+
 }

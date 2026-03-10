@@ -1,6 +1,8 @@
 package es.footleague.app.model;
 
 import jakarta.persistence.*;
+
+import java.sql.Blob;
 import java.util.Base64;
 
 @Entity
@@ -32,7 +34,7 @@ public class Team {
 
     @Lob
     @Column(name = "logo_data", columnDefinition = "LONGBLOB")
-    private byte[] logoData;
+    private Blob logoData;
 
     public Team() {
     }
@@ -45,16 +47,6 @@ public class Team {
         this.wins = 0;
         this.draws = 0;
         this.losses = 0;
-    }
-
-    /**
-     * Helper para Mustache
-     */
-    public String getLogoBase64() {
-        if (this.logoData != null && this.logoData.length > 0) {
-            return Base64.getEncoder().encodeToString(this.logoData);
-        }
-        return null;
     }
 
     // --- GETTERS Y SETTERS ---
@@ -80,13 +72,21 @@ public class Team {
 
     public void setStadiumName(String stadiumName) {
         this.stadiumName = stadiumName;
+    } 
+
+    public int getPlayedMatchs() {
+        return playedMatchs;
     }
 
-    public byte[] getLogoData() {
+    public void setPlayedMatchs(int playedMatchs) {
+        this.playedMatchs = playedMatchs;
+    }
+
+    public Blob getLogoData() {
         return logoData;
     }
 
-    public void setLogoData(byte[] logoData) {
+    public void setLogoData(Blob logoData) {
         this.logoData = logoData;
     }
 

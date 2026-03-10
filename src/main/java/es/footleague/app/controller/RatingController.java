@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import es.footleague.app.model.Rating;
 import es.footleague.app.model.MatchEvent;
 import es.footleague.app.services.MatchEventService;
 import es.footleague.app.services.RatingService;
+import es.footleague.app.services.UserSession;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -18,11 +21,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class RatingController {
 
     @Autowired
+    private UserSession userSession;
+
+    @Autowired
     private RatingService ratingService;
 
     @Autowired
     private MatchEventService matchEventService;
 
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        if (userSession.isLoggedIn()) {
+            model.addAttribute("loggedUser", userSession.getUser());
+        }
+    }
 
     @GetMapping("/my-ratings")
     public String listRatings(Model model) {
@@ -40,8 +52,9 @@ public class RatingController {
     @PostMapping("/rating/save")
     public String saveRating(@RequestParam Long eventId, @RequestParam int score, @RequestParam String comment,
             RedirectAttributes info) {
-        MatchEvent event = matchEventService.findById(eventId).orElseThrow(() -> new RuntimeException("Evento no encontrado"));
-        
+        MatchEvent event = matchEventService.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
+
         Rating newRating = new Rating();
         newRating.setScore(score);
         newRating.setComment(comment);

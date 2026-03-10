@@ -10,8 +10,8 @@
                 <form action="/profile/edit" method="post">
                     {{#user}} <div class="row">
                         <div class="col-md-4 text-center mb-4">
-                            <img src="{{#avatarPath}}{{avatarPath}}{{/avatarPath}}{{^avatarPath}}/images/default-avatar.png{{/avatarPath}}" 
-                                class="rounded-circle img-thumbnail mb-2" alt="Avatar" style="width: 150px; height: 150px; object-fit: cover;">
+                            <img src="{{#avatarData}}/user/{{id}}/avatar{{/avatarData}}{{^avatarData}}/images/default-avatar.png{{/avatarData}}" 
+                                class="rounded-circle img-thumbnail mb-2" alt="Avatar de {{username}}" style="width: 150px; height: 150px; object-fit: cover;">
                             <div class="mb-3">
                                 <label for="formFileSm" class="form-label small text-primary">Cambiar foto</label>
                                 <input class="form-control form-control-sm" name="avatarPath" id="formFileSm" type="file">

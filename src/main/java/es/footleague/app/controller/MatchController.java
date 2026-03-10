@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/admin")
 public class MatchController {
 
     @Autowired
@@ -19,21 +20,21 @@ public class MatchController {
     @Autowired
     private TeamService teamService; 
 
-    // SE HA CAMBIADO /match-list A /matches PARA EVITAR EL CONFLICTO
     @GetMapping("/list-matches")
     public String adminListMatches(Model model) {
         model.addAttribute("matches", matchService.findAll());
         return "ModifyMatch";
     }
 
-    @GetMapping("/match/new")
+    // CAMBIO: Usamos /match-create para que no choque con /match/{id}
+    @GetMapping("/match-create")
     public String showCreateForm(Model model) {
         model.addAttribute("match", new Match());
         model.addAttribute("teams", teamService.findAll()); 
         return "CreateMatch";
     }
     
-    @GetMapping("/match/{id}/edit")
+    @GetMapping("/match-edit/{id}") // CAMBIO: Ruta más clara
     public String showEditForm(@PathVariable Long id, Model model) {
         Optional<Match> matchOpt = matchService.findById(id);
         if (matchOpt.isPresent()) {
@@ -41,42 +42,32 @@ public class MatchController {
             model.addAttribute("match", match);
             model.addAttribute("events", match.getEvents());
             model.addAttribute("teams", teamService.findAll());
-
-            if (match.getWeather() != null) {
-                model.addAttribute("clima" + match.getWeather(), true);
-            }
-            
-            return "EditMatchDetails";
+            return "CreateMatch"; // Reutilizamos CreateMatch
         }
-        return "match_not_found";
+        return "redirect:/admin/list-matches";
     }
 
     @PostMapping("/match/save")
     public String saveMatch(@ModelAttribute Match match, RedirectAttributes redirectAttributes) {
         try {
+            // Lógica de estadio
             if (match.getLocalTeam() != null && match.getLocalTeam().getId() != null) {
                 teamService.findById(match.getLocalTeam().getId()).ifPresent(t -> {
                     match.setStadium(t.getStadiumName());
                 });
             }
 
+            // Lógica de eventos (MUY IMPORTANTE para evitar Error 500)
             if (match.getEvents() != null) {
                 match.getEvents().forEach(event -> event.setMatch(match));
             }
 
             matchService.save(match);
-            redirectAttributes.addFlashAttribute("mensaje", "Partido guardado con éxito");
+            redirectAttributes.addFlashAttribute("mensaje", "¡Partido guardado!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al guardar: " + e.getMessage());
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
-        // REDIRIGE A LA NUEVA RUTA
-        return "redirect:/matches";
-    }
-
-    @PostMapping("/match/{id}/delete")
-    public String deleteMatch(@PathVariable Long id) {
-        matchService.deleteById(id);
-        return "redirect:/matches";
+        // CAMBIO: Redirige a la lista real que existe en este controller
+        return "redirect:/admin/list-matches"; 
     }
 }

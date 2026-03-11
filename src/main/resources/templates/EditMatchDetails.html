@@ -22,17 +22,22 @@
         </div>
 
         <div class="row mb-4">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
                 <label class="form-label text-info small">Fecha del encuentro</label>
                 <input type="date" class="form-control bg-dark text-white border-secondary" id="matchDate"
                     value="{{match.matchDate}}" required>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
+                <label class="form-label text-info small">Estadio</label>
+                <input type="text" class="form-control bg-dark text-white border-secondary" id="stadium"
+                    value="{{match.stadium}}" required>
+            </div>
+            <div class="col-md-3 mb-3">
                 <label class="form-label text-info small">Hora de inicio</label>
                 <input type="time" class="form-control bg-dark text-white border-secondary" id="matchTime" 
                     value="{{match.matchTime}}" required>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
                 <label class="form-label text-info small">Temporal (Clima)</label>
                 <select id="weather" class="form-select bg-dark text-white border-secondary">
                     <option value="Despejado" {{#climaDespejado}}selected{{/climaDespejado}}>☀️ Despejado</option>
@@ -45,8 +50,10 @@
         <div class="text-center mb-4 p-3 rounded" style="background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8;">
             <h5 class="text-white-50 mb-1 small text-uppercase">Marcador Actual</h5>
             <div class="h1 text-info fw-bold mb-0">
-                <span id="displayHomeScore">{{match.localGoals}}</span> - <span id="displayAwayScore">{{match.visitorGoals}}</span>
+                <span id="scoreHome">{{match.localGoals}}</span> - <span id="scoreAway">{{match.visitorGoals}}</span>
             </div>
+            <input type="hidden" id="displayHomeScore" value="{{match.localGoals}}">
+            <input type="hidden" id="displayAwayScore" value="{{match.visitorGoals}}">
         </div>
 
         <div class="p-3 mb-4 rounded" style="background: rgba(255,255,255,0.05)">
@@ -56,32 +63,35 @@
                 <div class="event-row row g-2 mb-3 align-items-end border-start border-info ps-2">
                     <input type="hidden" class="event-id" value="{{id}}">
                     <div class="col-md-2">
-                        <select class="form-select form-select-sm team-selector bg-dark text-white" data-saved-team-id="{{team.id}}" onchange="calculateScore()">
-                            <option value="LOCAL">Local</option>
-                            <option value="VISITOR">Visitante</option>
+                        <select class="form-select form-select-sm team-selector bg-dark text-white" onchange="calculateScore()">
+                            <option value="LOCAL" {{#isLocal}}selected{{/isLocal}}>Local</option>
+                            <option value="VISITOR" {{#isVisitor}}selected{{/isVisitor}}>Visitante</option>
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <select class="form-select form-select-sm event-type bg-dark text-white" data-saved-type="{{type}}" onchange="toggleEditSubFields(this); calculateScore();">
-                            <option value="GOAL">⚽ Gol</option>
-                            <option value="YELLOW_CARD">🟨 Tarjeta Amarilla</option>
-                            <option value="RED_CARD">🟥 Tarjeta Roja</option>
-                            <option value="SUBSTITUTION">🔄 Cambio</option>
+                        <select class="form-select form-select-sm event-type bg-dark text-white" onchange="toggleEditSubFields(this); calculateScore();">
+                            <option value="GOAL" {{#isGoal}}selected{{/isGoal}}>⚽ Gol</option>
+                            <option value="YELLOW_CARD" {{#isYellow}}selected{{/isYellow}}>🟨 Tarjeta Amarilla</option>
+                            <option value="RED_CARD" {{#isRed}}selected{{/isRed}}>🟥 Tarjeta Roja</option>
+                            <option value="SUBSTITUTION" {{#isSubstitution}}selected{{/isSubstitution}}>🔄 Cambio</option>
                         </select>
                     </div>
                     <div class="col-md-2">
                         <input type="number" class="form-control form-control-sm bg-dark text-white event-min" value="{{minute}}" placeholder="Min">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="sub-fields row g-1 {{^isSubstitution}}d-none{{/isSubstitution}}">
                             <div class="col-6">
-                                <input type="text" class="form-control form-control-sm bg-dark text-white event-in" value="{{#namePlayerIn}}{{.}}{{/namePlayerIn}}" placeholder="Entra...">
+                                <input type="text" class="form-control form-control-sm bg-dark text-white event-in" 
+                                       value="{{#namePlayerIn}}{{namePlayerIn}}{{/namePlayerIn}}" placeholder="Entra...">
                             </div>
                             <div class="col-6">
-                                <input type="text" class="form-control form-control-sm bg-dark text-white event-out" value="{{#namePlayerOut}}{{.}}{{/namePlayerOut}}" placeholder="Sale...">
+                                <input type="text" class="form-control form-control-sm bg-dark text-white event-out" 
+                                       value="{{#namePlayerOut}}{{namePlayerOut}}{{/namePlayerOut}}" placeholder="Sale...">
                             </div>
                         </div>
-                        <input type="text" class="form-control form-control-sm bg-dark text-white event-player {{#isSubstitution}}d-none{{/isSubstitution}}" value="{{#namePlayer}}{{.}}{{/namePlayer}}" placeholder="Jugador">
+                        <input type="text" class="form-control form-control-sm bg-dark text-white event-player {{#isSubstitution}}d-none{{/isSubstitution}}" 
+                               value="{{#namePlayer}}{{namePlayer}}{{/namePlayer}}" placeholder="Jugador">
                     </div>
                     <div class="col-md-1">
                         <button type="button" class="btn btn-danger btn-sm w-100" onclick="removeEvent(this)">×</button>
@@ -120,7 +130,7 @@
         <div class="col-md-2">
             <input type="number" class="form-control form-control-sm bg-dark text-white event-min" placeholder="Min">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="sub-fields row g-1 d-none">
                 <div class="col-6">
                     <input type="text" class="form-control form-control-sm bg-dark text-white event-in" placeholder="Entra...">

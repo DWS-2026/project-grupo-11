@@ -10,7 +10,7 @@
                 <form action="/profile/edit" method="post">
                     {{#user}} <div class="row">
                         <div class="col-md-4 text-center mb-4">
-                            <img src="{{#avatarData}}/user/{{id}}/avatar{{/avatarData}}{{^avatarData}}/images/default-avatar.png{{/avatarData}}" 
+                            <img src="{{#avatarData}}/user/{{user.username}}/avatar{{/avatarData}}{{^avatarData}}/images/default-avatar.png{{/avatarData}}" 
                                 class="rounded-circle img-thumbnail mb-2" alt="Avatar de {{username}}" style="width: 150px; height: 150px; object-fit: cover;">
                             <div class="mb-3">
                                 <label for="formFileSm" class="form-label small text-primary">Cambiar foto</label>

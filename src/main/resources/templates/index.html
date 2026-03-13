@@ -86,5 +86,14 @@
     {{/loggedUser}}
 </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach((row, index) => {
+            // Rellena la primera columna (Pos) con el número de fila
+            row.cells[0].innerText = index + 1;
+        });
+    });
+</script>
 
 {{>fragments/footer}}

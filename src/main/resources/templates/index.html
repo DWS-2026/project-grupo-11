@@ -64,20 +64,36 @@
 
 <div class="row g-3 mt-4 border-top pt-4 border-secondary">
     {{^loggedUser}}
-    <div class="col-6">
-        <div class="card option-card p-3 text-center" data-option="go-login">
-            <h6 class="text-white mb-0 small">¿Ya tienes cuenta?</h6>
-            <small class="text-muted">Login</small>
+    <div class="row g-3 mt-4 border-top pt-4 border-secondary">
+        <div class="col-6">
+            <a href="/login" class="text-decoration-none">
+                <div class="card option-card p-3 text-center" style="cursor: pointer;">
+                    <h6 class="text-white mb-0 small">¿Ya tienes cuenta?</h6>
+                    <small class="text-info">Inicia Sesión aquí</small>
+                </div>
+            </a>
         </div>
-    </div>
-    <div class="col-6">
-        <div class="card option-card p-3 text-center" data-option="go-register">
-            <h6 class="text-white mb-0 small">¿Eres nuevo?</h6>
-            <small class="text-muted">Registro</small>
+
+        <div class="col-6">
+            <a href="/register" class="text-decoration-none">
+                <div class="card option-card p-3 text-center" style="cursor: pointer;">
+                    <h6 class="text-white mb-0 small">¿Eres nuevo?</h6>
+                    <small class="text-info">Crea una cuenta aquí</small>
+                </div>
+            </a>
         </div>
     </div>
     {{/loggedUser}}
 </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach((row, index) => {
+            // Rellena la primera columna (Pos) con el número de fila
+            row.cells[0].innerText = index + 1;
+        });
+    });
+</script>
 
 {{>fragments/footer}}

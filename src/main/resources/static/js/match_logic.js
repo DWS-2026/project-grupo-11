@@ -33,13 +33,10 @@ function calculateScore() {
         }
     });
 
-    // 1. Actualizar Inputs ocultos (para el envío del form)
-    document.getElementById('displayHomeScore').value = homeScore;
-    document.getElementById('displayAwayScore').value = awayScore;
-
-    // 2. ACTUALIZAR INTERFAZ VISUAL (lo que el usuario ve)
-    document.getElementById('scoreHome').innerText = homeScore;
-    document.getElementById('scoreAway').innerText = awayScore;
+    if (document.getElementById('displayHomeScore')) document.getElementById('displayHomeScore').value = homeScore;
+    if (document.getElementById('displayAwayScore')) document.getElementById('displayAwayScore').value = awayScore;
+    if (document.getElementById('scoreHome')) document.getElementById('scoreHome').innerText = homeScore;
+    if (document.getElementById('scoreAway')) document.getElementById('scoreAway').innerText = awayScore;
 }
 
 /**
@@ -53,7 +50,6 @@ if (form) {
         calculateScore();
 
         const formData = new URLSearchParams();
-
         const matchId = document.getElementById('matchId')?.value;
         if (matchId && matchId !== "") {
             formData.append('id', matchId);
@@ -61,42 +57,21 @@ if (form) {
 
         formData.append('localTeam.id', document.getElementById('homeTeam').value);
         formData.append('visitorTeam.id', document.getElementById('awayTeam').value);
-
-        // Captura inteligente de marcador
-        const hDisp = document.getElementById('displayHomeScore');
-        const aDisp = document.getElementById('displayAwayScore');
-        const hScore = hDisp.value || hDisp.innerText || 0;
-        const aScore = aDisp.value || aDisp.innerText || 0;
-
-        formData.append('localGoals', hScore);
-        formData.append('visitorGoals', aScore);
+        formData.append('localGoals', document.getElementById('displayHomeScore').value || 0);
+        formData.append('visitorGoals', document.getElementById('displayAwayScore').value || 0);
         formData.append('matchDate', document.getElementById('matchDate').value);
         formData.append('matchTime', document.getElementById('matchTime').value);
         formData.append('weather', document.getElementById('weather').value);
-        
-        // ... dentro del form.addEventListener('submit' ...
+        formData.append('stadium', document.getElementById('stadium')?.value || "Estadio Municipal");
 
-        // 1. Captura del Estadio (Lo que preguntaste)
-        const stadiumValue = document.getElementById('stadium')?.value || "Estadio Municipal";
-        formData.append('stadium', stadiumValue);
-
-        // 2. Captura de Eventos con ID (Asegúrate de que el bucle se vea así)
+        // Bucle de eventos corregido (Un solo bucle para evitar errores)
         document.querySelectorAll('.event-row').forEach((row, index) => {
             const eventId = row.querySelector('.event-id')?.value;
-            if (eventId) {
-                formData.append(`events[${index}].id`, eventId); // VITAL para editar sin duplicar
-            }
-        // ... resto de tu lógica de campos ...
-        });
-
-        document.querySelectorAll('.event-row').forEach((row, index) => {
-            // 1. Capturar el ID del evento si existe (para edición)
-            const eventId = row.querySelector('.event-id')?.value;
-            if (eventId) {
+            if (eventId && eventId !== "") {
                 formData.append(`events[${index}].id`, eventId);
             }
+
             const type = row.querySelector('.event-type').value;
-            // ... resto de tu lógica de capturar tipo, equipo, minuto ...
             const role = row.querySelector('.team-selector').value;
             const teamId = (role === 'LOCAL')
                 ? document.getElementById('homeTeam').value
@@ -106,18 +81,15 @@ if (form) {
             formData.append(`events[${index}].type`, type);
             formData.append(`events[${index}].team.id`, teamId);
 
-            if (eventId) formData.append(`events[${index}].id`, eventId);
-
             if (type !== 'SUBSTITUTION') {
-                formData.append(`events[${index}].namePlayer`, row.querySelector('.event-player').value);
+                formData.append(`events[${index}].namePlayer`, row.querySelector('.event-player').value || "");
             } else {
-                formData.append(`events[${index}].namePlayerIn`, row.querySelector('.event-in').value);
-                formData.append(`events[${index}].namePlayerOut`, row.querySelector('.event-out').value);
+                formData.append(`events[${index}].namePlayerIn`, row.querySelector('.event-in').value || "");
+                formData.append(`events[${index}].namePlayerOut`, row.querySelector('.event-out').value || "");
             }
         });
 
         try {
-            // RUTA CORREGIDA: /admin/match/save (en singular según tu MatchController)
             const response = await fetch('/admin/match/save', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -125,13 +97,23 @@ if (form) {
             });
 
             if (response.ok) {
-                Swal.fire({ title: '¡Guardado!', icon: 'success', timer: 1500, showConfirmButton: false })
-                    .then(() => window.location.href = '/admin/ModifyMatch'); 
+                // Verificamos si Swal existe, si no usamos alert normal
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({ title: '¡Guardado!', icon: 'success', timer: 1500, showConfirmButton: false })
+                        .then(() => window.location.href = '/admin/ModifyMatch'); 
+                } else {
+                    alert("¡Partido guardado con éxito!");
+                    window.location.href = '/admin/ModifyMatch';
+                }
             } else {
                 throw new Error("Error en el servidor");
             }
         } catch (err) {
-            Swal.fire({ title: 'Error', text: 'No se pudo guardar el partido.', icon: 'error' });
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({ title: 'Error', text: 'No se pudo guardar el partido.', icon: 'error' });
+            } else {
+                alert("Error: No se pudo guardar el partido.");
+            }
         }
     });
 }
@@ -156,12 +138,11 @@ function toggleEditSubFields(select) {
 }
 
 /**
- * 5. CARGA INICIAL Y ESCUCHA DE CAMBIOS
+ * 5. CARGA INICIAL
  */
 window.onload = () => {
     syncSavedEvents();
 
-    // HACER EL MARCADOR DINÁMICO: Escuchar cambios en el contenedor
     const container = document.getElementById('eventsContainer');
     if (container) {
         container.addEventListener('change', (e) => {
@@ -169,10 +150,6 @@ window.onload = () => {
                 calculateScore();
             }
         });
-
-        if (container.querySelectorAll('.event-row').length === 0) {
-            addEventField();
-        }
     }
 };
 
@@ -186,16 +163,8 @@ function syncSavedEvents() {
         const typeSelect = row.querySelector('.event-type');
         const teamSelect = row.querySelector('.team-selector');
 
-        const savedType = typeSelect.getAttribute('data-saved-type');
-        if (savedType) {
-            typeSelect.value = savedType;
-            toggleEditSubFields(typeSelect);
-        }
-
-        const savedTeamId = teamSelect.getAttribute('data-saved-team-id');
-        if (savedTeamId) {
-            teamSelect.value = (savedTeamId === localTeamId) ? 'LOCAL' : 'VISITOR';
-        }
+        // Esta parte es importante para cuando editas
+        if (typeSelect.value) toggleEditSubFields(typeSelect);
     });
     calculateScore();
 }

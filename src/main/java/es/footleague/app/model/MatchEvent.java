@@ -35,7 +35,37 @@ public class MatchEvent {
 
     public MatchEvent() {
     }
+    // --- AÑADE ESTO PARA ARREGLAR LA WEB ---
 
+    public boolean getIsLocal() {
+        if (this.match == null || this.team == null) return true;
+        // Compara si el ID del equipo del evento es el mismo que el ID del equipo local del partido
+        return this.team.getId().equals(this.match.getLocalTeam().getId());
+    }
+
+    public boolean getIsVisitor() {
+        if (this.match == null || this.team == null) return false;
+        return this.team.getId().equals(this.match.getVisitorTeam().getId());
+    }
+
+    public boolean getIsGoal() {
+        return "GOAL".equalsIgnoreCase(this.type);
+    }
+
+    public boolean getIsYellow() {
+        // Tu Java usa "YELLOW CARD" o "CARD", esto lo unifica para el HTML
+        return "YELLOW_CARD".equalsIgnoreCase(this.type) || 
+               "YELLOW CARD".equalsIgnoreCase(this.type) || 
+               "CARD".equalsIgnoreCase(this.type);
+    }
+
+    public boolean getIsRed() {
+        return "RED_CARD".equalsIgnoreCase(this.type);
+    }
+
+    public boolean getIsSubstitution() {
+        return "SUBSTITUTION".equalsIgnoreCase(this.type);
+    }
     public MatchEvent(String type, int minute, String namePlayer, Match match, Team team) {
         this.type = type;
         this.minute = minute;

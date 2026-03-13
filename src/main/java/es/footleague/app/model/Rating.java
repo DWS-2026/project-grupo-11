@@ -19,8 +19,8 @@ public class Rating {
 
     private LocalDateTime createdAt;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User author; 
 
     @ManyToOne(optional = false)

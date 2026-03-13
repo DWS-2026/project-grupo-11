@@ -46,6 +46,7 @@ public class RatingController {
     public String createRating(@PathVariable Long matchId, Model model) {
         model.addAttribute("rating", new Rating());
         model.addAttribute("events", matchEventService.findAllByMatchId(matchId));
+        model.addAttribute("matchId", matchId);
         return "player-ratings";
     }
 

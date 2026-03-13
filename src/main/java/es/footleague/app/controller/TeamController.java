@@ -41,6 +41,10 @@ public class TeamController {
         model.addAttribute("team", new Team());
         return "CreateTeam";
     }
+    @GetMapping("/Team_Management_Screen")
+    public String showTeamManagementScreen(Model model) {
+        return "Team_Management_Screen";
+    }
 
     /**
      * GUARDAR/ACTUALIZAR

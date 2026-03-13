@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Map;
 import java.util.HashMap;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -87,4 +90,11 @@ public class MatchController {
                 .body(Map.of("status", "error", "message", e.getMessage()));
         }
     }
+
+    @PostMapping("/match-delete/{id}")
+    public String deleteMatch(@PathVariable Long id) {
+        matchService.deleteById(id);
+        return "redirect:/admin/ModifyMatch";
+    }
+    
 }

@@ -54,8 +54,10 @@ public class MatchController {
     @ResponseBody
     public ResponseEntity<?> saveMatch(@ModelAttribute Match match) {
         try {
-            // 1. Validar y asignar Estadio basado en el equipo local
-            if (match.getLocalTeam() != null && match.getLocalTeam().getId() != null) {
+        // SOLUCIÓN: Solo asignar si el estadio está vacío o es nulo
+            if ((match.getStadium() == null || match.getStadium().trim().isEmpty()) 
+                && match.getLocalTeam() != null && match.getLocalTeam().getId() != null) {
+    
                 teamService.findById(match.getLocalTeam().getId()).ifPresent(t -> {
                     match.setStadium(t.getStadiumName());
                 });

@@ -62,7 +62,8 @@ if (form) {
         formData.append('matchDate', document.getElementById('matchDate').value);
         formData.append('matchTime', document.getElementById('matchTime').value);
         formData.append('weather', document.getElementById('weather').value);
-        formData.append('stadium', document.getElementById('stadium')?.value || "Estadio Municipal");
+        const stadiumInput = document.getElementById('stadium');
+        formData.append('stadium', stadiumInput ? stadiumInput.value : "");
 
         // Bucle de eventos corregido (Un solo bucle para evitar errores)
         document.querySelectorAll('.event-row').forEach((row, index) => {

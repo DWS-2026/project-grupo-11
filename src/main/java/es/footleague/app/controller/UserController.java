@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -72,7 +73,7 @@ public class UserController {
 
     // 3. PROCESS RECORD (Logic)
     @PostMapping("/register")
-    public String processRegister(User user, MultipartFile imageFile) throws IOException {
+    public String processRegister(User user, @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
         if (!imageFile.isEmpty()) {
             try {
                 // Convertimos los bytes del archivo a un Blob
@@ -168,7 +169,7 @@ public class UserController {
         return "redirect:/profile/" + updatedUser.getUsername();
     }
 
-    @GetMapping("/user/{id}/avatar")
+    @GetMapping("/user/{username}/avatar")
     public ResponseEntity<Object> downloadAvatar(@PathVariable String username) throws SQLException {
         Optional<User> user = userService.findByUsernameIgnoreCase(username);
         if (user.isPresent() && user.get().getAvatarData() != null) {

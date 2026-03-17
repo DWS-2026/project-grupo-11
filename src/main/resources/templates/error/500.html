@@ -1,0 +1,23 @@
+{{>fragments/header}}
+<div class="container text-center py-5">
+    <div class="error-template">
+        <h1 class="display-1 text-danger fw-bold">500</h1>
+        <div class="mb-4">
+            <span class="badge bg-danger p-2">🟥 EXPULSIÓN DIRECTA</span>
+        </div>
+        <h2 class="text-white">¡Error grave en el vestuario!</h2>
+        <p class="lead text-white-50">
+            Nuestro servidor ha cometido una entrada muy dura y ha sido expulsado. 
+            Estamos revisando el VAR para solucionar este fallo técnico.
+        </p>
+        <div class="mt-4">
+            <div class="alert alert-dark border-danger text-danger inline-block d-inline-block">
+                <strong>Incidencia:</strong> Fallo en la táctica del servidor.
+            </div>
+        </div>
+        <div class="mt-5">
+            <a href="/admin/ModifyMatch" class="btn btn-outline-light">Intentar Reanudar el Juego</a>
+        </div>
+    </div>
+</div>
+{{>fragments/footer}}

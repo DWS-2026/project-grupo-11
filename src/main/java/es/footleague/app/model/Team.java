@@ -128,4 +128,16 @@ public class Team {
     public void setLosses(int losses) {
         this.losses = losses;
     }
+    public void updateStats(int goalsFor, int goalsAgainst) {
+        this.playedMatchs++;
+        if (goalsFor > goalsAgainst) {
+            this.wins++;
+            this.points += 3;
+        } else if (goalsFor == goalsAgainst) {
+            this.draws++;
+            this.points += 1;
+        } else {
+            this.losses++;
+        }
+    }
 }

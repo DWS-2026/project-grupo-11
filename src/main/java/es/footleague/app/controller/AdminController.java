@@ -3,6 +3,7 @@ package es.footleague.app.controller;
 import es.footleague.app.model.User;
 import es.footleague.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -19,7 +21,7 @@ public class AdminController {
 
     // --- NAVEGACIÓN GENERAL DEL PANEL ---
 
-    @GetMapping("/Admin_Page")
+    @GetMapping("/admin-page")
     public String Admin_Page() {
         return "Admin_Page";
     }
@@ -53,9 +55,16 @@ public class AdminController {
     @PostMapping("/users/delete/{username}")
     public String deleteUser(@PathVariable String username){
         Optional<User> userOpt = userService.findByUsernameIgnoreCase(username);
-        if (userOpt.isPresent()){
-            userService.deleteByUsername(userOpt.get().getUsername());
+        if(userOpt.isEmpty()){
+            return "redirect:/admin/modify-accounts?error=usernotfound";
         }
+
+        if(userOpt.get().getRoles().contains("ADMIN")){
+            return "redirect:/admin/modify-accounts?error=cannotdeleteadmin";
+        }
+
+        userService.deleteByUsername(userOpt.get().getUsername());
+
         return "redirect:/admin/modify-accounts";
     }
 

@@ -91,7 +91,7 @@ if (form) {
         });
 
         try {
-            const response = await fetch('/admin/match/save', {
+            const response = await fetch('/admin/matches/match/save', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()
@@ -101,10 +101,10 @@ if (form) {
                 // Verificamos si Swal existe, si no usamos alert normal
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({ title: '¡Guardado!', icon: 'success', timer: 1500, showConfirmButton: false })
-                        .then(() => window.location.href = '/admin/ModifyMatch'); 
+                        .then(() => window.location.href = '/admin/matches/modify-match'); 
                 } else {
                     alert("¡Partido guardado con éxito!");
-                    window.location.href = '/admin/ModifyMatch';
+                    window.location.href = '/admin/matches/modify-match';
                 }
             } else {
                 throw new Error("Error en el servidor");

@@ -6,7 +6,7 @@
         {{/match.id}}
     </h2>
 
-    <form id="createMatchForm" action="/match/save" method="post">
+    <form id="createMatchForm" action="/matches/match/save" method="post">
     
         {{#match.id}}
             <input type="hidden" name="id" id="matchId" value="{{match.id}}">
@@ -122,7 +122,7 @@
 
         <div class="d-grid gap-2 mt-4">
             <button type="submit" class="btn btn-primary p-3 fw-bold shadow">Guardar Partido</button>
-            <a href="/admin/ModifyMatch" class="btn btn-secondary py-2">Cancelar</a>
+            <a href="/admin/matches/modify-match" class="btn btn-secondary py-2">Cancelar</a>
         </div>
     </form>
 </div>

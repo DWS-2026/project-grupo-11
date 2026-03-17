@@ -5,17 +5,17 @@ import es.footleague.app.services.MatchService;
 import es.footleague.app.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Map;
 import java.util.HashMap;
-import org.springframework.web.bind.annotation.PostMapping;
-
 
 @Controller
-@RequestMapping("/admin")
+@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping("/admin/matches")
 public class MatchController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class MatchController {
     @Autowired
     private TeamService teamService;
 
-    @GetMapping("/ModifyMatch")
+    @GetMapping("/modify-match")
     public String adminListMatches(Model model) {
         model.addAttribute("matches", matchService.findAll());
         return "ModifyMatch";
@@ -44,22 +44,23 @@ public class MatchController {
             Match match = matchOpt.get();
             model.addAttribute("match", match);
             model.addAttribute("teams", teamService.findAll());
-            // Atributos para pre-seleccionar clima en el select si usas condiciones en el HTML
+            // Atributos para pre-seleccionar clima en el select si usas condiciones en el
+            // HTML
             model.addAttribute("clima" + match.getWeather(), true);
             model.addAttribute("events", match.getEvents());
             return "EditMatchDetails";
         }
-        return "redirect:/admin/ModifyMatch";
+        return "redirect:/admin/matches/modify-match";
     }
 
     @PostMapping("/match/save")
     @ResponseBody
     public ResponseEntity<?> saveMatch(@ModelAttribute Match match) {
         try {
-        // SOLUCIÓN: Solo asignar si el estadio está vacío o es nulo
-            if ((match.getStadium() == null || match.getStadium().trim().isEmpty()) 
-                && match.getLocalTeam() != null && match.getLocalTeam().getId() != null) {
-    
+            // SOLUCIÓN: Solo asignar si el estadio está vacío o es nulo
+            if ((match.getStadium() == null || match.getStadium().trim().isEmpty())
+                    && match.getLocalTeam() != null && match.getLocalTeam().getId() != null) {
+
                 teamService.findById(match.getLocalTeam().getId()).ifPresent(t -> {
                     match.setStadium(t.getStadiumName());
                 });
@@ -86,14 +87,18 @@ public class MatchController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError()
-                .body(Map.of("status", "error", "message", e.getMessage()));
+                    .body(Map.of("status", "error", "message", e.getMessage()));
         }
     }
 
     @PostMapping("/match-delete/{id}")
     public String deleteMatch(@PathVariable Long id) {
+        if (matchService.findById(id).isEmpty()) {
+            return "redirect:/admin/matches/ModifyMatch?error=notfound";
+        }
+
         matchService.deleteById(id);
-        return "redirect:/admin/ModifyMatch";
+        return "redirect:/admin/matches/modify-match";
     }
-    
+
 }

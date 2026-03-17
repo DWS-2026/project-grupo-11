@@ -51,7 +51,7 @@
                                 <i class="bi bi-trash"></i> Borrar
                             </button>
                             
-                            <form id="delete-form-{{id}}" action="/admin/match-delete/{{id}}" method="post" style="display:none;"></form>
+                            <form id="delete-form-{{id}}" action="/admin/matches/match-delete/{{id}}" method="post" style="display:none;"></form>
                         </div>
                     </td>
                 </tr>
@@ -59,7 +59,7 @@
                 {{^matches}}
                 <tr>
                     <td colspan="6" class="text-center py-5 text-white-50">
-                        No hay partidos registrados. <a href="/admin/match-create" class="text-info">Registra el primero aquí</a>.
+                        No hay partidos registrados. <a href="/admin/matches/match-create" class="text-info">Registra el primero aquí</a>.
                     </td>
                 </tr>
                 {{/matches}}

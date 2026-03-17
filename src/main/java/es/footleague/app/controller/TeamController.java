@@ -5,6 +5,7 @@ import es.footleague.app.repository.TeamRepository;
 import es.footleague.app.services.TeamService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Controller
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/admin/teams")
 public class TeamController {
 
@@ -41,7 +43,7 @@ public class TeamController {
         model.addAttribute("team", new Team());
         return "CreateTeam";
     }
-    @GetMapping("/Team_Management_Screen")
+    @GetMapping("/team-management-screen")
     public String showTeamManagementScreen(Model model) {
         return "Team_Management_Screen";
     }
@@ -76,7 +78,7 @@ public class TeamController {
             }
         }
         teamService.save(team); // Persistencia en MySQL
-        return "redirect:/admin/teams";
+        return "redirect:/admin/teams/list-teams";
     }
 
     /**
@@ -90,7 +92,7 @@ public class TeamController {
             model.addAttribute("team", teamOpt.get());
             return "CreateTeam";
         }
-        return "redirect:/admin/teams";
+        return "redirect:/admin/teams/list-teams";
     }
 
     /**

@@ -38,12 +38,18 @@ public class RatingController {
 
     @GetMapping("/my-ratings")
     public String listRatings(Model model) {
-        model.addAttribute("ratings", ratingService.findAll());
+        if (!userSession.isLoggedIn()) {
+            return "redirect:/login";
+        }
+        model.addAttribute("ratings", ratingService.findbyUser(userSession.getUser()));
         return "my-ratings";
     }
 
     @GetMapping("/match/{matchId}/rating/new")
     public String createRating(@PathVariable Long matchId, Model model) {
+        if (!userSession.isLoggedIn()) {
+            return "redirect:/login";
+        }
         model.addAttribute("rating", new Rating());
         model.addAttribute("events", matchEventService.findAllByMatchId(matchId));
         model.addAttribute("matchId", matchId);
@@ -53,10 +59,15 @@ public class RatingController {
     @PostMapping("/rating/save")
     public String saveRating(@RequestParam Long eventId, @RequestParam int score, @RequestParam String comment,
             RedirectAttributes info) {
+        if (!userSession.isLoggedIn()) {
+            return "redirect:/login";
+        }
+
         MatchEvent event = matchEventService.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
 
         Rating newRating = new Rating();
+        newRating.setAuthor(userSession.getUser());
         newRating.setScore(score);
         newRating.setComment(comment);
         newRating.setEvent(event);
@@ -70,8 +81,15 @@ public class RatingController {
 
     @PostMapping("/rating/{id}/delete")
     public String deleteRating(@PathVariable Long id, RedirectAttributes info) {
+        Rating rating = ratingService.findById(id);
+
+        if (!rating.getAuthor().getId().equals(userSession.getUser().getId())) {
+            return "redirect:/403";
+        }
+
         ratingService.deleteRating(id);
         info.addFlashAttribute("mensaje", "Valoracion eliminada correctamente");
+
         return "redirect:/my-ratings";
     }
 }

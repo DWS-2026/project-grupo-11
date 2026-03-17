@@ -3,7 +3,6 @@ package es.footleague.app.model;
 import jakarta.persistence.*;
 
 import java.sql.Blob;
-import java.util.Base64;
 
 @Entity
 @Table(name = "teams")

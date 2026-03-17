@@ -20,10 +20,13 @@ public class User {
     private String username;
 
     @Column(nullable = false)
-    private String password;
+    private String encodedPassword;
 
     @Column(unique = true, nullable = false)
     private String email;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles;
 
     @Lob
     @Column(name = "avatar_data", columnDefinition = "LONGBLOB")
@@ -40,11 +43,12 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String email, Team favouriteTeam) {
+    public User(String username, String password, String email, Team favouriteTeam, String... roles) {
         this.username = username;
-        this.password = password;
+        this.encodedPassword = password;
         this.email = email;
         this.favouriteTeam = favouriteTeam;
+        this.roles = List.of(roles);
     }
 
     public Long getId() {
@@ -64,11 +68,11 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return encodedPassword;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.encodedPassword = password;
     }
 
     public String getEmail() {
@@ -103,4 +107,12 @@ public class User {
         this.avatarData = avatarData;
     }
 
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+    
 }

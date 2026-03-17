@@ -1,64 +1,68 @@
 {{>fragments/header}}
 
-<div class="mb-4 text-center">
-    <h1 class="h2 mb-0 text-white fw-bold">Clasificación General</h1>
-    <small class="text-white-50">Temporada Regular 2026</small>
-</div>
-
-<div class="card option-card p-4">
-    <div class="table-responsive">
-        <table class="table table-dark table-hover align-middle mb-0">
-            <thead class="text-info">
-                <tr>
-                    <th>Pos</th>
-                    <th>Equipo</th>
-                    <th class="text-center">PJ</th>
-                    <th class="text-center">G</th>
-                    <th class="text-center">E</th>
-                    <th class="text-center">P</th>
-                    <th class="text-center fw-bold text-white">Pts</th>
-                </tr>
-            </thead>
-            <tbody class="text-white">
-                {{#teams}}
-                <tr>
-                    <td></td>
-                    <td>
-                        {{#logoData}}
-                        <img src="/team/{{id}}/logo" width="25" class="me-2">
-                        {{/logoData}}
-                        {{^logoData}}
-                        <img src="/images/default-logo.png" width="25" class="me-2">
-                        {{/logoData}}
-                        {{name}}
-                    </td>
-                    <td class="text-center">{{playedMatches}}</td>
-                    <td class="text-center">{{wins}}</td>
-                    <td class="text-center">{{draws}}</td>
-                    <td class="text-center">{{losses}}</td>
-                    <td class="text-center fw-bold">{{points}}</td>
-                </tr>
-                {{/teams}}
-            </tbody>
-        </table>
+<div class="container py-5"> <div class="mb-4 text-center">
+        <h1 class="h2 mb-0 text-white fw-bold">Clasificación General</h1>
+        <small class="text-white-50">Temporada Regular 2026</small>
     </div>
 
-    <div class="mt-4 small text-white-50">
-        <p>* PJ: Partidos Jugados | G: Ganados | E: Empatados | P: Perdidos</p>
+    <div class="card option-card p-4">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle mb-0">
+                <thead class="text-info">
+                    <tr>
+                        <th scope="col">Pos</th>
+                        <th scope="col">Equipo</th>
+                        <th scope="col" class="text-center">PJ</th>
+                        <th scope="col" class="text-center">G</th>
+                        <th scope="col" class="text-center">E</th>
+                        <th scope="col" class="text-center">P</th>
+                        <th scope="col" class="text-center fw-bold text-white">Pts</th>
+                    </tr>
+                </thead>
+                <tbody class="text-white">
+                    {{#teams}}
+                    <tr>
+                        <td class="fw-bold text-info"></td> 
+                        <td>
+                            {{#logoData}}
+                            <img src="/team/{{id}}/logo" width="30" height="30" class="me-2">
+                            {{/logoData}}
+                            {{^logoData}}
+                            <img src="/images/default-logo.png" width="30" height="30" class="me-2">
+                            {{/logoData}}
+                            <span class="align-middle">{{name}}</span>
+                        </td>
+                        <td class="text-center">{{playedMatches}}</td>
+                        <td class="text-center">{{wins}}</td>
+                        <td class="text-center">{{draws}}</td>
+                        <td class="text-center">{{losses}}</td>
+                        <td class="text-center fw-bold text-info" style="font-size: 1.1rem;">{{points}}</td>
+                    </tr>
+                    {{/teams}}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-4 small text-white-50 border-top border-secondary pt-3">
+            <p class="mb-0">* **PJ**: Partidos Jugados | **G**: Ganados | **E**: Empatados | **P**: Perdidos | **Pts**: Puntos</p>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/match-list" class="btn btn-outline-info">Ver Calendario de Partidos</a>
     </div>
 </div>
 
-<div class="text-center mt-4">
-    <a href="/match-list" class="btn btn-primary">Ver Calendario de Partidos</a>
-</div>
-</div>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const rows = document.querySelectorAll('tbody tr');
         rows.forEach((row, index) => {
-            // Rellena la primera columna (Pos) con el número de fila
-            row.cells[0].innerText = index + 1;
+            // Rellena la primera columna con el número de posición real
+            if(row.cells[0]) {
+                row.cells[0].innerText = index + 1;
+            }
         });
     });
 </script>
+
 {{>fragments/footer}}

@@ -1,0 +1,20 @@
+{{>fragments/header}}
+<div class="container text-center py-5">
+    <div class="error-template">
+        <h1 class="display-1 text-info fw-bold">409</h1>
+        <div class="mb-4">
+            <span class="badge bg-info text-dark p-2">🔄 JUGADA DUPLICADA</span>
+        </div>
+        <h2 class="text-white">¡Conflicto en el terreno de juego!</h2>
+        <p class="lead text-white-50">
+            Parece que intentas registrar algo que ya está en el acta del partido. 
+            No podemos tener dos equipos con el mismo nombre ni el mismo resultado duplicado.
+        </p>
+        <div class="mt-5">
+            <img src="https://img.icons8.com/color/96/referee-jersey.png" alt="Conflicto" class="mb-4">
+            <br>
+            <a href="/admin/ModifyMatch" class="btn btn-info text-dark fw-bold">Consultar el Acta (Ver Partidos)</a>
+        </div>
+    </div>
+</div>
+{{>fragments/footer}}

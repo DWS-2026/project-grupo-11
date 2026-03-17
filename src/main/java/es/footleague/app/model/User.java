@@ -20,10 +20,13 @@ public class User {
     private String username;
 
     @Column(nullable = false)
-    private String password;
+    private String encodedPassword;
 
     @Column(unique = true, nullable = false)
     private String email;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles;
 
     @Lob
     @Column(name = "avatar_data", columnDefinition = "LONGBLOB")
@@ -42,7 +45,7 @@ public class User {
 
     public User(String username, String password, String email, Team favouriteTeam) {
         this.username = username;
-        this.password = password;
+        this.encodedPassword = password;
         this.email = email;
         this.favouriteTeam = favouriteTeam;
     }
@@ -64,11 +67,11 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return encodedPassword;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.encodedPassword = password;
     }
 
     public String getEmail() {
@@ -102,5 +105,5 @@ public class User {
     public void setAvatarData(Blob avatarData) {
         this.avatarData = avatarData;
     }
-
+    
 }

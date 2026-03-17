@@ -1,6 +1,7 @@
 package es.footleague.app.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -28,6 +29,7 @@ import es.footleague.app.services.MatchService;
 import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
 import es.footleague.app.services.UserSession;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class UserController {
@@ -42,9 +44,22 @@ public class UserController {
     private UserSession userSession;
 
     @ModelAttribute
-    public void addAttributes(Model model) {
-        if (userSession.isLoggedIn()) {
-            model.addAttribute("loggedUser", userSession.getUser());
+    public void addAttributes(Model model, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+
+        if (principal != null) {
+            // Buscamos el usuario en la BD para tener el objeto completo (con avatar, etc.)
+            Optional<User> user = userService.findByUsernameIgnoreCase(principal.getName());
+            if (user.isPresent()) {
+                model.addAttribute("loggedUser", user.get());
+                model.addAttribute("logged", true);
+                model.addAttribute("admin", request.isUserInRole("ROLE_ADMIN"));
+
+                // Sincronizamos con tu UserSession por si la usas en otros sitios
+                userSession.setUser(user.get());
+            }
+        } else {
+            model.addAttribute("logged", false);
         }
     }
 
@@ -90,28 +105,6 @@ public class UserController {
     @GetMapping("/login")
     public String login() {
         return "login";
-    }
-
-    @PostMapping("/login")
-    public String proccessLogin(String username, String password, Model model) {
-        Optional<User> userOpt = userService.findByUsernameIgnoreCase(username);
-
-        // Comprobamos si el usuario existe y si la contraseña coincide
-        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
-            // ¡LOGIN CORRECTO! Guardamos en la sesión
-            userSession.setUser(userOpt.get());
-            return "redirect:/profile/" + username;
-        } else {
-            // LOGIN INCORRECTO: Volvemos al login con un mensaje de error
-            model.addAttribute("error", "Usuario o contraseña incorrectos");
-            return "login";
-        }
-    }
-
-    @GetMapping("/logout")
-    public String logout() {
-        userSession.logout();
-        return "redirect:/login";
     }
 
     @GetMapping("/profile/{username}/my-ratings")

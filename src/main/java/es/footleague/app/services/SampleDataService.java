@@ -3,12 +3,14 @@ package es.footleague.app.services;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import org.hibernate.engine.jdbc.proxy.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import es.footleague.app.model.Match;
 import es.footleague.app.model.MatchEvent;
@@ -39,6 +41,9 @@ public class SampleDataService {
     @Autowired
     private RatingRepository ratingRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostConstruct
     public void init() throws IOException {
         // 1. Crear equipos
@@ -54,9 +59,11 @@ public class SampleDataService {
         teamRepository.save(madridTeam);
         teamRepository.save(barsaTeam);
         // 2. Crear usuarios
-        User user1 = new User("JuanPerez", "password123", "juanperez@prensa.com", madridTeam);
+        User user1 = new User("JuanPerez", passwordEncoder.encode("password123"), "juanperez@prensa.com", madridTeam);
+        user1.setRoles(List.of("USER"));
         setUserAvatar(user1, "static/img/Juan_Perez_Avatar.PNG");
-        User user2 = new User("admin", "admin123", "admin@footleague.es", barsaTeam);
+        User user2 = new User("admin", passwordEncoder.encode("admin123"), "admin@footleague.es", barsaTeam);
+        user2.setRoles(List.of("USER", "ADMIN"));
         userRepository.save(user1);
         userRepository.save(user2);
         // 3. Crear partido

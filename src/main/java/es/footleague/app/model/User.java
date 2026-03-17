@@ -43,11 +43,12 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String email, Team favouriteTeam) {
+    public User(String username, String password, String email, Team favouriteTeam, String... roles) {
         this.username = username;
         this.encodedPassword = password;
         this.email = email;
         this.favouriteTeam = favouriteTeam;
+        this.roles = List.of(roles);
     }
 
     public Long getId() {
@@ -104,6 +105,14 @@ public class User {
 
     public void setAvatarData(Blob avatarData) {
         this.avatarData = avatarData;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
     
 }

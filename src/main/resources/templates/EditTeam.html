@@ -9,6 +9,7 @@
     </div>
 
     <form id="editTeamForm">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
         <input type="hidden" id="teamId" value="{{team.id}}">
 
         <div class="mb-3">

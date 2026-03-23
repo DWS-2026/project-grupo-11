@@ -59,13 +59,19 @@ public class SampleDataService {
         teamRepository.save(madridTeam);
         teamRepository.save(barsaTeam);
         // 2. Crear usuarios
-        User user1 = new User("JuanPerez", passwordEncoder.encode("password123"), "juanperez@prensa.com", madridTeam);
-        user1.setRoles(List.of("USER"));
-        setUserAvatar(user1, "static/img/Juan_Perez_Avatar.PNG");
-        User user2 = new User("admin", passwordEncoder.encode("admin123"), "admin@footleague.es", barsaTeam);
-        user2.setRoles(List.of("USER", "ADMIN"));
-        userRepository.save(user1);
-        userRepository.save(user2);
+    // 2. Crear usuarios
+    // Usamos passwordEncoder.encode para que la contraseña en la BD sea un hash compatible
+    User user1 = new User("JuanPerez", passwordEncoder.encode("password123"), "juanperez@prensa.com", madridTeam);
+    // Es fundamental incluir el prefijo ROLE_ para que request.isUserInRole("ROLE_ADMIN") funcione
+    user1.setRoles(List.of("ROLE_USER")); 
+    setUserAvatar(user1, "static/img/Juan_Perez_Avatar.PNG");
+
+    User user2 = new User("admin", passwordEncoder.encode("Admin_Secure_99#"), "admin@footleague.es", barsaTeam);
+    user2.setRoles(List.of("ROLE_USER", "ROLE_ADMIN"));
+
+    // Guardamos en el repositorio
+    userRepository.save(user1);
+    userRepository.save(user2);
         // 3. Crear partido
         Match match = new Match(madridTeam, barsaTeam, 2, 1, LocalDate.of(2026, 02, 01), LocalTime.of(21, 00));
         match.setWeather("Despejado");

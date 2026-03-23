@@ -7,6 +7,7 @@
     </h2>
 
     <form id="createMatchForm" action="/matches/match/save" method="post">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
     
         {{#match.id}}
             <input type="hidden" name="id" id="matchId" value="{{match.id}}">

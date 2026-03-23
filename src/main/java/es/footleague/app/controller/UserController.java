@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.core.io.InputStreamResource;
@@ -11,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +32,7 @@ import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
 import es.footleague.app.services.UserSession;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.web.csrf.CsrfToken;
 
 @Controller
 public class UserController {
@@ -45,18 +48,18 @@ public class UserController {
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
-        Principal principal = request.getUserPrincipal();
 
-        if (principal != null) {
-            // Buscamos el usuario en la BD para tener el objeto completo (con avatar, etc.)
+        CsrfToken token = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+        if (token != null) {
+            model.addAttribute("_csrf", token);
+        }
+        Principal principal = request.getUserPrincipal();
+            if (principal != null) {
             Optional<User> user = userService.findByUsernameIgnoreCase(principal.getName());
             if (user.isPresent()) {
                 model.addAttribute("loggedUser", user.get());
                 model.addAttribute("logged", true);
                 model.addAttribute("admin", request.isUserInRole("ROLE_ADMIN"));
-
-                // Sincronizamos con tu UserSession por si la usas en otros sitios
-                userSession.setUser(user.get());
             }
         } else {
             model.addAttribute("logged", false);
@@ -98,7 +101,8 @@ public class UserController {
     @GetMapping("/503")
     public String view503() { return "error/503"; } // En el Banquillo
     //
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     // 2. REGISTRATION FORM (View)
     @GetMapping("/register")
     public String registerForm(Model model) {
@@ -117,6 +121,8 @@ public class UserController {
                 throw new IOException("Error al crear el blob del avatar", e);
             }
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Cifra la pass
+        user.setRoles(List.of("ROLE_USER")); // Asigna el rol correcto
         userService.save(user);
         userSession.setUser(user);
         return "redirect:/profile/" + user.getUsername();

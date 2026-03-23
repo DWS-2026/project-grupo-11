@@ -4,6 +4,7 @@
     <h1 class="h4 text-white text-center mb-4">Valorar Evento del Partido</h1>
 
     <form action="/rating/save" method="post" style="display: inline;"> 
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
         <div class="mb-3">
             <label class="form-label">Seleccionar Evento</label>
             <select class="form-control search-box text-white bg-dark" name="eventId" required>

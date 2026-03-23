@@ -5,7 +5,8 @@
         {{#team.id}}Editar Equipo{{/team.id}}{{^team.id}}Registrar Nuevo Equipo{{/team.id}}
     </h2>
 
-    <form id="teamForm">
+    <form id="teamForm">´
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
         {{#team.id}}
         <input type="hidden" id="teamId" value="{{team.id}}">
         {{/team.id}}

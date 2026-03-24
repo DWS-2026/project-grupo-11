@@ -10,7 +10,9 @@
                 <p class="text-muted text-center mb-4">Únete a la plataforma para valorar a tus jugadores favoritos.</p>
 
                 <form action="/register" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+
+                    <input type="hidden" name="_csrf" value="{{token}}">
+                    
                     <div class="mb-3">
                         <label class="form-label text-primary">Nombre Usuario</label>
                         <input type="text" name="username" class="form-control" placeholder="Ej. JuanPérez"

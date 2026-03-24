@@ -19,7 +19,10 @@
                 {{#loggedUser}}
                 <span class="text-white me-2">Hola, <strong>{{username}}</strong></span>
                 <a href="/profile/{{username}}" class="btn btn-outline-light btn-sm">Mi perfil</a>
-                <a href="/logout" class="btn btn-primary btn-sm">Cerrar Sesion</a>
+                <form action="/logout" method="post" class="m-0">
+                    <input type="hidden" name="_csrf" value="{{token}}">
+                    <button type="submit" class="btn btn-primary btn-sm">Cerrar Sesión</button>
+                </form>
                 {{/loggedUser}}
 
                 {{^loggedUser}}

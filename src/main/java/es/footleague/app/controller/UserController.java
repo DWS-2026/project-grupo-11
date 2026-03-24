@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.security.Principal;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.core.io.InputStreamResource;
@@ -30,7 +29,6 @@ import es.footleague.app.model.User;
 import es.footleague.app.services.MatchService;
 import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
-import es.footleague.app.services.UserSession;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.web.csrf.CsrfToken;
 
@@ -44,7 +42,7 @@ public class UserController {
     @Autowired
     private MatchService matchService;
     @Autowired
-    private UserSession userSession;
+    private PasswordEncoder passwordEncoder;
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -59,7 +57,7 @@ public class UserController {
             if (user.isPresent()) {
                 model.addAttribute("loggedUser", user.get());
                 model.addAttribute("logged", true);
-                model.addAttribute("admin", request.isUserInRole("ROLE_ADMIN"));
+                model.addAttribute("admin", request.isUserInRole("ADMIN"));
             }
         } else {
             model.addAttribute("logged", false);
@@ -69,13 +67,13 @@ public class UserController {
     // 1. PROFILE VIEW (To view user data)
     // We use the username because it is unique, as you defined in the entity
     @GetMapping("/profile/{username}")
-    public String userProfile(@PathVariable String username, Model model) {
+    public String userProfile(@PathVariable String username, Model model, HttpServletRequest request) {
         Optional<User> user = userService.findByUsernameIgnoreCase(username);
 
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
-            boolean isOwner = userSession.isLoggedIn()
-                    && userSession.getUser().getUsername().equalsIgnoreCase(username);
+            Principal principal = request.getUserPrincipal();
+            boolean isOwner = principal != null && principal.getName().equalsIgnoreCase(username);
             model.addAttribute("isOwner", isOwner);
             return "profile";
         }
@@ -101,8 +99,6 @@ public class UserController {
     @GetMapping("/503")
     public String view503() { return "error/503"; } // En el Banquillo
     //
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     // 2. REGISTRATION FORM (View)
     @GetMapping("/register")
     public String registerForm(Model model) {
@@ -121,10 +117,8 @@ public class UserController {
                 throw new IOException("Error al crear el blob del avatar", e);
             }
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // Cifra la pass
-        user.setRoles(List.of("ROLE_USER")); // Asigna el rol correcto
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
-        userSession.setUser(user);
         return "redirect:/profile/" + user.getUsername();
     }
 
@@ -144,13 +138,15 @@ public class UserController {
     }
 
     @GetMapping("/profile/{username}/edit")
-    public String editProfileForm(@PathVariable String username, Model model) {
-        User currentUser = userSession.getUser();
-        boolean isOwner = currentUser != null && currentUser.getUsername().equalsIgnoreCase(username);
-        boolean isAdmin = currentUser != null && currentUser.getUsername().equals("admin");
-        if (!userSession.isLoggedIn() || !(isOwner || isAdmin)) {
+    public String editProfileForm(@PathVariable String username, Model model, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        boolean isOwner = principal != null && principal.getName().equalsIgnoreCase(username);
+        boolean isAdmin = request.isUserInRole("ADMIN");
+
+        if (principal == null || !(isOwner || isAdmin)) {
             return "redirect:/profile/" + username;
         }
+
         Optional<User> user = userService.findByUsernameIgnoreCase(username);
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
@@ -178,11 +174,10 @@ public class UserController {
 
             // We only change the password if you've entered something new
             if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-                existingUser.setPassword(updatedUser.getPassword());
+                existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
             }
 
             userService.save(existingUser);
-            userSession.setUser(existingUser);
         }
 
         return "redirect:/profile/" + updatedUser.getUsername();

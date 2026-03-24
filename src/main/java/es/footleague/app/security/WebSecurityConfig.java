@@ -1,0 +1,82 @@
+package es.footleague.app.security;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfig {
+
+	@Autowired
+    public RepositoryUserDetailsService userDetailService;
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailService);
+		authProvider.setPasswordEncoder(passwordEncoder());
+
+		return authProvider;
+	}
+
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		
+		http.authenticationProvider(authenticationProvider());
+		
+		http
+			.authorizeHttpRequests(authorize -> authorize
+					// PUBLIC PAGES
+					.requestMatchers("/").permitAll()
+                    .requestMatchers("/register").permitAll()
+					.requestMatchers("/user/*/avatar").permitAll()
+					.requestMatchers("/team/*/logo").permitAll()
+					.requestMatchers("/classification").permitAll()
+					.requestMatchers("/match-list").permitAll()
+					.requestMatchers("/match/{id}").permitAll()
+					.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+					// PRIVATE PAGES
+					.requestMatchers("/profile/*").hasAnyRole("USER")
+                    .requestMatchers("/profile/*/my-ratings").hasAnyRole("USER")
+                    .requestMatchers("/profile/*/edit").hasAnyRole("USER")
+					.requestMatchers("/match/*/rating/new").hasAnyRole("USER")
+					.requestMatchers("/admin/Admin_Page").hasAnyRole("ADMIN")
+					.requestMatchers("/admin/accounts-menu").hasAnyRole("ADMIN")
+					.requestMatchers("/admin/teams").hasAnyRole("ADMIN")
+					.requestMatchers("/admin/matches").hasAnyRole("ADMIN")
+					.requestMatchers("/admin/modify-accounts").hasAnyRole("ADMIN")
+					.requestMatchers("/admin/ModifyMatch").hasAnyRole("ADMIN")
+					.requestMatchers("/admin/match-create").hasAnyRole("ADMIN")
+					.requestMatchers("/admin/match-edit/*").hasAnyRole("ADMIN")
+					.requestMatchers("/admin/teams/list-teams").hasAnyRole("ADMIN")
+					.requestMatchers("/admin/teams/new").hasAnyRole("ADMIN")
+					.requestMatchers("/admin/teams/edit/*").hasAnyRole("ADMIN")
+					.requestMatchers("/admin/teams/delete/*").hasAnyRole("ADMIN")
+			)
+			.formLogin(formLogin -> formLogin
+					.loginPage("/login")
+					.failureUrl("/loginerror")
+					.defaultSuccessUrl("/")
+					.permitAll()
+			)
+			.logout(logout -> logout
+					.logoutUrl("/logout")
+					.logoutSuccessUrl("/")
+					.permitAll()
+			);
+
+		return http.build();
+	}
+
+}

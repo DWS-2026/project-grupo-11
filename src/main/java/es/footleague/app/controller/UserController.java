@@ -11,7 +11,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,8 +40,6 @@ public class UserController {
     private TeamService teamService;
     @Autowired
     private MatchService matchService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -52,7 +49,7 @@ public class UserController {
             model.addAttribute("_csrf", token);
         }
         Principal principal = request.getUserPrincipal();
-            if (principal != null) {
+        if (principal != null) {
             Optional<User> user = userService.findByUsernameIgnoreCase(principal.getName());
             if (user.isPresent()) {
                 model.addAttribute("loggedUser", user.get());
@@ -79,27 +76,40 @@ public class UserController {
         }
         return "user_not_found";
     }
-    //Temporal 
-    
+    // Temporal
+
     @GetMapping("/400")
-    public String view400() { return "error/400"; } // Pase Impreciso
+    public String view400() {
+        return "error/400";
+    } // Pase Impreciso
 
     @GetMapping("/403")
-    public String view403() { return "error/403"; } // Zona Exclusiva
+    public String view403() {
+        return "error/403";
+    } // Zona Exclusiva
 
     @GetMapping("/404")
-    public String view404() { return "error/404"; } // Fuera de Juego
+    public String view404() {
+        return "error/404";
+    } // Fuera de Juego
 
     @GetMapping("/409")
-    public String view409() { return "error/409"; } // Jugada Repetida
+    public String view409() {
+        return "error/409";
+    } // Jugada Repetida
 
     @GetMapping("/500")
-    public String view500() { return "error/500"; } // Tarjeta Roja
+    public String view500() {
+        return "error/500";
+    } // Tarjeta Roja
 
     @GetMapping("/503")
-    public String view503() { return "error/503"; } // En el Banquillo
-    //
-    // 2. REGISTRATION FORM (View)
+    public String view503() {
+        return "error/503";
+    } // En el Banquillo
+      //
+      // 2. REGISTRATION FORM (View)
+
     @GetMapping("/register")
     public String registerForm(Model model) {
         model.addAttribute("teams", teamService.findAll());
@@ -117,7 +127,6 @@ public class UserController {
                 throw new IOException("Error al crear el blob del avatar", e);
             }
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         return "redirect:/profile/" + user.getUsername();
     }
@@ -174,9 +183,8 @@ public class UserController {
 
             // We only change the password if you've entered something new
             if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-                existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+                existingUser.setPassword(updatedUser.getPassword());
             }
-
             userService.save(existingUser);
         }
 

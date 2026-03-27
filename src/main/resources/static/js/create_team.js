@@ -19,10 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     teamForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        // 1. Obtener el token CSRF del campo oculto en el HTML
+        const csrfToken = document.querySelector('input[name="_csrf"]').value;
+
         // Usamos FormData para empaquetar texto y archivos binarios
         const formData = new FormData();
         
-        // Si tienes un campo oculto con el ID (para edición), lo añadimos
+        // Si existe el ID (caso edición), lo añadimos
         const teamId = document.getElementById('teamId')?.value;
         if (teamId) {
             formData.append('id', teamId);
@@ -36,12 +39,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // Cambiamos la ruta de '/api/teams' a '/teams/save' que es el @PostMapping de tu Controller
+            // Enviamos la petición al controlador de Spring Boot
             const response = await fetch('/admin/teams/save', {
                 method: 'POST',
+                headers: {
+                    // 2. Añadir el token a las cabeceras para evitar el error 403
+                    'X-CSRF-TOKEN': csrfToken
+                },
                 body: formData,
                 redirect: 'follow'
-                // No ponemos cabecera Content-Type, el navegador la pone automáticamente como multipart/form-data
             });
 
             if (response.ok || response.redirected) {
@@ -54,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     timer: 2000,
                     showConfirmButton: false
                 }).then(() => {
-                    // Redirigimos a la ruta del listado gestionada por Spring
                     window.location.href = '/admin/teams/list-teams';
                 });
             } else {
@@ -64,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error al guardar:", error);
             Swal.fire({
                 title: 'Error',
-                text: 'No se pudo guardar el equipo. Verifica los datos y el tamaño de la imagen.',
+                text: 'No se pudo guardar el equipo. Verifica el token CSRF, los permisos y el tamaño de la imagen.',
                 icon: 'error',
                 background: '#1e293b',
                 color: '#ffffff'

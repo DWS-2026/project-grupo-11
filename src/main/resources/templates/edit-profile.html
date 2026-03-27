@@ -7,7 +7,7 @@
                 <h4 class="mb-0">Configuración del Perfil</h4>
             </div>
             <div class="card-body p-4">
-                <form action="/profile/edit" method="post">
+                <form action="/profile/edit" method="post" enctype="multipart/form-data">
 
                     <input type="hidden" name="_csrf" value="{{token}}">
                     
@@ -17,7 +17,7 @@
                                 class="rounded-circle img-thumbnail mb-2" alt="Avatar de {{username}}" style="width: 150px; height: 150px; object-fit: cover;">
                             <div class="mb-3">
                                 <label for="formFileSm" class="form-label small text-primary">Cambiar foto</label>
-                                <input class="form-control form-control-sm" name="avatarPath" id="formFileSm" type="file">
+                                <input class="form-control form-control-sm" name="imageFile" id="formFileSm" type="file">
                             </div>
                         </div>
 

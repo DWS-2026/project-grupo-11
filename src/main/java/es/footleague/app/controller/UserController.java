@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.core.io.InputStreamResource;
@@ -127,6 +128,7 @@ public class UserController {
                 throw new IOException("Error al crear el blob del avatar", e);
             }
         }
+        user.setRoles(List.of("USER"));
         userService.save(user);
         return "redirect:/profile/" + user.getUsername();
     }
@@ -141,6 +143,7 @@ public class UserController {
         Optional<User> user = userService.findByUsernameIgnoreCase(username);
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
+            model.addAttribute("ratings", user.get().getRatings());
             return "my-ratings";
         }
         return "user_not_found";
@@ -165,13 +168,22 @@ public class UserController {
     }
 
     @PostMapping("/profile/edit")
-    public String processEditProfile(User updatedUser) {
+    public String processEditProfile(User updatedUser, @RequestParam("imageFile") MultipartFile imageFile)
+            throws IOException {
         // We look for the original user so as not to lose data that is not in the form
         // (like the role)
         Optional<User> userOpt = userService.findByUsernameIgnoreCase(updatedUser.getUsername());
 
         if (userOpt.isPresent()) {
             User existingUser = userOpt.get();
+
+            if (!imageFile.isEmpty()) {
+                try {
+                    existingUser.setAvatarData(new javax.sql.rowset.serial.SerialBlob(imageFile.getBytes()));
+                } catch (Exception e) {
+                    throw new IOException("Error al actualizar el avatar", e);
+                }
+            }
 
             // 2. Logic for Email: We only update if a new one has been sent and
             // it is not blank

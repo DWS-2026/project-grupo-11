@@ -51,6 +51,7 @@ public class WebSecurityConfig {
                     .requestMatchers("/profile/*/my-ratings").hasAnyRole("USER")
                     .requestMatchers("/profile/*/edit").hasAnyRole("USER")
 					.requestMatchers("/match/*/rating/new").hasAnyRole("USER")
+					.requestMatchers("/rating/save").hasAnyRole("USER")
 					.requestMatchers("/admin/**").hasAnyRole("ADMIN")
 			)
 			.formLogin(formLogin -> formLogin

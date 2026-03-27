@@ -45,6 +45,7 @@ public class WebSecurityConfig {
 					.requestMatchers("/classification").permitAll()
 					.requestMatchers("/match-list").permitAll()
 					.requestMatchers("/match/{id}").permitAll()
+					.requestMatchers("/error").permitAll()
 					.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 					// PRIVATE PAGES
 					.requestMatchers("/profile/*").hasAnyRole("USER")

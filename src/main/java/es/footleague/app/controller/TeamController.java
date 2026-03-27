@@ -1,8 +1,11 @@
 package es.footleague.app.controller;
 
 import es.footleague.app.model.Team;
+import es.footleague.app.model.User;
 import es.footleague.app.repository.TeamRepository;
 import es.footleague.app.services.TeamService;
+import es.footleague.app.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -26,6 +30,23 @@ public class TeamController {
 
     TeamController(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;
+    }
+
+    @Autowired
+    private UserService userService;
+
+    @ModelAttribute
+    public void addAttributes(Model model, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            Optional<User> user = userService.findByUsernameIgnoreCase(principal.getName());
+            if (user.isPresent()) {
+                model.addAttribute("loggedUser", user.get());
+                model.addAttribute("logged", true);
+                model.addAttribute("admin", request.isUserInRole("ADMIN"));
+                // El token lo añade automáticamente tu CSRFHandlerInterceptor
+            }
+        }
     }
 
     @GetMapping("/list-teams")

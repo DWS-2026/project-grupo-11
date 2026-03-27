@@ -53,6 +53,7 @@ public class RatingController {
         if (principal == null) {
             return "redirect:/login";
         }
+        
         model.addAttribute("rating", new Rating());
         model.addAttribute("events", matchEventService.findAllByMatchId(matchId));
         model.addAttribute("matchId", matchId);

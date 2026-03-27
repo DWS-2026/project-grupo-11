@@ -2,12 +2,15 @@ package es.footleague.app.controller;
 
 import es.footleague.app.model.User;
 import es.footleague.app.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +21,20 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @ModelAttribute
+    public void addAttributes(Model model, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            Optional<User> user = userService.findByUsernameIgnoreCase(principal.getName());
+            if (user.isPresent()) {
+                model.addAttribute("loggedUser", user.get());
+                model.addAttribute("logged", true);
+                model.addAttribute("admin", request.isUserInRole("ADMIN"));
+                // El token lo añade automáticamente tu CSRFHandlerInterceptor
+            }
+        }
+    }
 
     // --- NAVEGACIÓN GENERAL DEL PANEL ---
 

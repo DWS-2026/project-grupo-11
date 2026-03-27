@@ -1,8 +1,12 @@
 package es.footleague.app.controller;
 
 import es.footleague.app.model.Match;
+import es.footleague.app.model.User;
 import es.footleague.app.services.MatchService;
 import es.footleague.app.services.TeamService;
+import es.footleague.app.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Map;
+import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
+
 
 @Controller
 @PreAuthorize("hasRole('ADMIN')")
@@ -23,6 +30,23 @@ public class MatchController {
 
     @Autowired
     private TeamService teamService;
+
+    @Autowired
+    private UserService userService;
+
+    @ModelAttribute
+    public void addAttributes(Model model, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            Optional<User> user = userService.findByUsernameIgnoreCase(principal.getName());
+            if (user.isPresent()) {
+                model.addAttribute("loggedUser", user.get());
+                model.addAttribute("logged", true);
+                model.addAttribute("admin", request.isUserInRole("ADMIN"));
+                // El token lo añade automáticamente tu CSRFHandlerInterceptor
+            }
+        }
+    }
 
     @GetMapping("/modify-match")
     public String adminListMatches(Model model) {

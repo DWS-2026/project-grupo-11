@@ -111,7 +111,7 @@ public class TeamController {
         Optional<Team> teamOpt = teamService.findById(id);
         if (teamOpt.isPresent()) {
             model.addAttribute("team", teamOpt.get());
-            return "CreateTeam";
+            return "EditTeam";
         }
         return "redirect:/admin/teams/list-teams";
     }

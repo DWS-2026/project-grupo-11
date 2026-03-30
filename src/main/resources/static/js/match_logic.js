@@ -50,6 +50,7 @@ if (form) {
         calculateScore();
 
         const formData = new URLSearchParams();
+        const csrfToken = document.querySelector('input[name="_csrf"]').value;
         const matchId = document.getElementById('matchId')?.value;
         if (matchId && matchId !== "") {
             formData.append('id', matchId);
@@ -64,6 +65,7 @@ if (form) {
         formData.append('weather', document.getElementById('weather').value);
         const stadiumInput = document.getElementById('stadium');
         formData.append('stadium', stadiumInput ? stadiumInput.value : "");
+        formData.append('_csrf', csrfToken);
 
         // Bucle de eventos corregido (Un solo bucle para evitar errores)
         document.querySelectorAll('.event-row').forEach((row, index) => {

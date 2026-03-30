@@ -29,8 +29,8 @@
                 <tr>
                     <td class="text-white-50 small">{{matchDate}}</td>
                     <td class="text-white">
-                        <span class="fw-bold text-info">{{localTeam.name}}</span> 
-                        <span class="mx-1 text-white-50">vs</span> 
+                        <span class="fw-bold text-info">{{localTeam.name}}</span>
+                        <span class="mx-1 text-white-50">vs</span>
                         <span class="fw-bold text-danger">{{visitorTeam.name}}</span>
                     </td>
                     <td class="text-center">
@@ -47,11 +47,15 @@
                             <button class="btn btn-sm btn-warning" onclick="editMatch('{{id}}')">
                                 <i class="bi bi-pencil-square"></i> Editar
                             </button>
-                            <button class="btn btn-sm btn-danger" onclick="confirmDelete('{{id}}', '{{localTeam.name}} vs {{visitorTeam.name}}')">
+                            <button class="btn btn-sm btn-danger"
+                                onclick="confirmDelete('{{id}}', '{{localTeam.name}} vs {{visitorTeam.name}}')">
                                 <i class="bi bi-trash"></i> Borrar
                             </button>
-                            
-                            <form id="delete-form-{{id}}" action="/admin/matches/match-delete/{{id}}" method="post" style="display:none;"></form>
+
+                            <form id="delete-form-{{id}}" action="/admin/matches/match-delete/{{id}}" method="post"
+                                style="display:none;">
+                                <input type="hidden" name="_csrf" value="{{token}}" />
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -59,7 +63,8 @@
                 {{^matches}}
                 <tr>
                     <td colspan="6" class="text-center py-5 text-white-50">
-                        No hay partidos registrados. <a href="/admin/matches/match-create" class="text-info">Registra el primero aquí</a>.
+                        No hay partidos registrados. <a href="/admin/matches/match-create" class="text-info">Registra el
+                            primero aquí</a>.
                     </td>
                 </tr>
                 {{/matches}}
@@ -71,7 +76,7 @@
         <a href="/admin/matches" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Volver
         </a>
-        <a href="/admin/match-create" class="btn btn-primary px-4 fw-bold">
+        <a href="/admin/matches/match-create" class="btn btn-primary px-4 fw-bold">
             <i class="bi bi-plus-lg"></i> Nuevo Partido
         </a>
     </div>
@@ -92,7 +97,7 @@
             didOpen: () => { Swal.showLoading(); }
         }).then(() => {
             // Ruta configurada en MatchController
-            window.location.href = '/admin/match-edit/' + matchId;
+            window.location.href = '/admin/matches/match-edit/' + matchId;
         });
     }
 

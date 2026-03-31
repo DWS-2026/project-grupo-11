@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Si existe el ID (caso edición), lo añadimos
         const teamId = document.getElementById('teamId')?.value;
-        const csrfToken = document.querySelector('input[name="_csrf"]').value;
         if (teamId) {
             formData.append('id', teamId);
         }

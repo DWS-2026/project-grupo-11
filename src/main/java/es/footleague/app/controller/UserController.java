@@ -162,6 +162,7 @@ public class UserController {
         Optional<User> user = userService.findByUsernameIgnoreCase(username);
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
+            model.addAttribute("teams", teamService.findAll());
             return "edit-profile";
         }
         return "user_not_found";

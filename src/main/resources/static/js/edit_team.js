@@ -7,12 +7,14 @@ editForm.addEventListener('submit', async (event) => {
     const teamName = document.getElementById('teamName').value;
     const stadiumName = document.getElementById('stadiumName').value;
     const logoFile = document.getElementById('teamLogo').files[0];
+    const csrfToken = document.querySelector('input[name="_csrf"]').value;
 
     const formData = new FormData();
     // IMPORTANTE: Incluimos el ID para que el Controller sepa que es una actualización
     formData.append('id', teamId);
     formData.append('name', teamName);
     formData.append('stadiumName', stadiumName);
+    formData.append('_csrf', csrfToken);
 
     if (logoFile) {
         formData.append('logoFile', logoFile);

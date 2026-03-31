@@ -27,12 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Si existe el ID (caso edición), lo añadimos
         const teamId = document.getElementById('teamId')?.value;
+        const csrfToken = document.querySelector('input[name="_csrf"]').value;
         if (teamId) {
             formData.append('id', teamId);
         }
 
         formData.append('name', document.getElementById('teamName').value);
         formData.append('stadiumName', document.getElementById('stadiumName').value);
+        formData.append('_csrf', csrfToken);
         
         if (logoInput.files[0]) {
             formData.append('logoFile', logoInput.files[0]); 

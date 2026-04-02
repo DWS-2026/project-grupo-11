@@ -11,9 +11,8 @@
     <div class="text-center mb-5 p-4 rounded" style="background: rgba(255,255,255,0.05)">
         <div class="row align-items-center">
             <div class="col text-white">
-                <img src="{{#match.localTeam.logoData}}/team/{{match.localTeam.id}}/logo{{/match.localTeam.logoData}}{{^match.localTeam.logoData}}/images/default-logo.png{{/match.localTeam.logoData}}" 
-                     alt="{{match.localTeam.name}}" class="mb-3"
-                     style="width: 80px; height: 80px; object-fit: contain;">
+                <img src="{{#match.localTeam.logoData}}/team/{{match.localTeam.id}}/logo{{/match.localTeam.logoData}}{{^match.localTeam.logoData}}/images/default-logo.png{{/match.localTeam.logoData}}"
+                    alt="{{match.localTeam.name}}" class="mb-3" style="width: 80px; height: 80px; object-fit: contain;">
                 <h5>{{match.localTeam.name}}</h5>
             </div>
 
@@ -35,9 +34,9 @@
             </div>
 
             <div class="col text-white">
-                <img src="{{#match.visitorTeam.logoData}}/team/{{match.visitorTeam.id}}/logo{{/match.visitorTeam.logoData}}{{^match.visitorTeam.logoData}}/images/default-logo.png{{/match.visitorTeam.logoData}}" 
-                     alt="{{match.visitorTeam.name}}" class="mb-3"
-                     style="width: 80px; height: 80px; object-fit: contain;">
+                <img src="{{#match.visitorTeam.logoData}}/team/{{match.visitorTeam.id}}/logo{{/match.visitorTeam.logoData}}{{^match.visitorTeam.logoData}}/images/default-logo.png{{/match.visitorTeam.logoData}}"
+                    alt="{{match.visitorTeam.name}}" class="mb-3"
+                    style="width: 80px; height: 80px; object-fit: contain;">
                 <h5>{{match.visitorTeam.name}}</h5>
             </div>
         </div>
@@ -48,7 +47,15 @@
         {{#match.events}}
         <div class="card option-card p-2 mb-2 bg-dark border-secondary">
             <small class="text-white">
-                {{type}} {{minute}}' - {{namePlayer}} {{#namePlayerIn}} (Entra: {{namePlayerIn}} / Sale: {{namePlayerOut}}) {{/namePlayerIn}}
+                {{type}} {{minute}}' -
+
+                {{#namePlayer}}
+                {{namePlayer}}
+                {{/namePlayer}}
+
+                {{#namePlayerIn}}
+                (Entra: {{namePlayerIn}} / Sale: {{namePlayerOut}})
+                {{/namePlayerIn}}
             </small>
         </div>
         {{/match.events}}
@@ -61,7 +68,8 @@
     </div>
 
     <div class="d-grid gap-2 mt-4">
-        <a href="/match/{{match.id}}/rating/new" class="btn btn-primary fw-bold" id="continueBtn">Valorar Eventos del Partido</a>
+        <a href="/match/{{match.id}}/rating/new" class="btn btn-primary fw-bold" id="continueBtn">Valorar Eventos del
+            Partido</a>
         <a href="/match-list" class="btn btn-outline-secondary text-center py-2">Volver al listado</a>
     </div>
 </div>

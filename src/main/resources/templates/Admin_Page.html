@@ -57,11 +57,12 @@
 
 <script>
     //Navegation Paths
+    const currentUsername = "{{loggedUser.username}}";
     const paths = {
         'manage-users': '/admin/accounts-menu',
         'manage-matches': '/admin/matches',
         'manage-teams': '/admin/teams',
-        'return-profile': '/profile/{username}'
+        'return-profile': '/profile/' + currentUsername
     };
 
     // Listener and events

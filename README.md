@@ -12,9 +12,20 @@
 ## 🎭 **Preparación: Definición del Proyecto**
 
 ### **Descripción del Tema**
-La aplicación tendrá como objetivo principal funcionar como una plataforma web de visualización y seguimiento de resultados de partidos de fútbol.
-Inicialmente está app estará diseñada para una Liga en el cual representaremos a cada equipo con un Nombre (por ejemplo, Parla FC) y un Estandarte/Escudo asociado. El usuario podrá consultar los resultados por fecha, las alineaciones, las plantillas completas y los detalles de cada partido disputado. Además se incluirá la capacidad del usuario de hacer login y elegir su equipo favorito, de poder reseñar a jugadores en cada partido (siempre y cuando tengan un usuario) y la capacidad de ver que ocurrió en el partido X de su equipo favorito (resultado, formacion inicial, Temporal, Campo en el que se jugó, Goles con el minuto en que se marcó y el dorsal y nombre el jugador goleador asociado, Tarjetas (Rojas o amarillas) con un formato similar al de los goles). Por último incluiremos una tabla de clasificación dinámica que mostrará la posición de cada equipo, su escudo, puntos obtenidos, partidos ganados, empatados y perdidos, además de la diferencia de goles y una tabla de máximos goleadores. 
-Está aplicación estará diseñada con la finalidad de ayudar a aficionados, entrenadores, árbitros, jugadores etc a poder ver los resultados de su Liga preferida y tener un mejor control de los resultados de está y poder así seguir a su equipo favorito pudiendo estar informados de las últimas noticias de este.
+La aplicación consiste en una plataforma web para la gestión y visualización de resultados de partidos de fútbol dentro de una liga.
+
+El sistema permite consultar información detallada de equipos, partidos y eventos ocurridos durante los encuentros. Cada partido incluye datos como fecha, equipos participantes, resultado final, estadio y un registro cronológico de eventos (goles, tarjetas y sustituciones).
+
+Los usuarios pueden registrarse e iniciar sesión para seleccionar su equipo favorito y participar en la plataforma mediante valoraciones de los eventos del partido. Estas valoraciones permiten puntuar y comentar el rendimiento de los jugadores en acciones concretas del juego.
+
+Además, la aplicación incluye:
+
+Visualización de calendario de partidos
+Detalles completos de cada partido (alineaciones, eventos, resultado)
+Clasificación de la liga con estadísticas (puntos, victorias, empates, derrotas, diferencia de goles)
+Registro de eventos enriquecidos (incluyendo sustituciones con jugador que entra y sale)
+
+El objetivo es proporcionar una herramienta interactiva para el seguimiento de competiciones deportivas, dirigida a aficionados y usuarios interesados en el análisis de partidos.
 
 ### **Entidades**
 Indicar las entidades principales que gestionará la aplicación y las relaciones entre ellas:
@@ -23,7 +34,7 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 2. **[Entidad 2]**: Equipo: Información del club (Nombre, Escudo, Estadio) y sus estadísticas acumuladas (puntos, goles).
 3. **[Entidad 3]**: Partido: El evento central que une a dos equipos, con fecha, marcador final y estadio.
 4. **[Entidad 4]**: Evento de Partido: Registro de cada hito (Gol, Tarjeta Roja/Amarilla, Cambio) vinculado a un minuto y a un jugador (Nombre + Dorsal).
-5. **[Entidad 5]**: Valoración: Almacena los comentarios y puntuaciones que los usuarios registrados otorgan a los jugadores. Incluye el texto de la opinión y la calificación numérica.
+5. **[Entidad 5]**: Valoración: Almacena los comentarios y puntuaciones que los usuarios registrados otorgan a los eventos de un partido. Incluye el texto de la opinión y la calificación numérica.
 
 **Relaciones entre entidades:**
 - Usuario - Equipo (N:1): Muchos usuarios pueden tener el mismo "Equipo Favorito".
@@ -47,7 +58,7 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
   - Permisos:
       - Todas las funcionalidades del usuario anónimo
       - Gestión de su perfil y selección de equipo favorito
-      - Valorar evnetos de partidos
+      - Valorar eventos de partidos
   - Es dueño de:
       - Su perfil de usuario
       - Sus valoraciones
@@ -63,8 +74,8 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
 ### **Imágenes**
 Indicar qué entidades tendrán asociadas una o varias imágenes:
 
-- **[Entidad 2]**: Equipo : Una imagen para el Escudo o Estandarte oficial del club, que se mostrará en la clasificación, en las fichas de partido y junto a las noticias relacionadas.
-- **[Entidad 1]**: Usuario: Una imagen de Avatar para el perfil del usuario, que aparecerá junto a sus reseñas y valoraciones de los partidos.
+- **[Entidad 2]**: Equipo : Una imagen para el Escudo o Estandarte oficial del club, que se mostrará en la clasificación y en las fichas de partido.
+- **[Entidad 1]**: Usuario: Una imagen de Avatar para el perfil del usuario, que aparecerá junto a sus valoraciones de los partidos.
 
 ---
 

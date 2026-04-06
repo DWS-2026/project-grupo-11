@@ -11,41 +11,47 @@
         <div class="card option-card p-4 bg-dark border-secondary">
             <div class="row align-items-center">
                 <div class="col-4 text-center text-white">
-                    <img src="{{#localTeam.logoData}}/team/{{localTeam.id}}/logo{{/localTeam.logoData}}{{^localTeam.logoData}}/images/default-logo.png{{/localTeam.logoData}}" 
-                         alt="{{localTeam.name}}" class="mb-2 d-block mx-auto"
-                         style="width: 45px; height: 45px; object-fit: contain;">
+                    <img src="{{#localTeam.logoData}}/team/{{localTeam.id}}/logo{{/localTeam.logoData}}{{^localTeam.logoData}}/images/default-logo.png{{/localTeam.logoData}}"
+                        alt="{{localTeam.name}}" class="mb-2 d-block mx-auto"
+                        style="width: 45px; height: 45px; object-fit: contain;">
                     <h6 class="mb-0">{{localTeam.name}}</h6>
                 </div>
 
                 <div class="col-4 text-center">
                     <div class="text-white fw-bold h3 mb-0">
-                        {{#finalized}}{{localGoals}} - {{visitorGoals}}{{/finalized}}
-                        {{^finalized}}VS{{/finalized}}
+                        {{#played}}{{localGoals}} - {{visitorGoals}}{{/played}}
+                        {{^played}}VS{{/played}}
                     </div>
 
-                    {{#finalized}}
-                        <span class="badge bg-success mb-2">Finalizado</span>
-                    {{/finalized}}
-                    {{^finalized}}
-                        <small class="text-warning d-block fw-bold mt-1">Próximamente</small>
-                    {{/finalized}}
+                    {{#played}}
+                    <span class="badge bg-success mb-2">Finalizado</span>
+                    {{/played}}
+                    {{^played}}
+                    <small class="text-warning d-block fw-bold mt-1">Próximamente</small>
+                    {{/played}}
 
                     <small class="text-white-50 d-block">{{matchDate}}</small>
                     <small class="text-white-50 d-block small">{{matchTime}}</small>
                 </div>
 
                 <div class="col-4 text-center text-white">
-                    <img src="{{#visitorTeam.logoData}}/team/{{visitorTeam.id}}/logo{{/visitorTeam.logoData}}{{^visitorTeam.logoData}}/images/default-logo.png{{/visitorTeam.logoData}}" 
-                         alt="{{visitorTeam.name}}" class="mb-2 d-block mx-auto"
-                         style="width: 45px; height: 45px; object-fit: contain;">
+                    <img src="{{#visitorTeam.logoData}}/team/{{visitorTeam.id}}/logo{{/visitorTeam.logoData}}{{^visitorTeam.logoData}}/images/default-logo.png{{/visitorTeam.logoData}}"
+                        alt="{{visitorTeam.name}}" class="mb-2 d-block mx-auto"
+                        style="width: 45px; height: 45px; object-fit: contain;">
                     <h6 class="mb-0">{{visitorTeam.name}}</h6>
                 </div>
             </div>
-
+            {{#played}}
             <div class="mt-3 text-center border-top pt-3 border-secondary d-flex justify-content-center gap-2">
-                <a href="/match/{{id}}" class="btn btn-primary btn-sm px-3">Ver detalle</a>
+                <a href="/match/{{id}}" class="btn btn-primary btn-sm px-3">Ver detalles</a>
                 </form>
             </div>
+            {{/played}}
+            {{^played}}
+            <div class="mt-3 text-center border-top pt-3 border-secondary d-flex justify-content-center gap-2">
+                <small class="text-white-50 d-block">Detealles no disponibles</small>
+            </div>
+            {{/played}}
         </div>
     </div>
     {{/matches}}

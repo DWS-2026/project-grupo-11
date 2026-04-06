@@ -66,20 +66,33 @@ public class MatchService {
         Team visitor = teamRepository.findById(match.getVisitorTeam().getId())
                 .orElseThrow(() -> new RuntimeException("Equipo visitante no encontrado"));
 
-        // 2. Detectar si es EDICIÓN
-        if (match.getId() != null) {
-            Match oldMatch = matchRepository.findById(match.getId())
-                    .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+        // 2. Obtener estado anterior del partido (si existe)
+        Match oldMatch = null;
 
-            // REVERTIMOS estadísticas del resultado anterior antes de aplicar el nuevo
-            // OJO: No restamos 'playedMatchs' porque el partido se sigue jugando, solo
-            // cambian los goles
-            revertOldResultOnly(oldMatch);
-        } else {
-            // 3. ¿Es NUEVO?
-            // Solo sumamos +1 aquí y nos aseguramos de que NADIE más lo sume.
+        if (match.getId() != null) {
+            oldMatch = matchRepository.findById(match.getId())
+                    .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+        }
+
+        boolean wasPlayed = oldMatch != null && oldMatch.isPlayed();
+        boolean isNowPlayed = match.isPlayed();
+
+        // 3. TRANSICIONES DE ESTADO
+
+        // 🟢 Caso 1: NO jugado → jugado
+        if (!wasPlayed && isNowPlayed) {
             local.setPlayedMatchs(local.getPlayedMatchs() + 1);
             visitor.setPlayedMatchs(visitor.getPlayedMatchs() + 1);
+        }
+
+        // 🔴 Caso 2: YA jugado → sigue jugado (edición)
+        if (wasPlayed && isNowPlayed) {
+            revertOldResultOnly(oldMatch);
+        }
+
+        // ⚫ Caso 3: jugado → NO jugado (raro, pero controlado)
+        if (wasPlayed && !isNowPlayed) {
+            revertTeamStats(oldMatch, local, visitor);
         }
 
         // 4. Asignamos estos equipos completos al objeto match
@@ -89,14 +102,12 @@ public class MatchService {
         // 5. Guardamos el partido
         matchRepository.save(match);
 
-        // 6. Ahora sí, actualizamos las estadísticas sobre los equipos que tienen
-        // nombre y datos
-        if (match.getLocalGoals() != null && match.getVisitorGoals() != null) {
+        // 6. Aplicar estadísticas SOLO si está jugado
+        if (isNowPlayed && match.getLocalGoals() != null && match.getVisitorGoals() != null) {
+
             local.updateStats(match.getLocalGoals(), match.getVisitorGoals());
             visitor.updateStats(match.getVisitorGoals(), match.getLocalGoals());
 
-            // 7. Guardamos los equipos (ahora Hibernate no se quejará porque el 'name' está
-            // presente)
             teamRepository.save(local);
             teamRepository.save(visitor);
         }

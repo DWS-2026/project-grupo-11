@@ -35,6 +35,7 @@
     <div class="col-md-8">
         <h3 class="h5 text-white mb-3">Destacados de la Semana</h3>
         {{#match}}
+        {{#played}}
         <div class="card option-card p-3 mb-3" onclick="window.location.href='/match/{{id}}'" role="button">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="text-center" style="width: 30%;">
@@ -51,6 +52,25 @@
                 </div>
             </div>
         </div>
+        {{/played}}
+        {{^played}}
+        <div class="card option-card p-3 mb-3" onclick="window.location.href='/match/{{id}}'" role="button">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="text-center" style="width: 30%;">
+                    <img src="/team/{{localTeam.id}}/logo" width="35" class="mb-1 d-block mx-auto">
+                    <span class="text-white small">{{localTeam.name}}</span>
+                </div>
+                <div class="text-center">
+                    <span class="text-white fw-bold h4">VS</span>
+                    <small class="text-warning d-block" style="font-size: 0.7rem;">Proximamente</small>
+                </div>
+                <div class="text-center" style="width: 30%;">
+                    <img src="/team/{{visitorTeam.id}}/logo" width="35" class="mb-1 d-block mx-auto">
+                    <span class="text-white small">{{visitorTeam.name}}</span>
+                </div>
+            </div>
+        </div>
+        {{/played}}
         {{/match}}
         {{^match}}
         <p class="text-white-50">No hay partidos destacados esta semana.</p>

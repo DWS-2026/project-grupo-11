@@ -56,12 +56,25 @@ public class Match {
         this.stadium = localTeam.getStadiumName();
     }
 
-    public boolean getClimaDespejado() { return "Despejado".equalsIgnoreCase(weather); }
-    public boolean getClimaNublado() { return "Nublado".equalsIgnoreCase(weather); }
-    public boolean getClimaLluvia() { return "Lluvia".equalsIgnoreCase(weather); }
-    public boolean getClimaNieve() {return "Nieve".equalsIgnoreCase(this.weather);}
-    public boolean getClimaViento() {return "Viento".equalsIgnoreCase(this.weather);}
-    
+    public boolean getClimaDespejado() {
+        return "Despejado".equalsIgnoreCase(weather);
+    }
+
+    public boolean getClimaNublado() {
+        return "Nublado".equalsIgnoreCase(weather);
+    }
+
+    public boolean getClimaLluvia() {
+        return "Lluvia".equalsIgnoreCase(weather);
+    }
+
+    public boolean getClimaNieve() {
+        return "Nieve".equalsIgnoreCase(this.weather);
+    }
+
+    public boolean getClimaViento() {
+        return "Viento".equalsIgnoreCase(this.weather);
+    }
 
     public String getWeather() {
         return weather;
@@ -149,5 +162,9 @@ public class Match {
 
         LocalDateTime fullDateTime = LocalDateTime.of(this.matchDate, this.matchTime);
         return fullDateTime.isBefore(LocalDateTime.now());
+    }
+
+    public boolean isPlayed() {
+        return this.events != null && !this.events.isEmpty();
     }
 }

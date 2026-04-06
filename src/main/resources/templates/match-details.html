@@ -15,24 +15,30 @@
                     alt="{{match.localTeam.name}}" class="mb-3" style="width: 80px; height: 80px; object-fit: contain;">
                 <h5>{{match.localTeam.name}}</h5>
             </div>
-
+            {{#match.played}}
             <div class="col text-info">
                 <h1 class="display-5 fw-bold mb-0 text-nowrap">
                     {{match.localGoals}} - {{match.visitorGoals}}
                 </h1>
-                {{#match.finalized}}
                 <span class="badge bg-success mt-1">Finalizado</span>
-                {{/match.finalized}}
-                {{^match.finalized}}
-                <span class="badge bg-warning mt-1 text-dark">En curso / Próximamente</span>
-                {{/match.finalized}}
 
                 <div class="mt-3">
                     <p class="text-white-50 mb-0 small">Estadio:</p>
                     <p class="text-white fw-semibold">{{match.stadium}}</p>
                 </div>
             </div>
+            {{/match.played}}
+            {{^match.played}}
+            <div class="col text-info">
+                <h1 class="display-5 fw-bold mb-0 text-nowrap">-</h1>
+                <span class="badge bg-warning mt-1 text-dark">En curso / Próximamente</span>
 
+                <div class="mt-3">
+                    <p class="text-white-50 mb-0 small">Estadio:</p>
+                    <p class="text-white fw-semibold">{{match.stadium}}</p>
+                </div>
+            </div>
+            {{/match.played}}
             <div class="col text-white">
                 <img src="{{#match.visitorTeam.logoData}}/team/{{match.visitorTeam.id}}/logo{{/match.visitorTeam.logoData}}{{^match.visitorTeam.logoData}}/images/default-logo.png{{/match.visitorTeam.logoData}}"
                     alt="{{match.visitorTeam.name}}" class="mb-3"

@@ -31,19 +31,19 @@ public class AdminController {
                 model.addAttribute("loggedUser", user.get());
                 model.addAttribute("logged", true);
                 model.addAttribute("admin", request.isUserInRole("ADMIN"));
-                // El token lo añade automáticamente tu CSRFHandlerInterceptor
+                // The token is added automatically by your CSRFHandlerInterceptor
             }
         }
     }
 
-    // --- NAVEGACIÓN GENERAL DEL PANEL ---
+    // --- GENERAL NAVEGATION OF THE PANEL ---
 
     @GetMapping("/admin-page")
     public String Admin_Page() {
         return "Admin_Page";
     }
 
-    // --- MENÚS DE GESTIÓN (PANTALLAS PRINCIPALES) ---
+    // --- MANAGEMENT MENU (PRINCIPAL SCREENS) ---
 
     @GetMapping("/accounts-menu")
     public String showAccounts() {
@@ -60,7 +60,7 @@ public class AdminController {
         return "Match_Management_Screen";
     }
 
-    // --- GESTIÓN DE USUARIOS / CUENTAS ---
+    // --- USER AND ACCOUNT MANAGEMENT ---
 
     @GetMapping("/modify-accounts")
     public String modifyAccount(Model model){
@@ -85,6 +85,6 @@ public class AdminController {
         return "redirect:/admin/modify-accounts";
     }
 
-    // NOTA: Las rutas de guardar, editar y crear partidos HAN SIDO ELIMINADAS de aquí
-    // porque ahora viven en MatchController para evitar errores 400, 404 y 500.
+    // NOTE: the rest of the user management functionalities (like role modification) have been removed from this controller
+    // because now they live in MatchController to avoid errors 400, 404 and 500.
 }

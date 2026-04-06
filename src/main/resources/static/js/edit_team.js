@@ -10,7 +10,8 @@ editForm.addEventListener('submit', async (event) => {
     const csrfToken = document.querySelector('input[name="_csrf"]').value;
 
     const formData = new FormData();
-    // IMPORTANTE: Incluimos el ID para que el Controller sepa que es una actualización
+    // IMPORTANT: When editing, we need to include the team ID 
+    // in the form data so that the server knows which team to update.
     formData.append('id', teamId);
     formData.append('name', teamName);
     formData.append('stadiumName', stadiumName);
@@ -21,7 +22,8 @@ editForm.addEventListener('submit', async (event) => {
     }
 
     try {
-        // CAMBIO: Enviamos a /teams/save mediante POST (el estándar de los Controllers de vista)
+        // CHANGE: We need to include the CSRF token in the headers for security,
+        // and we also need to set redirect: 'follow' to handle the redirection after saving.
         const response = await fetch(`/admin/teams/save`, {
             method: 'POST',
             body: formData
@@ -37,7 +39,7 @@ editForm.addEventListener('submit', async (event) => {
                 timer: 1500,
                 showConfirmButton: false
             }).then(() => {
-                // Redirigimos a la ruta del controlador de la lista
+                // We redirect to the team list page after successful update
                 window.location.href = '/admin/teams/list-teams';
             });
         } else {

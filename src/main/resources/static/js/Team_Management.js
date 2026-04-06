@@ -15,7 +15,8 @@ async function confirmDeleteTeam(id, teamName) {
     });
 
     if (result.isConfirmed) {
-        // AHORA SÍ: Redirigimos a la ruta de borrado con el ID
+        // Now we can safely redirect to the delete URL, 
+        // knowing that the user has confirmed the action.
         window.location.href = `/admin/teams/delete/${id}`;
     }
 }

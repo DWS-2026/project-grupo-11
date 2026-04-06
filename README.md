@@ -322,17 +322,17 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 ### **Participación de Miembros en la Práctica 2**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - Jaime Tejero Fernández**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Las principales responsabilidades de Jaime fueron la creacion de pantallas de error y los modulos CRUD de equipos y partidos, asi como la creacion de algunas pantallas o funcionalidades relacionadas con partidos o equipos como la implementacion de clasificacion a tiempo real y cambio de comentarios a ingles.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Cambios grandes en la creacion de equipos del /admin](https://github.com/DWS-2026/project-grupo-11/commit/c355cb36aa5f98d424f967d3bd6f5e355dbc17fc)  | [RatingController](src/main/java/es/footleague/app/controller/RatingController.java), [TeamRestController](src/main/java/es/footleague/app/controller/TeamRestController.java), [ViewController](src/main/java/es/footleague/app/controller/ViewController.java),  [Team](src/main/java/es/footleague/app/model/Team.java), [TeamService](src/main/java/es/footleague/app/services/TeamService.java), [aplication.properties](src/main/resources/aplication.properties.java), [Team_Mangement](src/main/resources/static/js/Team_Management.js), [create_team](src/main/resources/static/create_team.js), [match_logic](src/main/resources/static/js/match_logic.js), [CreateTeam](src/main/resources/templates/CreateTeam.html), [EditTeam](src/main/resources/templates/EditTeam.html), [ModifyTeam](src/main/resources/templates/ModifyTeam.html), [Team_Management_Screen](src/main/resources/templates/Team_Mangement_Screen.html),|
+|2| [Cambios Edicion de partido](https://github.com/DWS-2026/project-grupo-11/commit/9e702733e30af41ed19f3c9f2386c9461135d7f6)  | [Match.java](src/main/java/es/footleague/app/model/Match.java), [MatchEvent.java](src/main/java/es/footleague/app/model/MatchEvent.java), [EditMatchDetails.java](src/main/resources/templates/EditMatchDetails.html)  |
+|3| [Creadas pantallas de error](https://github.com/DWS-2026/project-grupo-11/commit/26fcec4c91d5896217e906dd66432a70a3f004c8)  | [ErrorRestController](src/main/java/es/footleague/app/controller/ErrorTestController.java), [400](src/main/resources/templates/error/400.html), [503](src/main/resources/templates/error/503.html), [403](src/main/resources/templates/error/403.html), [409](src/main/resources/templates/error/409.html), [500](src/main/resources/templates/error/500.html)|
+|4| [solucion https y bug en creacion de equipos (mirar error no deja ver partido si lo creas en la web)](https://github.com/DWS-2026/project-grupo-11/commit/d4544bdaf8ee1fd5420a120f28ee986c2cf9fa00)  | [aplication.properties](src/main/resources/application.properties), [keystore.p12](src/main/resources/keystore.p12), [create_team.js](src/main/resources/static/js/create_team.js)    |
+|5| [Modificaciones en rutas y en la entidad teams](https://github.com/DWS-2026/project-grupo-11/commit/b6e3ab7db536cd55b785133014291a63e049d931)  | [TeamController](src/main/java/es/footleague/app/controller/TeamController.java), [TeamManagement](src/main/resources/static/js/Team_Management.js), [create_team](src/main/resources/static/js/create_team.js), [ModifyTeam](src/main/resources/templates/ModifyTeam.html), [index](src/main/resources/templates/index.html),   |
 
 ---
 

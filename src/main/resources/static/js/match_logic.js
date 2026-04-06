@@ -1,5 +1,5 @@
 /**
- * 1. GESTIÓN DINÁMICA DE EVENTOS
+ * 1. DYNAMIC ADDITION AND REMOVAL OF EVENTS
  */
 function addEventField() {
     const container = document.getElementById('eventsContainer');
@@ -17,7 +17,10 @@ function removeEvent(btn) {
 }
 
 /**
- * 2. LÓGICA DE MARCADOR EN TIEMPO REAL
+ * 2. DYNAMIC SCORE CALCULATION
+ * This function iterates through all the event rows, checks if the event type is "GOAL",
+ *  and if so, it increments the score for the corresponding team (home or away) based 
+ * on the team selector. Finally, it updates the displayed scores in the form.
  */
 function calculateScore() {
     let homeScore = 0;
@@ -40,7 +43,10 @@ function calculateScore() {
 }
 
 /**
- * 3. ENVÍO DE DATOS AL SERVIDOR
+ * 3. FORM SUBMISSION LOGIC
+ * This part handles the submission of both the create and edit match forms. It gathers all the form data, 
+ * including the dynamically added events, and sends it to the server using fetch. The CSRF token is included 
+ * for security, and after a successful save, it redirects the user back to the match list page.
  */
 const form = document.getElementById('createMatchForm') || document.getElementById('editMatchForm');
 
@@ -67,7 +73,8 @@ if (form) {
         formData.append('stadium', stadiumInput ? stadiumInput.value : "");
         formData.append('_csrf', csrfToken);
 
-        // Bucle de eventos corregido (Un solo bucle para evitar errores)
+        // Events Loop: We iterate through all the event 
+        // rows and append their data to the formData with the correct naming convention
         document.querySelectorAll('.event-row').forEach((row, index) => {
             const eventId = row.querySelector('.event-id')?.value;
             if (eventId && eventId !== "") {
@@ -100,7 +107,8 @@ if (form) {
             });
 
             if (response.ok) {
-                // Verificamos si Swal existe, si no usamos alert normal
+                // We check if Swal is available for a nicer alert, 
+                // otherwise we fall back to a simple alert
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({ title: '¡Guardado!', icon: 'success', timer: 1500, showConfirmButton: false })
                         .then(() => window.location.href = '/admin/matches/modify-match'); 
@@ -122,7 +130,10 @@ if (form) {
 }
 
 /**
- * 4. CONTROL DE VISIBILIDAD DE CAMPOS
+ * 4. DYNAMIC SHOW/HIDE OF SUBSTITUTION FIELDS
+ * This function is called whenever the event type select changes. If the selected type is "SUBSTITUTION",
+ * it hides the regular player input and shows the substitution fields (player in and player out). 
+ * If it's any other type, it does the opposite.
  */
 function toggleEditSubFields(select) {
     const row = select.closest('.event-row');
@@ -141,7 +152,10 @@ function toggleEditSubFields(select) {
 }
 
 /**
- * 5. CARGA INICIAL
+ * 5. INITIALIZATION
+ * When the page loads, we call syncSavedEvents to ensure that the form is in sync with any existing events (important for editing).
+ * We also set up an event listener on the container that holds the events, so that whenever an event type or team selector changes, 
+ * we recalculate the score in real time.
  */
 window.onload = () => {
     syncSavedEvents();
@@ -166,7 +180,8 @@ function syncSavedEvents() {
         const typeSelect = row.querySelector('.event-type');
         const teamSelect = row.querySelector('.team-selector');
 
-        // Esta parte es importante para cuando editas
+        // This part is crucial for the edit form: we need to set the team selector based on 
+        // the saved event data,
         if (typeSelect.value) toggleEditSubFields(typeSelect);
     });
     calculateScore();

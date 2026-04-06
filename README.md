@@ -261,8 +261,8 @@ Solo si ha cambiado.
 #### **Capturas de Pantalla Actualizadas**
 La app sigue usando las mismas vistas que en la Práctica 1 para no cargarnos la usabilidad que ya funcionaba bien. Lo que más cambia a nivel visual es el header y el footer. El Header incluye el control de seguridad de Spring Security, y junto con el nuevo Footer le da a toda la plataforma un aspecto más sólido y coherente.
 #### **Header y Footer actualizados**
-![Siendo usuario sin registrar](images/Header_Footer_actualizado.jpg)
-![Siendo administrador](images/Header_Footer_admin.jpg)
+![Siendo usuario sin registrar](images/Header_Footer_actualizado.png)
+![Siendo administrador](images/Header_Footer_admin.png)
 
 ### **Instrucciones de Ejecución**
 
@@ -338,17 +338,17 @@ Las principales responsabilidades de Jaime fueron la creacion de pantallas de er
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
+#### **Alumno 2 - [Ruben Sanchez Lopez]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+[Responsable de la definición del modelo de datos, la gestión de la persistencia y la implementación de la capa de seguridad y usuarios.]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [completadas las clases Match, MatchEvent y Team](https://github.com/DWS-2026/dws-2026-project-base/commit/daeacd0290b0a0d492f4397ec827d2761cb3d7de)  | [Match.java](src/main/java/es/model/Match.java), [MatchEvent.java](src/main/java/es/model/MatchEvent.java), [Team.java](src/main/java/es/model/Team.java)   |
+|2| [completadas todas las entidades y los repositorios de cada entidad](https://github.com/DWS-2026/dws-2026-project-base/commit/d1093af92f6663d50d2c65ada99f6d7ab7cc61ad)  | [pom.xml](pom.xml), [Match.java](src/main/java/es/footleague/app/model/Match.java), [MatchEvent](src/main/java/es/footleague/app/model/MatchEvent.java), [Rating.java](src/main/java/es/footleague/app/model/Rating.java), [Team.java](src/main/java/es/footleague/app/model/Team.java), [User.java](src/main/java/es/footleague/app/model/User.java), [MatchEventRepository.java](src/main/java/es/footleague/app/repository/MatchEventRepository.java), [MatchRepository.java](src/main/java/es/footleague/app/repository/MatchRepository.java), [RatingRepository.java](src/main/java/es/footleague/app/repository/RatingRepository.java), [TeamRepository.java](src/main/java/es/footleague/app/repository/TeamRepository.java), [UserRepository.java](src/main/java/es/footleague/app/repository/UserRepository.java)   |
+|3| [cambiados todos los html de thymeleaf a mustache, tambien se ha cambiado el pom.xml y el application.properties](https://github.com/DWS-2026/dws-2026-project-base/commit/5e2642515f50c0002d7b1526f06add47c517d6d7)  | [pom.xml](pom.xml), [application.properties](src/main/resources/application.properties), [Account_Management_Screen.html](src/main/resources/templates/Account_Management_Screen.html), [Admin_Page.html](src/main/resources/templates/Admin_Page.html), [CreateMatch.html](src/main/resources/templates/CreateMatch.html), [CreateTeam.html](src/main/resources/templates/CreateTeam.html), [EditMatchDetails.html](src/main/resources/templates/EditMatchDetails.html), [EditTeamBarcelona.html](src/main/resources/templates/EditTeamBarcelona.html), [Match_Management_Screen.html](src/main/resources/templates/Match_Management_Screen.html), [ModifyAccount.html](src/main/resources/templates/ModifyAccount.html), [ModifyMatch.html](src/main/resources/templates/ModifyMatch.html), [ModifyTeam.html](src/main/resources/templates/ModifyTeam.html), [Team_Management_Screen.html](src/main/resources/templates/Team_Management_Screen.html), [classification.html](src/main/resources/templates/classification.html), [edit-profile.html](src/main/resources/templates/edit-profile.html), [footer.html](src/main/resources/templates/fragments/footer.html), [header.html](src/main/resources/templates/fragments/header.html), [index.html](src/main/resources/templates/index.html), [login.html](src/main/resources/templates/login.html), [match-details.html](src/main/resources/templates/match-details.html), [match-list.html](src/main/resources/templates/match-list.html), [my-ratings.html](src/main/resources/templates/my-ratings.html), [player-ratings.html](src/main/resources/templates/player-ratings.html), [profile.html](src/main/resources/templates/profile.html), [registration.html](src/main/resources/templates/registration.html)   |
+|4| [creado el UserController y modificados los html de perfil](https://github.com/DWS-2026/dws-2026-project-base/commit/040ee704a2fefeaf392910bf7175bc6428e5727b)  | [UserController.java](src/main/java/es/footleague/app/controller/UserController.java), [edit-profile.html](src/main/resources/templates/edit-profile.html), [profile.html](src/main/resources/templates/profile.html), [registration.html](src/main/resources/templates/registration.html)   |
+|5| [Corregidos los errores del login y de mas formularios](https://github.com/DWS-2026/dws-2026-project-base/commit/80f6f72f0c1209b0157028fe2a23e4960e953dbf)  | [RatingController.java](src/main/java/es/footleague/app/controller/RatingController.java), [UserController.java](src/main/java/es/footleague/app/controller/UserController.java), [CSRFHandlerConfiguration.java](src/main/java/es/footleague/app/security/CSRFHandlerConfiguration.java), [RepositoryUserDetailsService.java](src/main/java/es/footleague/app/security/RepositoryUserDetailsService.java), [WebSecurityConfig.java](src/main/java/es/footleague/app/security/WebSecurityConfig.java), [SampleDataService.java](src/main/java/es/footleague/app/services/SampleDataService.java), [UserService.java](src/main/java/es/footleague/app/services/UserService.java), [CreateMatch.html](src/main/resources/templates/CreateMatch.html), [edit-profile.html](src/main/resources/templates/edit-profile.html), [header.html](src/main/resources/templates/fragments/header.html), [index.html](src/main/resources/templates/index.html), [login.html](src/main/resources/templates/login.html), [player-ratings.html](src/main/resources/templates/player-ratings.html), [profile.html](src/main/resources/templates/profile.html), [registration.html](src/main/resources/templates/registration.html)   |
 
 ---
 

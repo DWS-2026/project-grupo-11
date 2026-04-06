@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import jakarta.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
@@ -37,6 +38,7 @@ public class WebSecurityConfig {
 		
 		http
 			.authorizeHttpRequests(authorize -> authorize
+				.dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
 					// PUBLIC PAGES
 					.requestMatchers("/").permitAll()
                     .requestMatchers("/register").permitAll()
@@ -49,6 +51,7 @@ public class WebSecurityConfig {
 					.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 					// PRIVATE PAGES
 					.requestMatchers("/profile/*").hasAnyRole("USER")
+					.requestMatchers("/rating/{{id}}/delete").hasAnyRole("USER")
                     .requestMatchers("/profile/*/my-ratings").hasAnyRole("USER")
                     .requestMatchers("/profile/*/edit").hasAnyRole("USER")
 					.requestMatchers("/match/*/rating/new").hasAnyRole("USER")

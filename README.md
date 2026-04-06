@@ -310,7 +310,7 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 ![Diagrama Entidad-Relación](images/database-diagram.png)
 
-> [Descripción opcional: Ej: "El diagrama muestra las 4 entidades principales: Usuario, Producto, Pedido y Categoría, con sus respectivos atributos y relaciones 1:N y N:M."]
+> [El diagrama muestra las entidades principales de la aplicación FootLeague: User, Team y Match, junto con sus relaciones. Un usuario puede gestionar equipos, y los equipos participan en partidos como local y visitante.]
 
 ### **Diagrama de Clases y Templates**
 

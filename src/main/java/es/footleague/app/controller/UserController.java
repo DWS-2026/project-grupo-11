@@ -77,37 +77,36 @@ public class UserController {
         }
         return "user_not_found";
     }
-    // Temporal
 
     @GetMapping("/400")
     public String view400() {
         return "error/400";
-    } // Pase Impreciso
+    } // Bad Request
 
     @GetMapping("/403")
     public String view403() {
         return "error/403";
-    } // Zona Exclusiva
+    } // Restricted Access
 
     @GetMapping("/404")
     public String view404() {
         return "error/404";
-    } // Fuera de Juego
+    } // Not Found
 
     @GetMapping("/409")
     public String view409() {
         return "error/409";
-    } // Jugada Repetida
+    } // Conflict (e.g., username already exists)
 
     @GetMapping("/500")
     public String view500() {
         return "error/500";
-    } // Tarjeta Roja
+    } // Internal Server Error
 
     @GetMapping("/503")
     public String view503() {
         return "error/503";
-    } // En el Banquillo
+    } // Service Unavailable (e.g., database down)
       //
       // 2. REGISTRATION FORM (View)
 
@@ -122,7 +121,7 @@ public class UserController {
     public String processRegister(User user, @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
         if (!imageFile.isEmpty()) {
             try {
-                // Convertimos los bytes del archivo a un Blob
+                // We convert the uploaded file into a Blob to store in MySQL [cite: 73]
                 user.setAvatarData(new javax.sql.rowset.serial.SerialBlob(imageFile.getBytes()));
             } catch (Exception e) {
                 throw new IOException("Error al crear el blob del avatar", e);
@@ -209,17 +208,17 @@ public class UserController {
         Optional<User> user = userService.findByUsernameIgnoreCase(username);
         if (user.isPresent() && user.get().getAvatarData() != null) {
             Blob image = user.get().getAvatarData();
-            // Convertimos el flujo binario del Blob en un recurso descargable [cite: 238]
+            // We create a downloadable resource from the binary stream [cite: 238]
             Resource file = new InputStreamResource(image.getBinaryStream());
 
-            // Detectamos automáticamente si es PNG, JPG, etc. [cite: 239, 240]
+            // We detect the media type automatically (PNG, JPG, etc.) [cite: 239, 240]
             MediaType mediaType = MediaTypeFactory.getMediaType(file).orElse(MediaType.IMAGE_JPEG);
 
             return ResponseEntity.ok()
-                    .contentType(mediaType) // Establecemos el tipo de contenido [cite: 244]
+                    .contentType(mediaType) // We set the content type [cite: 244]
                     .body(file);
         }
-        return ResponseEntity.notFound().build(); // Si no hay imagen, devuelve 404 [cite: 246]
+        return ResponseEntity.notFound().build(); // If there is no image, return 404 [cite: 246]
     }
 
     @GetMapping("/team/{id}/logo")
@@ -231,7 +230,7 @@ public class UserController {
             Resource file = new InputStreamResource(image.getBinaryStream());
 
             return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_PNG) // O usa MediaType.IMAGE_JPEG
+                    .contentType(MediaType.IMAGE_PNG) // Or it use MediaType.IMAGE_JPEG
                     .body(file);
         }
         return ResponseEntity.notFound().build();

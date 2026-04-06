@@ -1,4 +1,4 @@
-/* 1. VARIABLES GLOBALES */
+/* 1. GLOBAL VARIABLES */
 :root {
     --bg-1: #0f172a;
     --bg-2: #0b2545;
@@ -13,7 +13,7 @@
     --danger: #ef4444;
 }
 
-/* 2. ESTILOS GLOBALES */
+/* 2. GLOBAL STYLES */
 body.bg-light {
     background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
     color: #e6eef8;
@@ -30,7 +30,7 @@ body.bg-light {
     backdrop-filter: blur(6px);
 }
 
-/* 3. TARJETAS DE OPCIÓN (ADMIN PANEL) */
+/* 3. CARD OPTIONS */
 .card.option-card {
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
     border: 1px solid rgba(255,255,255,0.04);
@@ -56,7 +56,7 @@ body.bg-light {
     color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* 4. ICONOS */
+/* 4. ICONS */
 .option-icon {
     font-size: 1.5rem;
     width: 48px;
@@ -73,7 +73,7 @@ body.bg-light {
 .option-card[data-option="manage-teams"] .option-icon { background: linear-gradient(180deg,#bbf7d0,#10b981); color: #04201a; }
 .option-card[data-option="return-home"] .option-icon { background: linear-gradient(180deg,#fde68a,#f97316); color: #2b1500; }
 
-/* 5. FORMULARIOS (CREAR/ELIMINAR) */
+/* 5. FORMS (CREATE/DELETE) */
 .form-container, .delete-container {
     background: var(--card-bg);
     backdrop-filter: blur(10px);
@@ -98,7 +98,7 @@ body.bg-light {
     opacity: 0.9; 
 }
 
-/* 6. INPUTS Y BÚSQUEDA */
+/* 6. INPUTS AND SEARCH */
 .form-control.search-box {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -119,7 +119,7 @@ body.bg-light {
     justify-content: center;
 }
 
-/* 7. BOTONES Y MODALES */
+/* 7. BUTTONS AND MODALS */
 .btn-danger-custom {
     background: linear-gradient(180deg, #ef4444, #991b1b);
     border: none;

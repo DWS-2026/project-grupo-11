@@ -43,7 +43,7 @@ public class RatingController {
                 model.addAttribute("loggedUser", user.get());
                 model.addAttribute("logged", true);
                 model.addAttribute("admin", request.isUserInRole("ADMIN"));
-                // El token lo añade automáticamente tu CSRFHandlerInterceptor
+                // The token is added automatically by your CSRFHandlerInterceptor
             }
         }
     }

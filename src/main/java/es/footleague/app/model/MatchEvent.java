@@ -35,11 +35,11 @@ public class MatchEvent {
 
     public MatchEvent() {
     }
-    // --- AÑADE ESTO PARA ARREGLAR LA WEB ---
 
     public boolean getIsLocal() {
         if (this.match == null || this.team == null) return true;
-        // Compara si el ID del equipo del evento es el mismo que el ID del equipo local del partido
+        // It checks if the team of the event is the local team of the match. 
+        // If so, it returns true; otherwise, it returns false (visitor).
         return this.team.getId().equals(this.match.getLocalTeam().getId());
     }
 
@@ -53,7 +53,9 @@ public class MatchEvent {
     }
 
     public boolean getIsYellow() {
-        // Tu Java usa "YELLOW CARD" o "CARD", esto lo unifica para el HTML
+        // It checks if the type of the event is "YELLOW_CARD", "YELLOW CARD" or just "CARD" 
+        // (in case we want to use a generic "CARD" type for both yellow and red). If so, 
+        // it returns true; otherwise, it returns false.
         return "YELLOW_CARD".equalsIgnoreCase(this.type) || 
                "YELLOW CARD".equalsIgnoreCase(this.type) || 
                "CARD".equalsIgnoreCase(this.type);
@@ -146,7 +148,8 @@ public class MatchEvent {
         this.ratings = ratings;
     }
 
-    // Método para devolver el icono según el tipo de evento
+    // Method to get the icon for the event type, used in the HTML to display 
+    // the correct icon for each event
     public String getIcon() {
         if (type == null)
             return "•";
@@ -159,7 +162,7 @@ public class MatchEvent {
         };
     }
 
-    // Método para generar la descripción automática que pedía tu HTML
+    // MMethod to generate the automatic description that your HTML requested
     public String getDescription() {
         if (type == null) return "";
         return switch (type.toUpperCase()) {

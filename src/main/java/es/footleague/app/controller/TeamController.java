@@ -44,7 +44,7 @@ public class TeamController {
                 model.addAttribute("loggedUser", user.get());
                 model.addAttribute("logged", true);
                 model.addAttribute("admin", request.isUserInRole("ADMIN"));
-                // El token lo añade automáticamente tu CSRFHandlerInterceptor
+                // The token is added automatically by your CSRFHandlerInterceptor
             }
         }
     }
@@ -52,12 +52,12 @@ public class TeamController {
     @GetMapping("/list-teams")
     public String listTeams(Model model) {
         model.addAttribute("teams", teamService.findAll());
-        return "ModifyTeam"; // El nombre de tu archivo .mustache o .html
+        return "ModifyTeam"; // the name of the Mustache template to render the list of teams
     }
 
     /**
-     * FORMULARIO NUEVO: Accede a /admin/teams/new
-     * El archivo debe ser: src/main/resources/templates/CreateTeam.mustache
+     * NEW FORM: It allows access to /admin/teams/new
+     * The file should be: src/main/resources/templates/CreateTeam.mustache
      */
     @GetMapping("/new")
     public String showCreateForm(Model model) {
@@ -70,8 +70,7 @@ public class TeamController {
     }
 
     /**
-     * GUARDAR/ACTUALIZAR
-     * Procesa los datos y los persiste en MySQL
+     * SAVE/UPDATE: It processes the form data and persists it in MySQL
      */
     @PostMapping("/save")
     public String saveTeam(
@@ -94,7 +93,7 @@ public class TeamController {
             try {
                 team.setLogoData(new javax.sql.rowset.serial.SerialBlob(file.getBytes()));
             } catch (Exception e) {
-                // Manejo de error al crear el objeto binario [cite: 74]
+                // Error handling in logo upload [cite: 74]
                 throw new IOException("Error al crear el blob del logo", e);
             }
         }
@@ -103,8 +102,8 @@ public class TeamController {
     }
 
     /**
-     * EDITAR: Accede a /admin/teams/edit/1
-     * Reutiliza la plantilla de creación
+     * EDIT: Access /admin/teams/edit/1 to edit the team with id 1
+     * It will show the same form as the creation but pre-filled with the team data. The form will submit to the same /admin/teams/save route, which will handle both creation and update logic based on the presence of the id parameter.
      */
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
@@ -117,12 +116,12 @@ public class TeamController {
     }
 
     /**
-     * ELIMINAR: Accede a /admin/teams/delete/1
+     * Delete: Access /admin/teams/delete/1 to delete the team with id 1. It will check if the team can be deleted (i.e., it has no matches associated) and then delete it from MySQL. If it cannot be deleted, it will redirect back to the list with an error message.
      */
     @GetMapping("/delete/{id}")
     public String deleteTeam(@PathVariable Long id, RedirectAttributes info) {
         if (!teamService.canDelete(id)) {
-            // Enviamos un mensaje de error que Mustache podrá leer
+            // EWe send an error message if the team cannot be deleted due to existing matches
             info.addFlashAttribute("error",
                     "No se puede eliminar: El equipo ya tiene partidos registrados en la liga.");
             return "redirect:/admin/teams/list-teams";

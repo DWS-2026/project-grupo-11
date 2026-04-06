@@ -45,7 +45,7 @@ public class SampleDataService {
 
     @PostConstruct
     public void init() throws IOException {
-        // 1. Crear equipos
+        // 1. Create teams
         Team madridTeam = new Team("Real Madrid", "Santiago Bernabeu");
         setTeamLogo(madridTeam, "static/img/logo_realMadrid.png");
         Team barsaTeam = new Team("FC Barcelona", "Camp Nou");
@@ -57,17 +57,17 @@ public class SampleDataService {
         madridTeam.setPoints(3);
         teamRepository.save(madridTeam);
         teamRepository.save(barsaTeam);
-        // 2. Crear usuarios
+        // 2. Create users
         User user1 = new User("JuanPerez", passwordEncoder.encode("password123"), "juanperez@prensa.com", madridTeam, "USER");
         setUserAvatar(user1, "static/img/Juan_Perez_Avatar.PNG");
         User user2 = new User("admin", passwordEncoder.encode("admin123"), "admin@footleague.es", barsaTeam, "USER", "ADMIN");
         userRepository.save(user1);
         userRepository.save(user2);
-        // 3. Crear partido
+        // 3. Create a match
         Match match = new Match(madridTeam, barsaTeam, 2, 1, LocalDate.of(2026, 02, 01), LocalTime.of(21, 00));
         match.setWeather("Despejado");
         matchRepository.save(match);
-        // 4. Crear eventos
+        // 4. Create match events (goals, cards, etc.) for that match
         MatchEvent goal1 = new MatchEvent("GOAL", 23, "Vinicius Jr.", match, madridTeam);
         MatchEvent card = new MatchEvent("YELLOW_CARD", 40, "Gavi", match, barsaTeam);
         MatchEvent goal2 = new MatchEvent("GOAL", 67, "Lewandowski", match, barsaTeam);
@@ -76,7 +76,7 @@ public class SampleDataService {
         matchEventRepository.save(card);
         matchEventRepository.save(goal2);
         matchEventRepository.save(goal3);
-        // 5. Crear valoraciones
+        // 5. Create ratings for the match events
         Rating r1 = new Rating(5, "Espectacular remate de volea, totalmente imparable.", user1, goal3);
         Rating r2 = new Rating(2, "Demasiado rigurosa, apenas hubo contacto en la jugada.", user2, card);
         ratingRepository.save(r1);

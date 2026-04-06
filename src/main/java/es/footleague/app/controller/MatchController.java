@@ -42,7 +42,7 @@ public class MatchController {
                 model.addAttribute("loggedUser", user.get());
                 model.addAttribute("logged", true);
                 model.addAttribute("admin", request.isUserInRole("ADMIN"));
-                // El token lo añade automáticamente tu CSRFHandlerInterceptor
+                // The token is added automatically by your CSRFHandlerInterceptor
             }
         }
     }
@@ -67,7 +67,8 @@ public class MatchController {
             Match match = matchOpt.get();
             model.addAttribute("match", match);
             model.addAttribute("teams", teamService.findAll());
-            // Atributos para pre-seleccionar clima en el select si usas condiciones en el
+            // Weather attribute for the HTML, e.g. climaSoleado, climaLluvioso, etc. depending 
+            // on match.getWeather()
             // HTML
             model.addAttribute("clima" + match.getWeather(), true);
             model.addAttribute("events", match.getEvents());
@@ -80,7 +81,7 @@ public class MatchController {
     @ResponseBody
     public ResponseEntity<?> saveMatch(@ModelAttribute Match match) {
         try {
-            // SOLUCIÓN: Solo asignar si el estadio está vacío o es nulo
+            // SOLUTION FOR COMMON ERRORS IN MATCH CREATION/EDITING:
             if ((match.getStadium() == null || match.getStadium().trim().isEmpty())
                     && match.getLocalTeam() != null && match.getLocalTeam().getId() != null) {
 
@@ -89,7 +90,8 @@ public class MatchController {
                 });
             }
 
-            // 2. Vincular eventos al partido (evita errores de integridad en MySQL)
+            // 2. Set the match reference in each event to ensure the relationship is properly 
+            // established
             if (match.getEvents() != null) {
                 match.getEvents().forEach(event -> {
                     if (event != null) {
@@ -98,10 +100,10 @@ public class MatchController {
                 });
             }
 
-            // 3. Guardar en MySQL
+            // 3. Save the match (which will also save the events due to cascade settings)
             matchService.save(match);
 
-            // 4. Respuesta de éxito para el fetch
+            // 4. Return a success response with a message
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
             response.put("message", "Partido guardado correctamente");

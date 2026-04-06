@@ -67,7 +67,8 @@ public class MatchController {
             Match match = matchOpt.get();
             model.addAttribute("match", match);
             model.addAttribute("teams", teamService.findAll());
-            // Weather attribute for the HTML, e.g. climaSoleado, climaLluvioso, etc. depending on match.getWeather()
+            // Weather attribute for the HTML, e.g. climaSoleado, climaLluvioso, etc. depending 
+            // on match.getWeather()
             // HTML
             model.addAttribute("clima" + match.getWeather(), true);
             model.addAttribute("events", match.getEvents());
@@ -89,7 +90,8 @@ public class MatchController {
                 });
             }
 
-            // 2. Set the match reference in each event to ensure the relationship is properly established
+            // 2. Set the match reference in each event to ensure the relationship is properly 
+            // established
             if (match.getEvents() != null) {
                 match.getEvents().forEach(event -> {
                     if (event != null) {

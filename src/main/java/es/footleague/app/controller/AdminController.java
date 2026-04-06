@@ -85,6 +85,7 @@ public class AdminController {
         return "redirect:/admin/modify-accounts";
     }
 
-    // NOTE: the rest of the user management functionalities (like role modification) have been removed from this controller
+    // NOTE: the rest of the user management functionalities (like role modification) h
+    // ave been removed from this controller
     // because now they live in MatchController to avoid errors 400, 404 and 500.
 }

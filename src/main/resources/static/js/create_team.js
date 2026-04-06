@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoInput = document.getElementById('teamLogo');
     const preview = document.getElementById('logoPreview');
 
-    // --- Previsualización del Logo ---
+    // --- LOGO PREVIEW ---
     logoInput.addEventListener('change', () => {
         const file = logoInput.files[0];
         if (file) {
@@ -15,17 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Envío del Formulario ---
+    // --- FORM SUBMISSION ---
     teamForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // 1. Obtener el token CSRF del campo oculto en el HTML
+        // 1. Obtain the CSRF token from the hidden input field in the form
         const csrfToken = document.querySelector('input[name="_csrf"]').value;
 
-        // Usamos FormData para empaquetar texto y archivos binarios
+        // We create a FormData object to send the form data, including the file
         const formData = new FormData();
         
-        // Si existe el ID (caso edición), lo añadimos
+        // If we are editing an existing team, we need to include its ID in the form data
         const teamId = document.getElementById('teamId')?.value;
         if (teamId) {
             formData.append('id', teamId);
@@ -40,11 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // Enviamos la petición al controlador de Spring Boot
+            // We send the form data to the server using fetch, 
+            // including the CSRF token in the headers
             const response = await fetch('/admin/teams/save', {
                 method: 'POST',
                 headers: {
-                    // 2. Añadir el token a las cabeceras para evitar el error 403
+                    // 2. Include the CSRF token in the headers for security
                     'X-CSRF-TOKEN': csrfToken
                 },
                 body: formData,

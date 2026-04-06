@@ -38,7 +38,8 @@ public class MatchEvent {
 
     public boolean getIsLocal() {
         if (this.match == null || this.team == null) return true;
-        // It checks if the team of the event is the local team of the match. If so, it returns true; otherwise, it returns false (visitor).
+        // It checks if the team of the event is the local team of the match. 
+        // If so, it returns true; otherwise, it returns false (visitor).
         return this.team.getId().equals(this.match.getLocalTeam().getId());
     }
 
@@ -52,7 +53,9 @@ public class MatchEvent {
     }
 
     public boolean getIsYellow() {
-        // It checks if the type of the event is "YELLOW_CARD", "YELLOW CARD" or just "CARD" (in case we want to use a generic "CARD" type for both yellow and red). If so, it returns true; otherwise, it returns false.
+        // It checks if the type of the event is "YELLOW_CARD", "YELLOW CARD" or just "CARD" 
+        // (in case we want to use a generic "CARD" type for both yellow and red). If so, 
+        // it returns true; otherwise, it returns false.
         return "YELLOW_CARD".equalsIgnoreCase(this.type) || 
                "YELLOW CARD".equalsIgnoreCase(this.type) || 
                "CARD".equalsIgnoreCase(this.type);
@@ -145,7 +148,8 @@ public class MatchEvent {
         this.ratings = ratings;
     }
 
-    // Method to get the icon for the event type, used in the HTML to display the correct icon for each event
+    // Method to get the icon for the event type, used in the HTML to display 
+    // the correct icon for each event
     public String getIcon() {
         if (type == null)
             return "•";

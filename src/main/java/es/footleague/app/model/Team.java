@@ -129,7 +129,6 @@ public class Team {
         this.losses = losses;
     }
     public void updateStats(int goalsFor, int goalsAgainst) {
-        this.playedMatchs++;
         if (goalsFor > goalsAgainst) {
             this.wins++;
             this.points += 3;

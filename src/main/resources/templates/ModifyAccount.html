@@ -92,9 +92,15 @@
                     background: '#1e293b',
                     color: '#ffffff'
                 });
+                const token = document.getElementById('csrfToken').value;
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = '/admin/users/delete/' + userName;
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_csrf'; // Nombre que espera Spring Security
+                csrfInput.value = token;
+                form.appendChild(csrfInput);
                 document.body.appendChild(form);
                 form.submit();
             }

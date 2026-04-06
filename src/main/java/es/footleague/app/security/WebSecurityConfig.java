@@ -51,7 +51,7 @@ public class WebSecurityConfig {
 					.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 					// PRIVATE PAGES
 					.requestMatchers("/profile/*").hasAnyRole("USER")
-					.requestMatchers("/rating/{{id}}/delete").hasAnyRole("USER")
+					.requestMatchers("/rating/{id}/delete").hasAnyRole("USER")
                     .requestMatchers("/profile/*/my-ratings").hasAnyRole("USER")
                     .requestMatchers("/profile/*/edit").hasAnyRole("USER")
 					.requestMatchers("/match/*/rating/new").hasAnyRole("USER")

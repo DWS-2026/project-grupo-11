@@ -274,8 +274,8 @@ Solo si han cambiado.
 
 1. **Clonar el repositorio**
    ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
+   git https://github.com/CodeURJC-DAW-2025-26/project-grupo-11.git
+   cd project-grupo-11.git
    ```
 
 2. **Configurar la Base de Datos (MySQL)**

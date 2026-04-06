@@ -322,13 +322,13 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 ### **Participación de Miembros en la Práctica 2**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - Jaime Tejero Fernández**
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
+|1| [Cambios grandes en la creacion de equipos del /admin](https://github.com/DWS-2026/project-grupo-11/commit/c355cb36aa5f98d424f967d3bd6f5e355dbc17fc)  | [](src/main/java/es/footleague/app/controller/RatingController.java), [](src/main/java/es/footleague/app/controller/TeamRestController.java), [](src/main/java/es/footleague/app/controller/ViewController.java),  [](src/main/java/es/footleague/app/model/Team.java), [](src/main/java/es/footleague/app/services/TeamService.java), [](src/main/resources/aplication.properties.java), [](src/main/resources/static/js/Team_Management.js), [](src/main/resources/static/create_team.js), [](src/main/resources/static/js/match_logic.js), [](src/main/resources/templates/CreateTeam.html), [](src/main/resources/templates/EditTeam.html), [](src/main/resources/templates/ModifyTeam.html), [](src/main/resources/templates/Team_Mangement_Screen.html),|
 |2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
 |3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
 |4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |

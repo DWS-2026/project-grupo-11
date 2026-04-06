@@ -20,14 +20,14 @@ public class TeamService {
     private MatchRepository matchRepository;
 
     /**
-     * Obtiene la lista de todos los equipos registrados.
+     * It retrieves all teams from the database and returns them as a list. This is useful for displaying all teams in the application, such as in a list or table format.
      */
     public List<Team> findAll() {
         return teamRepository.findAll();
     }
 
     /**
-     * Busca un equipo por su ID único.
+     * It retrieves a team from the database by its ID and returns it as an Optional.
      */
     public Optional<Team> findById(Long id) {
         return teamRepository.findById(id);
@@ -42,20 +42,23 @@ public class TeamService {
     }
 
     public boolean canDelete(Long teamId) {
-        // Si el conteo es 0, el equipo está "limpio" y se puede borrar
+        // If the count of matches where the team is either local or visitor is greater than 0, 
+        // it means that the team has played matches and therefore cannot be deleted.
+        //  If the count is 0, it means that the team has not played any matches and can be safely 
+        // deleted without affecting any match records.
         return matchRepository.countByLocalTeamIdOrVisitorTeamId(teamId, teamId) == 0;
     }
 
     /**
-     * Guarda un equipo. Sirve tanto para crear uno nuevo
-     * como para actualizar uno existente.
+     * It saves a team to the database.
+     * This is useful for creating a new team or updating an existing one.
      */
-    public Team save(Team team) { // Cambiado de void a Team
-        return teamRepository.save(team); // Añadido return
+    public Team save(Team team) { // Changed from void to Team
+        return teamRepository.save(team); // Added return
     }
 
     /**
-     * Elimina un equipo de la base de datos por su ID.
+     * It deletes a team from the database by its ID.
      */
     public void deleteById(Long id) {
         if (teamRepository.existsById(id)) {

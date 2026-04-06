@@ -33,11 +33,18 @@
                         <span class="mx-1 text-white-50">vs</span>
                         <span class="fw-bold text-danger">{{visitorTeam.name}}</span>
                     </td>
+                    {{#finalized}}
                     <td class="text-center">
                         <span class="badge bg-dark border border-info px-3 py-2 fs-6">
                             {{localGoals}} - {{visitorGoals}}
                         </span>
                     </td>
+                    {{/finalized}}
+                    {{^finalized}}
+                    <td class="text-center">
+                        <span class="badge bg-dark border border-info px-3 py-2 fs-6">-</span>
+                    </td>
+                    {{/finalized}}
                     <td class="small text-white-50">{{stadium}}</td>
                     <td>
                         <span class="badge bg-secondary border border-light">{{weather}}</span>

@@ -65,19 +65,43 @@ public class MatchService {
         Team visitor = teamRepository.findById(match.getVisitorTeam().getId())
                 .orElseThrow(() -> new RuntimeException("Equipo visitante no encontrado"));
 
-        // 2. We check if the match already exists (if it has an ID). If it does, it means we are updating an existing match, so we need to revert the statistics of the old result before applying the new one. This is because when we update a match, we might change the score, and therefore we need to first undo the effect of the old score on the teams' statistics before applying the new score. If the match does not have an ID, it means it is a new match, and in that case, we simply add +1 to the matches played for both teams without needing to revert anything.
+        // 2. Obtener estado anterior del partido (si existe)
+        Match oldMatch = null;
+
         if (match.getId() != null) {
-            Match oldMatch = matchRepository.findById(match.getId())
+            oldMatch = matchRepository.findById(match.getId())
                     .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+        }
 
-            // We revert the old result (points, wins, losses, etc.) but we do NOT decrease the number of matches played, because the match is still being played, only the goals change. This way we ensure that if we are editing a match, we do not accidentally decrease the matches played for the teams, which would be incorrect since the match still exists and is still being played, we are just changing its result.
+        boolean wasPlayed = oldMatch != null && oldMatch.isPlayed();
+        boolean isNowPlayed = match.isPlayed();
 
-            revertOldResultOnly(oldMatch);
-        } else {
-            // 3. It is new?
-            // We only increase the number of matches played for both teams, because it is a new match that is being added to the league, so we need to reflect that both teams have played one more match. The wins, losses, draws and points will be updated later according to the result of the match (goals scored by each team).
+        // 3. TRANSICIONES DE ESTADO
+
+        // 🟢 Caso 1: NO jugado → jugado
+        if (!wasPlayed && isNowPlayed) {
             local.setPlayedMatchs(local.getPlayedMatchs() + 1);
             visitor.setPlayedMatchs(visitor.getPlayedMatchs() + 1);
+        }
+
+        // 🔴 Caso 2: YA jugado → sigue jugado (edición)
+        if (wasPlayed && isNowPlayed) {
+            revertOldResultOnly(oldMatch);
+        }
+
+        // ⚫ Caso 3: jugado → NO jugado (raro, pero controlado)
+        if (wasPlayed && !isNowPlayed) {
+            revertTeamStats(oldMatch, local, visitor);
+        }
+
+        // 🔴 Caso 2: YA jugado → sigue jugado (edición)
+        if (wasPlayed && isNowPlayed) {
+            revertOldResultOnly(oldMatch);
+        }
+
+        // ⚫ Caso 3: jugado → NO jugado (raro, pero controlado)
+        if (wasPlayed && !isNowPlayed) {
+            revertTeamStats(oldMatch, local, visitor);
         }
 
         // 4. We set the local and visitor teams in the match object to ensure that the relationship is properly established before saving the match. This is important because the match needs to have references to the full Team entities (not just their IDs) in order for Hibernate to manage the relationships and for the statistics updates to work correctly.
@@ -87,12 +111,14 @@ public class MatchService {
         // 5. We save the match
         matchRepository.save(match);
 
-        // 6. Now we update the statistics of both teams according to the result of the match (goals scored by each team). We call the updateStats() method on both teams, passing the goals scored by the local team and the goals scored by the visitor team. This method will internally determine if it was a win, loss or draw for each team and update their wins, losses, draws and points accordingly.
-        if (match.getLocalGoals() != null && match.getVisitorGoals() != null) {
+        // 6. Aplicar estadísticas SOLO si está jugado
+        if (isNowPlayed && match.getLocalGoals() != null && match.getVisitorGoals() != null) {
+
             local.updateStats(match.getLocalGoals(), match.getVisitorGoals());
             visitor.updateStats(match.getVisitorGoals(), match.getLocalGoals());
 
-            // 7. We save the updated teams to the database so that the changes in their statistics are persisted after saving the match. This is important because we need to ensure that the teams' statistics are updated in the database to reflect the result of the match that was just saved or updated. If we don't save the teams after updating their stats, the changes would not be persisted and the teams' statistics would be incorrect when viewed later.
+            // 7. Guardamos los equipos (ahora Hibernate no se quejará porque el 'name' está
+            // presente)
             teamRepository.save(local);
             teamRepository.save(visitor);
         }

@@ -259,8 +259,10 @@ Me encargué de la autenticación de usuarios (login y registro), del diseño y 
 Solo si ha cambiado.
 
 #### **Capturas de Pantalla Actualizadas**
-
-Solo si han cambiado.
+La app sigue usando las mismas vistas que en la Práctica 1 para no cargarnos la usabilidad que ya funcionaba bien. Lo que más cambia a nivel visual es el header y el footer. El Header incluye el control de seguridad de Spring Security, y junto con el nuevo Footer le da a toda la plataforma un aspecto más sólido y coherente.
+#### **Header y Footer actualizados**
+![Siendo usuario sin registrar](images/Header_Footer_actualizado.jpg)
+![Siendo administrador](images/Header_Footer_admin.jpg)
 
 ### **Instrucciones de Ejecución**
 

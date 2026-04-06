@@ -274,15 +274,35 @@ Solo si han cambiado.
 
 1. **Clonar el repositorio**
    ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
+   git https://github.com/CodeURJC-DAW-2025-26/project-grupo-11.git
+   cd project-grupo-11.git
    ```
 
-2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
+2. **Configurar la Base de Datos (MySQL)**
+   Abre tu terminal de MySQL o MySQL Workbench.
+   Crea la base de datos necesaria para el proyecto:
+   ```SQL
+   CREATE DATABASE footleague
+   ```
+   Si has cambiado el usuario o la contraseña de tu MySQL local, abre el archivo src/main/resources/application.properties y actualiza estas         líneas:
+   ```Properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/footleague_db
+   spring.datasource.username=tu_usuario
+   spring.datasource.password=tu_contraseña
+   ```
+3. **Compilar e instalar las dependencias**
+4. **Ejecutar la aplicación desde el IDE**
+   Localiza la clase principal del proyecto: src/main/java/es/footleague/app/FootballApplication.java.
+   Haz clic derecho sobre el archivo o busca el icono de "Run" (un triángulo verde ▶️) que aparece junto a la definición de la clase: public        class FootballApplication.
+   Selecciona "Run 'FootballApplication'".
+   La consola integrada del IDE mostrará el log de Spring Boot indicando que el servidor se ha levantado correctamente.
+5. **Acceder a la web**
+   Una vez que en la consola aparezca el mensaje Started ... in X seconds, abre tu navegador y entra en:
+   https://localhost:8443
 
 #### **Credenciales de prueba**
-- **Usuario Admin**: usuario: `admin`, contraseña: `admin`
-- **Usuario Registrado**: usuario: `user`, contraseña: `user`
+- **Usuario Admin**: usuario: `admin`, contraseña: `admin123`
+- **Usuario Registrado**: usuario: `JuanPerez`, contraseña: `password123`
 
 ### **Diagrama de Entidades de Base de Datos**
 
@@ -296,9 +316,9 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 Diagrama de clases de la aplicación con diferenciación por colores o secciones:
 
-![Diagrama de Clases](images/classes-diagram.png)
+![Diagrama de Clases](images/DiagramaClasesTemplates.png)
 
-> [Descripción opcional del diagrama y relaciones principales]
+> [El diagrama muestra la arquitectura de la aplicación FootLeague. La idea de usar colores es básicamente para ver rápido quién hace qué. Las vistas (morado) hablan con los controladores (verde), que son los que organizan toda la lógica del negocio usando los servicios (rojo). Esos servicios, a su vez, tiran de los datos de las entidades (gris) a través de los repositorios (azul). Todo esto funciona dentro de un entorno protegido por Spring Security.]
 
 ### **Participación de Miembros en la Práctica 2**
 

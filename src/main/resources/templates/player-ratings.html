@@ -3,15 +3,15 @@
 <div class="form-container">
     <h1 class="h4 text-white text-center mb-4">Valorar Evento del Partido</h1>
 
-    <form action="/rating/save" method="post" style="display: inline;"> 
+    <form action="/rating/save" method="post" style="display: inline;">
 
         <input type="hidden" name="_csrf" value="{{token}}">
-        
+
         <div class="mb-3">
             <label class="form-label">Seleccionar Evento</label>
             <select class="form-control search-box text-white bg-dark" name="eventId" required>
                 {{#events}}
-                    <option value="{{id}}">{{type}} - {{team.name}} (Min {{minute}})</option>
+                <option value="{{id}}">{{type}} - {{team.name}} (Min {{minute}})</option>
                 {{/events}}
             </select>
             <small class="text-white-50 mt-1 d-block">Solo aparecen eventos del partido seleccionado</small>
@@ -28,16 +28,35 @@
 
         <div class="mb-4">
             <label class="form-label">Comentario</label>
-            <textarea class="form-control search-box" name="comment" rows="3" placeholder="Tu opinión técnica..." required></textarea>
+            <textarea style="display: none;" id="comment-textarea" name="comment" rows="3"
+                placeholder="Tu opinión técnica..." required></textarea>
+            <div id="editor" style="background: white; color: black; height: 150px;"></div>
         </div>
+</div>
 
-        <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-primary" id="continueBtn">Enviar Valoración</button>
-            <a href="/profile/{{loggedUser.username}}/my-ratings" class="btn btn-outline-info btn-sm py-2">Ver mis valoraciones anteriores</a>
-            <a href="/match/{{matchId}}" class="btn btn-return text-center py-2">Cancelar</a>
-        </div>
-    </form>
+<div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary" id="continueBtn">Enviar Valoración</button>
+    <a href="/profile/{{loggedUser.username}}/my-ratings" class="btn btn-outline-info btn-sm py-2">Ver mis valoraciones
+        anteriores</a>
+    <a href="/match/{{matchId}}" class="btn btn-return text-center py-2">Cancelar</a>
+</div>
+</form>
 </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.js"></script>
+
+<script>
+    // 1. Inicializa el editor en el div con id "editor"
+    const quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+
+    // 2. Cada vez que el usuario escriba algo en el editor...
+    quill.on('text-change', function () {
+        // ...copiamos el contenido HTML al textarea oculto
+        document.getElementById('comment-textarea').value = quill.root.innerHTML;
+    });
+</script>
 
 {{>fragments/footer}}

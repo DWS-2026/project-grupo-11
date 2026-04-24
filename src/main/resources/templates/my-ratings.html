@@ -1,25 +1,26 @@
 {{>fragments/header}}
 
 {{#mensaje}}
-    <div class="alert alert-success text-center mb-4">
-        {{mensaje}}
-    </div>
+<div class="alert alert-success text-center mb-4">
+    {{mensaje}}
+</div>
 {{/mensaje}}
 
 <div class="form-container" style="max-width: 800px;">
     <h1 class="h4 text-white text-center mb-4 border-bottom pb-3">Historial de Eventos Valorados</h1>
 
-    {{#ratings}} 
+    {{#ratings}}
     <div class="card option-card p-3 mb-3">
         <div class="d-flex justify-content-between align-items-start">
             <div class="d-flex">
-                <div class="me-3 h2">{{event.icon}}</div> 
+                <div class="me-3 h2">{{event.icon}}</div>
                 <div>
                     <h6 class="text-white mb-1">{{event.description}} - {{event.team.name}}</h6>
                     <small class="text-white-50">
-                        Minuto {{event.minute}} | {{event.match.localTeam.name}} {{event.match.localGoals}} - {{event.match.visitorGoals}} {{event.match.visitorTeam.name}}
+                        Minuto {{event.minute}} | {{event.match.localTeam.name}} {{event.match.localGoals}} -
+                        {{event.match.visitorGoals}} {{event.match.visitorTeam.name}}
                     </small>
-                    <p class="mt-2 text-muted mb-0 small italic">{{comment}}</p>
+                    <div class="mt-2 text-white-50 border-start ps-2">{{{comment}}}</div>
                 </div>
             </div>
             <div class="text-end">
@@ -38,10 +39,10 @@
                 </form>
             </div>
         </div>
-    </div> 
+    </div>
     {{/ratings}}
     {{^ratings}}
-        <p class="text-white text-center">Aún no has realizado ninguna valoración.</p>
+    <p class="text-white text-center">Aún no has realizado ninguna valoración.</p>
     {{/ratings}}
 
     <div class="d-grid gap-2 mt-4">

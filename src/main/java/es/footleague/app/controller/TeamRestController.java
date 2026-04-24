@@ -61,12 +61,15 @@ public class TeamRestController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    // 3. BORRADO (DELETE) - Solo para ADMIN
+    // 3. BORRADO (DELETE) 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
         if (teamService.findById(id).isPresent()) {
             teamService.deleteById(id);
             return ResponseEntity.noContent().build();
+        }
+        if (!teamService.canDelete(id)) {
+            return ResponseEntity.status(409).build(); // 409 Conflict: Hay partidos asociados
         }
         return ResponseEntity.notFound().build();
     }

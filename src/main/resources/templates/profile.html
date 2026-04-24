@@ -4,7 +4,7 @@
     <div class="col-md-4 mb-4">
         <div class="card shadow-sm border-0 text-center p-4">
             <div class="mb-3">
-                <img src="{{#user.avatarData}}/user/{{user.username}}/avatar{{/user.avatarData}}{{^user.avatarData}}/images/default-avatar.png{{/user.avatarData}}" 
+                <img src="{{#user.avatarData}}/user/{{user.username}}/avatar{{/user.avatarData}}{{^user.avatarData}}/images/default-avatar.png{{/user.avatarData}}"
                     class="rounded-circle img-thumbnail" alt="Avatar"
                     style="width: 150px; height: 150px; object-fit: cover;">
             </div>
@@ -12,7 +12,7 @@
             <hr>
             <div class="text-start">
                 <p><strong>Email:</strong>{{user.email}}</p>
-                <p><strong>Equipo Favorito:</strong> 
+                <p><strong>Equipo Favorito:</strong>
                     <span>
                         {{#user.favouriteTeam}}{{name}}{{/user.favouriteTeam}}
                         {{^user.favouriteTeam}}No seleccionado{{/user.favouriteTeam}}
@@ -20,7 +20,8 @@
                 </p>
             </div>
             {{#isOwner}}
-            <a href="/profile/{{user.username}}/edit" class="btn btn-outline-primary btn-sm w-100 mt-3">Editar Perfil</a>
+            <a href="/profile/{{user.username}}/edit" class="btn btn-outline-primary btn-sm w-100 mt-3">Editar
+                Perfil</a>
             {{/isOwner}}
         </div>
         {{#admin}}
@@ -42,11 +43,12 @@
                     <div class="me-3 h2">{{event.icon}}</div>
                     <div class="flex-grow-1 ms-3">
                         <div class="d-flex justify-content-between">
-                            <h6 class="mb-1">{{event.type}} - {{event.match.localTeam.name}} vs {{event.match.visitorTeam.name}}</h6>
+                            <h6 class="mb-1">{{event.type}} - {{event.match.localTeam.name}} vs
+                                {{event.match.visitorTeam.name}}</h6>
                             <span class="badge bg-warning text-dark">⭐ {{score}}</span>
                         </div>
                         <p class="small text-muted mb-1">Fecha: {{event.match.matchDate}}</p>
-                        <p class="mb-0 italic text-secondary">"{{comment}}"</p>
+                        <div class="mb-0 text-secondary quill-content">"{{{comment}}}"</div>
                     </div>
                 </div>
                 {{/user.ratings}}
@@ -56,7 +58,8 @@
                 {{/user.ratings}}
             </div>
             <div class="card-footer bg-white text-center">
-                <a href="/profile/{{user.username}}/my-ratings" class="text-decoration-none small">Ver todas mis valoraciones</a>
+                <a href="/profile/{{user.username}}/my-ratings" class="text-decoration-none small">Ver todas mis
+                    valoraciones</a>
             </div>
         </div>
     </div>

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import es.footleague.app.model.Team;
 import es.footleague.app.repository.MatchRepository;
 import es.footleague.app.repository.TeamRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault; // Opcional, para valores por defecto
 
 @Service
 public class TeamService {
@@ -64,5 +67,8 @@ public class TeamService {
         if (teamRepository.existsById(id)) {
             teamRepository.deleteById(id);
         }
+    }
+    public Page<Team> findAll(Pageable pageable) {
+        return teamRepository.findAll(pageable);
     }
 }

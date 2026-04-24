@@ -15,7 +15,7 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired 
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public List<User> findAll() {
@@ -36,7 +36,19 @@ public class UserService {
                 .ifPresent(userRepository::delete);
     }
 
-    public void save(User user){
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
+
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }

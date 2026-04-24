@@ -21,7 +21,7 @@ import jakarta.servlet.DispatcherType;
 public class WebSecurityConfig {
 
 	@Autowired
-    public RepositoryUserDetailsService userDetailService;
+	public RepositoryUserDetailsService userDetailService;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -44,23 +44,19 @@ public class WebSecurityConfig {
 
 		http
 				.securityMatcher("/api/**");
-				//.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
+		// .exceptionHandling(handling ->
+		// handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
 		http
 				.authorizeHttpRequests(authorize -> authorize
-						// PRIVATE ENDPOINTS
-						// Images
-						//.requestMatchers(HttpMethod.PUT, "/api/images/*/media").hasRole("USER")
-						//.requestMatchers(HttpMethod.DELETE, "/api/books/*/images/*").hasRole("USER")
-						// Books
-						//.requestMatchers(HttpMethod.POST, "/api/books/**").hasRole("USER")
-						//.requestMatchers(HttpMethod.PUT, "/api/books/**").hasRole("USER")
-						//.requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN")
-						// Shops
-						//.requestMatchers(HttpMethod.PUT, "/api/shops/**").hasRole("ADMIN")
-						//.requestMatchers(HttpMethod.PUT, "/api/shops/**").hasRole("ADMIN")
-						//.requestMatchers(HttpMethod.DELETE, "/api/shops/**").hasRole("ADMIN")
 						// PUBLIC ENDPOINTS
+						.requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
+						// USER ENDPOINTS
+						.requestMatchers(HttpMethod.GET, "/api/v1/users/me").hasAnyRole("USER", "ADMIN")
+						// ADMIN ENDPOINTS
+						.requestMatchers(HttpMethod.GET, "/api/v1/users/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/api/v1/users/**").hasRole("ADMIN")
 						.anyRequest().permitAll());
 
 		// Disable Form login Authentication
@@ -76,50 +72,49 @@ public class WebSecurityConfig {
 		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		// Add JWT Token filter
-		// http.addFilterBefore(new JwtRequestFilter(userDetailService, jwtTokenProvider),
-		//		UsernamePasswordAuthenticationFilter.class);
+		// http.addFilterBefore(new JwtRequestFilter(userDetailService,
+		// jwtTokenProvider),
+		// UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
+
 	@Bean
 	@Order(2)
 	public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
-		
+
 		http.authenticationProvider(authenticationProvider());
-		
+
 		http
-			.authorizeHttpRequests(authorize -> authorize
-				.dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
-					// PUBLIC PAGES
-					.requestMatchers("/").permitAll()
-                    .requestMatchers("/register").permitAll()
-					.requestMatchers("/user/*/avatar").permitAll()
-					.requestMatchers("/team/*/logo").permitAll()
-					.requestMatchers("/classification").permitAll()
-					.requestMatchers("/match-list").permitAll()
-					.requestMatchers("/match/{id}").permitAll()
-					.requestMatchers("/error").permitAll()
-					.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-					// PRIVATE PAGES
-					.requestMatchers("/profile/*").hasAnyRole("USER")
-					.requestMatchers("/rating/{id}/delete").hasAnyRole("USER")
-                    .requestMatchers("/profile/*/my-ratings").hasAnyRole("USER")
-                    .requestMatchers("/profile/*/edit").hasAnyRole("USER")
-					.requestMatchers("/match/*/rating/new").hasAnyRole("USER")
-					.requestMatchers("/rating/save").hasAnyRole("USER")
-					.requestMatchers("/admin/**").hasAnyRole("ADMIN")
-			)
-			.formLogin(formLogin -> formLogin
-					.loginPage("/login")
-					.failureUrl("/loginerror")
-					.defaultSuccessUrl("/")
-					.permitAll()
-			)
-			.logout(logout -> logout
-					.logoutUrl("/logout")
-					.logoutSuccessUrl("/")
-					.permitAll()
-			);
+				.authorizeHttpRequests(authorize -> authorize
+						.dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+						// PUBLIC PAGES
+						.requestMatchers("/").permitAll()
+						.requestMatchers("/register").permitAll()
+						.requestMatchers("/user/*/avatar").permitAll()
+						.requestMatchers("/team/*/logo").permitAll()
+						.requestMatchers("/classification").permitAll()
+						.requestMatchers("/match-list").permitAll()
+						.requestMatchers("/match/{id}").permitAll()
+						.requestMatchers("/error").permitAll()
+						.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+						// PRIVATE PAGES
+						.requestMatchers("/profile/*").hasAnyRole("USER")
+						.requestMatchers("/rating/{id}/delete").hasAnyRole("USER")
+						.requestMatchers("/profile/*/my-ratings").hasAnyRole("USER")
+						.requestMatchers("/profile/*/edit").hasAnyRole("USER")
+						.requestMatchers("/match/*/rating/new").hasAnyRole("USER")
+						.requestMatchers("/rating/save").hasAnyRole("USER")
+						.requestMatchers("/admin/**").hasAnyRole("ADMIN"))
+				.formLogin(formLogin -> formLogin
+						.loginPage("/login")
+						.failureUrl("/loginerror")
+						.defaultSuccessUrl("/")
+						.permitAll())
+				.logout(logout -> logout
+						.logoutUrl("/logout")
+						.logoutSuccessUrl("/")
+						.permitAll());
 
 		return http.build();
 	}

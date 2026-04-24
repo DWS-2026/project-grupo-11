@@ -1,4 +1,4 @@
-package es.footleague.app.model; // Cambiado a un paquete de DTOs
+package es.footleague.app.dto; // Cambiado a un paquete de DTOs
 
 import es.footleague.app.model.Team;
 

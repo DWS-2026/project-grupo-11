@@ -1,6 +1,6 @@
 package es.footleague.app.controller;
+import es.footleague.app.dto.TeamDTO;
 import es.footleague.app.model.Team;
-import es.footleague.app.model.TeamDTO;
 import es.footleague.app.services.TeamService;
 
 import java.net.URI;

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 
@@ -39,6 +40,7 @@ public class TeamRestController {
     // --- AÑADIR ESTO A TU TeamRestController.java ---
 
     // 1. CREACIÓN (POST) con validación básica
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
     public ResponseEntity<TeamDTO> createTeam(@RequestBody Team team, HttpServletRequest request) {
         // Validación de campo (Punto 6 de la rúbrica)
@@ -47,10 +49,11 @@ public class TeamRestController {
         }
         Team newTeam = teamService.save(team);
         URI location = ServletUriComponentsBuilder.fromContextPath(request).path("/api/v1/teams/{id}").buildAndExpand(newTeam.getId()).toUri();
-        return ResponseEntity.status(201).body(new TeamDTO(newTeam));
+        return ResponseEntity.created(location).body(new TeamDTO(newTeam));
     }
 
     // 2. EDICIÓN (PUT)
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TeamDTO> updateTeam(@PathVariable Long id, @RequestBody Team updatedTeam) {
         return teamService.findById(id).map(existingTeam -> {
@@ -62,19 +65,22 @@ public class TeamRestController {
     }
 
     // 3. BORRADO (DELETE) 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
-        if (teamService.findById(id).isPresent()) {
-            teamService.deleteById(id);
-            return ResponseEntity.noContent().build();
+        if (teamService.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+        // Primero compruebas la restricción
         if (!teamService.canDelete(id)) {
-            return ResponseEntity.status(409).build(); // 409 Conflict: Hay partidos asociados
+            return ResponseEntity.status(409).build(); 
         }
-        return ResponseEntity.notFound().build();
+        // Si pasa la prueba, borras
+        teamService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
-    // 4. VER IMAGEN (Requisito de gestión de ficheros)
+        // 4. VER IMAGEN (Requisito de gestión de ficheros)
     @GetMapping("/{id}/logo")
     public ResponseEntity<byte[]> getTeamLogo(@PathVariable Long id) throws SQLException {
         Team team = teamService.findById(id).orElseThrow();

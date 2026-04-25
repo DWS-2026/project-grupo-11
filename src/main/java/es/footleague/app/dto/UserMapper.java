@@ -2,8 +2,9 @@ package es.footleague.app.dto;
 
 import org.mapstruct.Mapper;
 import es.footleague.app.model.User;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
+@Component
 public class UserMapper {
 
     public UserDTO toDTO(User user) {

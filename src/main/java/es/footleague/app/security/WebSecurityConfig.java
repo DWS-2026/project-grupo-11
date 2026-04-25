@@ -57,7 +57,14 @@ public class WebSecurityConfig {
 						// ADMIN ENDPOINTS
 						.requestMatchers(HttpMethod.GET, "/api/v1/users/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/api/v1/users/**").hasRole("ADMIN")
+						// Permisos de escritura: Solo ADMIN
+						.requestMatchers(HttpMethod.GET, "/api/v1/teams/**").permitAll()
+    					.requestMatchers(HttpMethod.GET, "/api/v1/matches/**").permitAll()
+    					.requestMatchers("/api/v1/teams/**").hasRole("ADMIN")
+    					.requestMatchers("/api/v1/matches/**").hasRole("ADMIN")
+    					.requestMatchers("/api/v1/events/**").hasRole("ADMIN")
 						.anyRequest().permitAll());
+
 
 		// Disable Form login Authentication
 		http.formLogin(formLogin -> formLogin.disable());

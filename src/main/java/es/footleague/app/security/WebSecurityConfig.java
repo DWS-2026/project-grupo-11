@@ -77,6 +77,7 @@ public class WebSecurityConfig {
 						.requestMatchers(HttpMethod.DELETE, "/api/v1/events/**").hasRole("ADMIN")
 						.anyRequest().authenticated());
 
+
 		// Disable Form login Authentication
 		http.formLogin(formLogin -> formLogin.disable());
 

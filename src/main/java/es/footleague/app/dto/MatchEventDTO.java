@@ -1,32 +1,30 @@
 package es.footleague.app.dto;
-
-import es.footleague.app.model.MatchEvent;
-
-public class MatchEventDTO {
-    private Long id;
-    private int minute;
-    private String type;
-    private String description;
-    private String teamName;
-
-    public MatchEventDTO(MatchEvent event) {
-        this.id = event.getId();
-        this.minute = event.getMinute();
-        this.type = event.getType();
-        this.description = event.getDescription(); // Reutilizamos tu lógica de descripción
-        this.teamName = event.getTeam().getName();
-    }
-    // GETTERS
-    public Long getId() { return id; }
-    public int getMinute() { return minute; }
-    public String getType() { return type; }
-    public String getDescription() { return description; }
-    public String getTeamName() { return teamName; }
-
-    // SETTERS (Opcionales para Jackson, pero recomendados)
-    public void setId(Long id) { this.id = id; }
-    public void setMinute(int minute) { this.minute = minute; }
-    public void setType(String type) { this.type = type; }
-    public void setDescription(String description) { this.description = description; }
-    public void setTeamName(String teamName) { this.teamName = teamName; }
-}
+ 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+ 
+public record MatchEventDTO(
+        Long id,
+ 
+        @NotNull(message = "Minute is required")
+        @Min(value = 0, message = "Minute must be between 0 and 120")
+        @Max(value = 120, message = "Minute must be between 0 and 120")
+        Integer minute,
+ 
+        @NotBlank(message = "Type is required")
+        String type,
+ 
+        String namePlayer,
+        String namePlayerOut,
+        String namePlayerIn,
+ 
+        @NotNull(message = "Match ID is required")
+        Long matchId,
+ 
+        @NotNull(message = "Team ID is required")
+        Long teamId,
+ 
+        String teamName
+) {}

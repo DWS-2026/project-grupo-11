@@ -1,13 +1,18 @@
 package es.footleague.app.controller;
 
 import java.security.Principal;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.footleague.app.dto.UserDTO;
 import es.footleague.app.dto.UserMapper;
@@ -108,4 +113,30 @@ public class UserRestController {
         return ResponseEntity.noContent().build();
     }
 
+    // GET user avatar
+    @GetMapping("/{id}/avatar")
+    public ResponseEntity<Object> getUserAvatar(@PathVariable Long id) throws SQLException {
+        User user = userService.findById(id).orElseThrow();
+        if (user.getAvatarData() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        var avatar = user.getAvatarData();
+        var resource = new InputStreamResource(avatar.getBinaryStream());
+        MediaType mediaType = MediaTypeFactory.getMediaType(resource).orElse(MediaType.IMAGE_JPEG);
+        return ResponseEntity.ok().contentType(mediaType).body(resource);
+    }
+
+    // PUT update user avatar
+    @PutMapping("/{id}/avatar")
+    public ResponseEntity<Void> updateUserAvatar(@PathVariable Long id,
+            @RequestParam MultipartFile imageFile) throws Exception {
+        if (!userService.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        if (imageFile.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        userService.updateAvatar(id, imageFile.getBytes());
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -82,7 +82,7 @@ public class SampleDataService {
         ratingRepository.save(r1);
         ratingRepository.save(r2);
 
-        System.out.println("⚽ [SampleDataService] ¡Datos de FootLeague cargados con éxito!");
+        System.out.println("⚽ [SampleDataService] FootLeague data loaded successfully!");
     }
 
     private void setTeamLogo(Team team, String path) throws IOException {

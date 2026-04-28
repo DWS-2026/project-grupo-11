@@ -22,7 +22,7 @@ public class TeamDTO {
     public String getStadiumName() { return stadiumName; }
     public int getPoints() { return points; }
 
-    // Setters (Útiles para cuando implementes el POST/PUT)
+    // Setters 
     public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setStadiumName(String stadiumName) { this.stadiumName = stadiumName; }

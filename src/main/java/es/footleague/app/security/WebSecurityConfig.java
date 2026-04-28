@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -52,14 +53,29 @@ public class WebSecurityConfig {
 						// PUBLIC ENDPOINTS
 						.requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/teams/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/matches/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/events/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/users/*/avatar").permitAll()
 						// USER ENDPOINTS
 						.requestMatchers(HttpMethod.GET, "/api/v1/users/me").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/api/v1/users/*/avatar").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.GET, "/api/v1/ratings/**").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.POST, "/api/v1/ratings/**").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/api/v1/ratings/**").hasAnyRole("USER", "ADMIN")
 						// ADMIN ENDPOINTS
 						.requestMatchers(HttpMethod.GET, "/api/v1/users/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/api/v1/users/**").hasRole("ADMIN")
-						.anyRequest().permitAll());
+						.requestMatchers(HttpMethod.POST, "/api/v1/teams/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/api/v1/teams/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/api/v1/teams/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/api/v1/matches/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/api/v1/matches/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/api/v1/matches/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/api/v1/events/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/api/v1/events/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/api/v1/events/**").hasRole("ADMIN")
+						.anyRequest().authenticated());
 
 		// Disable Form login Authentication
 		http.formLogin(formLogin -> formLogin.disable());
@@ -68,7 +84,7 @@ public class WebSecurityConfig {
 		http.csrf(csrf -> csrf.disable());
 
 		// Disable Basic Authentication
-		http.httpBasic(httpBasic -> httpBasic.disable());
+		http.httpBasic(Customizer.withDefaults());
 
 		// Stateless session
 		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

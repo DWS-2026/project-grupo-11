@@ -23,7 +23,7 @@ public class TeamRestController {
     private TeamService teamService; // Reutilización de lógica (evita -2 puntos)
 
     // Subtítulo para el vídeo: "Endpoint listado de Team"
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Page<TeamDTO>> getTeams(Pageable page) {
         // Convertimos la página de Entidades a página de DTOs
         Page<TeamDTO> teams = teamService.findAll(page).map(TeamDTO::new);
@@ -41,7 +41,7 @@ public class TeamRestController {
 
     // 1. CREACIÓN (POST) con validación básica
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<TeamDTO> createTeam(@RequestBody Team team, HttpServletRequest request) {
         // Validación de campo (Punto 6 de la rúbrica)
         if (team.getName() == null || team.getName().isEmpty()) {

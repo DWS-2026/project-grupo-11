@@ -24,7 +24,7 @@ public class MatchRestController {
     private MatchService matchService;
 
     // Subtítulo: "Endpoint listado de Match"
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Page<MatchDTO>> getMatches(Pageable pageable) {
         // Tu MatchService.findAll() devuelve List, lo convertimos a Page para la rúbrica
         List<Match> allMatches = matchService.findAll();
@@ -47,7 +47,7 @@ public class MatchRestController {
     }
 
     // Subtítulo: "Endpoint creación de Match"
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<MatchDTO> createMatch(@RequestBody Match match, HttpServletRequest request) {
         // Validación básica (Punto 6)
         if (match.getLocalTeam() == null || match.getVisitorTeam() == null) {

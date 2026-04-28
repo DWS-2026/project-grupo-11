@@ -57,6 +57,7 @@ public class WebSecurityConfig {
 						.requestMatchers(HttpMethod.GET, "/api/v1/matches/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/events/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/users/*/avatar").permitAll()
+						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 						// USER ENDPOINTS
 						.requestMatchers(HttpMethod.GET, "/api/v1/users/me").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/api/v1/users/*/avatar").hasAnyRole("USER", "ADMIN")
@@ -76,7 +77,6 @@ public class WebSecurityConfig {
 						.requestMatchers(HttpMethod.PUT, "/api/v1/events/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/api/v1/events/**").hasRole("ADMIN")
 						.anyRequest().authenticated());
-
 
 		// Disable Form login Authentication
 		http.formLogin(formLogin -> formLogin.disable());
@@ -117,6 +117,10 @@ public class WebSecurityConfig {
 						.requestMatchers("/match/{id}").permitAll()
 						.requestMatchers("/error").permitAll()
 						.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+						.requestMatchers("/swagger-ui.html").permitAll()
+						.requestMatchers("/swagger-ui/**").permitAll()
+						.requestMatchers("/v3/api-docs/**").permitAll()
+						.requestMatchers("/v3/api-docs.yaml").permitAll()
 						// PRIVATE PAGES
 						.requestMatchers("/profile/*").hasAnyRole("USER")
 						.requestMatchers("/rating/{id}/delete").hasAnyRole("USER")

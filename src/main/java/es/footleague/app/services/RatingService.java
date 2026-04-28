@@ -6,6 +6,7 @@ import es.footleague.app.repository.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RatingService {
@@ -21,8 +22,8 @@ public class RatingService {
         return ratingRepository.findByAuthor(user);
     }
 
-    public Rating findById(Long userId){
-        return ratingRepository.findById(userId).orElse(null);
+    public Optional<Rating> findById(Long userId){
+        return ratingRepository.findById(userId);
     }
 
     public void save(Rating rating) {

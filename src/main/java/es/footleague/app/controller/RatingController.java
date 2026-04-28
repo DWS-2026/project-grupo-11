@@ -88,9 +88,9 @@ public class RatingController {
 
     @PostMapping("/rating/{id}/delete")
     public String deleteRating(@PathVariable Long id, RedirectAttributes info, Principal principal) {
-        Rating rating = ratingService.findById(id);
+        Optional<Rating> rating = ratingService.findById(id);
 
-        if (!rating.getAuthor().getUsername().equalsIgnoreCase(principal.getName())) {
+        if (!rating.get().getAuthor().getUsername().equalsIgnoreCase(principal.getName())) {
             return "redirect:/403";
         }
 

@@ -113,7 +113,7 @@ public class RatingRestController {
             return ResponseEntity.status(403).build();
         }
 
-        Rating rating = new Rating();
+        Rating rating = existing.get();
         rating.setScore(dto.score());
         rating.setComment(dto.comment());
         ratingService.save(rating);

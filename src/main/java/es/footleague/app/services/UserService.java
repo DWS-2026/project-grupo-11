@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Blob;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,5 +52,15 @@ public class UserService {
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    public void updateAvatar(Long id, byte[] avatarBytes) throws Exception {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setAvatarData(new javax.sql.rowset.serial.SerialBlob(avatarBytes));
+        userRepository.save(user);
+    }
+
+    public Optional<Blob> getAvatar(Long id) {
+        return userRepository.findById(id).map(User::getAvatarData);
     }
 }

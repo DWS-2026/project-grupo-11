@@ -87,10 +87,16 @@ public class RatingController {
     }
 
     @PostMapping("/rating/{id}/delete")
-    public String deleteRating(@PathVariable Long id, RedirectAttributes info, Principal principal) {
-        Optional<Rating> rating = ratingService.findById(id);
-
-        if (!rating.get().getAuthor().getUsername().equalsIgnoreCase(principal.getName())) {
+    public String deleteRating(@PathVariable Long id, RedirectAttributes info, Principal principal, HttpServletRequest request) {
+        Optional<Rating> ratingOpt = ratingService.findById(id);
+        if (ratingOpt.isEmpty()){
+            return "redirect:/404";
+        }
+        
+        Rating rating = ratingOpt.get();
+        boolean isOwner = rating.getAuthor().getUsername().equalsIgnoreCase(principal.getName());
+        boolean isAdmin = request.isUserInRole("ADMIN");
+        if(!isOwner && !isAdmin){
             return "redirect:/403";
         }
 

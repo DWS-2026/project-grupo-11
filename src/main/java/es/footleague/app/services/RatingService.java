@@ -18,12 +18,12 @@ public class RatingService {
         return ratingRepository.findAll();
     }
 
-    public List<Rating> findbyUser(User user){
+    public List<Rating> findbyUser(User user) {
         return ratingRepository.findByAuthor(user);
     }
 
-    public Optional<Rating> findById(Long userId){
-        return ratingRepository.findById(userId);
+    public Optional<Rating> findById(Long ratingId) {
+        return ratingRepository.findById(ratingId);
     }
 
     public void save(Rating rating) {
@@ -33,5 +33,5 @@ public class RatingService {
     public void deleteRating(Long ratingId) {
         ratingRepository.deleteById(ratingId);
     }
-    
+
 }

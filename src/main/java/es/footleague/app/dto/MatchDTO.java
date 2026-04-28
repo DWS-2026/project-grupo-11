@@ -23,7 +23,17 @@ public class MatchDTO {
         this.stadium = match.getStadium();
         this.date = match.getMatchDate().toString() + " " + match.getMatchTime().toString();
         this.events = match.getEvents().stream()
-                .map(MatchEventDTO::new)
+                .map(event -> new MatchEventDTO(
+                    event.getId(),
+                    event.getMinute(),          // Verifica que este método exista en MatchEvent
+                    event.getType(),       // O event.getType() según tu modelo
+                    event.getNamePlayer(),      // Ajusta según los nombres en tu entidad
+                    event.getNamePlayerOut(),   // Ajusta según los nombres en tu entidad
+                    event.getNamePlayerIn(),    // Ajusta según los nombres en tu entidad
+                    event.getMatch().getId(),
+                    event.getTeam().getId(),
+                    event.getTeam().getName()
+                ))
                 .collect(Collectors.toList());
     }
     // GETTERS

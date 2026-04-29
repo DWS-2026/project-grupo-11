@@ -102,7 +102,7 @@ public class MatchRestController {
                     existingMatch.getEvents().add(event);
 
                     // Solo si el tipo de evento es "GOL", incrementamos el contador
-                    if ("GOL".equalsIgnoreCase(event.getType()) && event.getTeam() != null) {
+                    if ("GOAL".equalsIgnoreCase(event.getType()) && event.getTeam() != null) {
                         if (event.getTeam().getId().equals(existingMatch.getLocalTeam().getId())) {
                             goalsLocal++;
                         } else if (event.getTeam().getId().equals(existingMatch.getVisitorTeam().getId())) {

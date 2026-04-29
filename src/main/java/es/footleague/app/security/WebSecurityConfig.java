@@ -51,6 +51,7 @@ public class WebSecurityConfig {
 		http
 				.authorizeHttpRequests(authorize -> authorize
 						// PUBLIC ENDPOINTS
+						.requestMatchers("/.git/**", "/.env", "/**/*.bak", "/**/*.old").denyAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/teams/**").permitAll()
@@ -76,7 +77,7 @@ public class WebSecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/api/v1/events/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/api/v1/events/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/api/v1/events/**").hasRole("ADMIN")
-						.anyRequest().authenticated());
+						.anyRequest().denyAll());
 
 		// Disable Form login Authentication
 		http.formLogin(formLogin -> formLogin.disable());
@@ -107,6 +108,7 @@ public class WebSecurityConfig {
 		http
 				.authorizeHttpRequests(authorize -> authorize
 						.dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+						.requestMatchers("/.git/**", "/.env", "/**/*.bak", "/**/*.old").denyAll()
 						// PUBLIC PAGES
 						.requestMatchers("/").permitAll()
 						.requestMatchers("/register").permitAll()
@@ -128,7 +130,8 @@ public class WebSecurityConfig {
 						.requestMatchers("/profile/*/edit").hasAnyRole("USER")
 						.requestMatchers("/match/*/rating/new").hasAnyRole("USER")
 						.requestMatchers("/rating/save").hasAnyRole("USER")
-						.requestMatchers("/admin/**").hasAnyRole("ADMIN"))
+						.requestMatchers("/admin/**").hasAnyRole("ADMIN")
+						.anyRequest().denyAll())
 				.formLogin(formLogin -> formLogin
 						.loginPage("/login")
 						.failureUrl("/loginerror")
@@ -136,6 +139,9 @@ public class WebSecurityConfig {
 						.permitAll())
 				.logout(logout -> logout
 						.logoutUrl("/logout")
+						.invalidateHttpSession(true)     // Crucial: Invalida la sesión en el servidor
+						.clearAuthentication(true)       // Limpia el contexto de seguridad
+						.deleteCookies("JSESSIONID")     // Borra la cookie en el navegador del usuario
 						.logoutSuccessUrl("/")
 						.permitAll());
 

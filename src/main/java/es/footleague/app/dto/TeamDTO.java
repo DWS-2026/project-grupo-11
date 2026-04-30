@@ -7,6 +7,7 @@ public class TeamDTO {
     private String name;
     private String stadiumName;
     private int points;
+    private String logoFileName;
 
     // Constructor necesario para el .map(TeamDTO::new) en el Controller
     public TeamDTO(Team team) {
@@ -14,6 +15,7 @@ public class TeamDTO {
         this.name = team.getName();
         this.stadiumName = team.getStadiumName();
         this.points = team.getPoints();
+        this.logoFileName = team.getLogoFileName();
     }
 
     // Getters
@@ -21,10 +23,12 @@ public class TeamDTO {
     public String getName() { return name; }
     public String getStadiumName() { return stadiumName; }
     public int getPoints() { return points; }
+    public String getLogoFileName() { return logoFileName; }
 
     // Setters 
     public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setStadiumName(String stadiumName) { this.stadiumName = stadiumName; }
     public void setPoints(int points) { this.points = points; }
+    public void setLogoFileName(String logoFileName) { this.logoFileName = logoFileName; }
 }

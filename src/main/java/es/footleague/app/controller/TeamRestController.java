@@ -1,19 +1,21 @@
 package es.footleague.app.controller;
 import es.footleague.app.dto.TeamDTO;
 import es.footleague.app.model.Team;
+import es.footleague.app.services.FileStorageService;
 import es.footleague.app.services.TeamService;
 
+import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.MediaType;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/api/v1/teams") // Cumple: /api/v1/ y recurso en plural/inglés
@@ -21,6 +23,9 @@ public class TeamRestController {
 
     @Autowired
     private TeamService teamService; // Reutilización de lógica (evita -2 puntos)
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     // Subtítulo para el vídeo: "Endpoint listado de Team"
     @GetMapping
@@ -82,11 +87,21 @@ public class TeamRestController {
 
         // 4. VER IMAGEN (Requisito de gestión de ficheros)
     @GetMapping("/{id}/logo")
-    public ResponseEntity<byte[]> getTeamLogo(@PathVariable Long id) throws SQLException {
+    public ResponseEntity<Resource> getTeamLogo(@PathVariable Long id) throws Exception {
         Team team = teamService.findById(id).orElseThrow();
+
+        if (team.getLogoFilePath() != null) {
+            Resource resource = fileStorageService.loadFileAsResource(team.getLogoFilePath());
+            MediaType mediaType = MediaTypeFactory.getMediaType(team.getLogoFileName()).orElse(MediaType.APPLICATION_OCTET_STREAM);
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + team.getLogoFileName() + "\"")
+                    .body(resource);
+        }
+
         if (team.getLogoData() != null) {
             byte[] imageBytes = team.getLogoData().getBytes(1, (int) team.getLogoData().length());
-            return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(imageBytes);
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(new org.springframework.core.io.ByteArrayResource(imageBytes));
         }
         return ResponseEntity.notFound().build();
     }

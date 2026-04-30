@@ -3,6 +3,8 @@ package es.footleague.app.services;
 import es.footleague.app.model.User;
 import es.footleague.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,10 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
 
     public List<User> findAll() {
         return userRepository.findAll();

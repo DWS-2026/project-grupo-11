@@ -3,6 +3,7 @@ package es.footleague.app.controller;
 import es.footleague.app.model.Team;
 import es.footleague.app.model.User;
 import es.footleague.app.repository.TeamRepository;
+import es.footleague.app.services.FileStorageService;
 import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,6 +35,9 @@ public class TeamController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -91,10 +95,17 @@ public class TeamController {
 
         if (file != null && !file.isEmpty()) {
             try {
-                team.setLogoData(new javax.sql.rowset.serial.SerialBlob(file.getBytes()));
+                if (team.getId() == null) {
+                    team = teamService.save(team);
+                }
+
+                String relativePath = fileStorageService.storeFile(file, "team-logos/" + team.getId(), file.getOriginalFilename());
+                team.setLogoFilePath(relativePath);
+                team.setLogoFileName(file.getOriginalFilename());
+                team.setLogoData(null);
             } catch (Exception e) {
                 // Error handling in logo upload [cite: 74]
-                throw new IOException("Error al crear el blob del logo", e);
+                throw new IOException("Error al guardar el archivo del logo", e);
             }
         }
         teamService.save(team); // Persistencia en MySQL

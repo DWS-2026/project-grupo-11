@@ -84,13 +84,11 @@ public class UserRestController {
         return ResponseEntity.status(201).body(userMapper.toDTO(newUser));
     }
 
-    // Get all users — ADMIN only
+    // Get all users — ADMIN only, paginated
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> users = userService.findAll()
-                .stream()
-                .map(userMapper::toDTO)
-                .toList();
+    public ResponseEntity<Page<UserDTO>> getAllUsers(Pageable pageable) {
+        Page<UserDTO> users = userService.findAll(pageable)
+                .map(userMapper::toDTO);
         return ResponseEntity.ok(users);
     }
 

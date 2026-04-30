@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import es.footleague.app.model.Match;
 import es.footleague.app.model.MatchEvent;
 import es.footleague.app.model.Team;
 import es.footleague.app.model.User;
+import es.footleague.app.services.FileStorageService;
 import es.footleague.app.services.MatchService;
 import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
@@ -41,6 +43,8 @@ public class UserController {
     private TeamService teamService;
     @Autowired
     private MatchService matchService;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -222,11 +226,24 @@ public class UserController {
     }
 
     @GetMapping("/team/{id}/logo")
-    public ResponseEntity<Object> downloadLogo(@PathVariable long id) throws SQLException {
-        Optional<Team> team = teamService.findById(id);
+    public ResponseEntity<Object> downloadLogo(@PathVariable long id) throws Exception {
+        Optional<Team> teamOpt = teamService.findById(id);
+        if (teamOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
-        if (team.isPresent() && team.get().getLogoData() != null) {
-            Blob image = team.get().getLogoData();
+        Team team = teamOpt.get();
+        if (team.getLogoFilePath() != null) {
+            Resource resource = fileStorageService.loadFileAsResource(team.getLogoFilePath());
+            MediaType mediaType = MediaTypeFactory.getMediaType(team.getLogoFileName()).orElse(MediaType.APPLICATION_OCTET_STREAM);
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + team.getLogoFileName() + "\"")
+                    .body(resource);
+        }
+
+        if (team.getLogoData() != null) {
+            Blob image = team.getLogoData();
             Resource file = new InputStreamResource(image.getBinaryStream());
 
             return ResponseEntity.ok()

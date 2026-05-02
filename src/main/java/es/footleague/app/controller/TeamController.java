@@ -2,7 +2,6 @@ package es.footleague.app.controller;
 
 import es.footleague.app.model.Team;
 import es.footleague.app.model.User;
-import es.footleague.app.services.FileStorageService;
 import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +16,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.sql.Blob;
+import java.util.List;
 import java.util.Optional;
+
+import javax.sql.rowset.serial.SerialBlob;
 
 @Controller
 @PreAuthorize("hasRole('ADMIN')")
@@ -30,9 +33,6 @@ public class TeamController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private FileStorageService fileStorageService;
-
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
@@ -42,33 +42,36 @@ public class TeamController {
                 model.addAttribute("loggedUser", user.get());
                 model.addAttribute("logged", true);
                 model.addAttribute("admin", request.isUserInRole("ADMIN"));
-                // The token is added automatically by your CSRFHandlerInterceptor
             }
         }
     }
 
     @GetMapping("/list-teams")
     public String listTeams(Model model) {
-        model.addAttribute("teams", teamService.findAll());
-        return "ModifyTeam"; // the name of the Mustache template to render the list of teams
+        List<Team> teams = teamService.findAll();
+        // Para cada equipo, establecemos la ruta del logo apuntando al endpoint que sirve el Blob
+        for (Team team : teams) {
+            if (team.getLogoData() != null) {
+                team.setLogoFilePath("/api/v1/teams/" + team.getId() + "/logo");
+            }
+        }
+        model.addAttribute("teams", teams);
+        return "ModifyTeam"; 
     }
 
-    /**
-     * NEW FORM: It allows access to /admin/teams/new
-     * The file should be: src/main/resources/templates/CreateTeam.mustache
-     */
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("team", new Team());
         return "CreateTeam";
     }
+
     @GetMapping("/team-management-screen")
     public String showTeamManagementScreen(Model model) {
         return "Team_Management_Screen";
     }
 
     /**
-     * SAVE/UPDATE: It processes the form data and persists it in MySQL
+     * SAVE/UPDATE: Procesa el archivo como BLOB y lo persiste en MySQL
      */
     @PostMapping("/save")
     public String saveTeam(
@@ -89,44 +92,40 @@ public class TeamController {
 
         if (file != null && !file.isEmpty()) {
             try {
-                if (team.getId() == null) {
-                    team = teamService.save(team);
-                }
-
-                String relativePath = fileStorageService.storeFile(file, "team-logos/" + team.getId(), file.getOriginalFilename());
-                team.setLogoFilePath(relativePath);
+                // Convertimos el MultipartFile a Blob para la columna logo_data[cite: 2]
+                byte[] bytes = file.getBytes();
+                Blob blob = new SerialBlob(bytes);
+                
+                team.setLogoData(blob);
                 team.setLogoFileName(file.getOriginalFilename());
-                team.setLogoData(null);
+                // Importante: Ponemos a null el path de archivo físico para usar solo el binario
+                team.setLogoFilePath(null); 
             } catch (Exception e) {
-                // Error handling in logo upload [cite: 74]
-                throw new IOException("Error al guardar el archivo del logo", e);
+                throw new IOException("Error al guardar el logo en la base de datos", e);
             }
         }
-        teamService.save(team); // Persistencia en MySQL
+        teamService.save(team);
         return "redirect:/admin/teams/list-teams";
     }
 
-    /**
-     * EDIT: Access /admin/teams/edit/1 to edit the team with id 1
-     * It will show the same form as the creation but pre-filled with the team data. The form will submit to the same /admin/teams/save route, which will handle both creation and update logic based on the presence of the id parameter.
-     */
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Optional<Team> teamOpt = teamService.findById(id);
         if (teamOpt.isPresent()) {
-            model.addAttribute("team", teamOpt.get());
+            Team team = teamOpt.get();
+            // Aseguramos que el formulario de edición también use la URL del binario[cite: 2]
+            if (team.getLogoData() != null) {
+                team.setLogoFilePath("/api/v1/teams/" + team.getId() + "/logo");
+            }
+            model.addAttribute("team", team);
             return "EditTeam";
         }
         return "redirect:/admin/teams/list-teams";
     }
 
-    /**
-     * Delete: Access /admin/teams/delete/1 to delete the team with id 1. It will check if the team can be deleted (i.e., it has no matches associated) and then delete it from MySQL. If it cannot be deleted, it will redirect back to the list with an error message.
-     */
     @GetMapping("/delete/{id}")
     public String deleteTeam(@PathVariable Long id, RedirectAttributes info) {
         if (!teamService.canDelete(id)) {
-            // EWe send an error message if the team cannot be deleted due to existing matches
             info.addFlashAttribute("error",
                     "No se puede eliminar: El equipo ya tiene partidos registrados en la liga.");
             return "redirect:/admin/teams/list-teams";
@@ -137,7 +136,6 @@ public class TeamController {
         } catch (Exception e) {
             info.addFlashAttribute("error", "No se pudo eliminar el equipo debido a un error interno.");
         }
-
         return "redirect:/admin/teams/list-teams";
     }
 }

@@ -92,26 +92,18 @@ public class MatchRestController {
             if (updatedMatch.getEvents() != null) {
                 // Limpiamos los eventos actuales para reflejar la nueva lista del cliente
                 existingMatch.getEvents().clear();
-                
-                int goalsLocal = 0;
-                int goalsVisitor = 0;
 
                 for (MatchEvent event : updatedMatch.getEvents()) {
                     // Vinculamos el evento al partido actual
                     event.setMatch(existingMatch);
                     existingMatch.getEvents().add(event);
-
-                    // Solo si el tipo de evento es "GOL", incrementamos el contador
-                    if ("GOAL".equalsIgnoreCase(event.getType()) && event.getTeam() != null) {
-                        if (event.getTeam().getId().equals(existingMatch.getLocalTeam().getId())) {
-                            goalsLocal++;
-                        } else if (event.getTeam().getId().equals(existingMatch.getVisitorTeam().getId())) {
-                            goalsVisitor++;
-                        }
-                    }
                 }
                 
-                // Forzamos el marcador según el conteo de eventos
+                // Delegamos el cálculo de goles al servicio
+                int goalsLocal = matchService.calculateGoalsFromEventsPublic(existingMatch, existingMatch.getLocalTeam());
+                int goalsVisitor = matchService.calculateGoalsFromEventsPublic(existingMatch, existingMatch.getVisitorTeam());
+                
+                // Establecemos los goles calculados
                 existingMatch.setLocalGoals(goalsLocal);
                 existingMatch.setVisitorGoals(goalsVisitor);
             }

@@ -2,7 +2,6 @@ package es.footleague.app.controller;
 
 import es.footleague.app.model.Team;
 import es.footleague.app.model.User;
-import es.footleague.app.repository.TeamRepository;
 import es.footleague.app.services.FileStorageService;
 import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
@@ -25,13 +24,8 @@ import java.util.Optional;
 @RequestMapping("/admin/teams")
 public class TeamController {
 
-    private final TeamRepository teamRepository;
     @Autowired
     private TeamService teamService;
-
-    TeamController(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
-    }
 
     @Autowired
     private UserService userService;

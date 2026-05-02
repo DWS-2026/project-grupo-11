@@ -171,4 +171,36 @@ public class MatchService {
         visitor.setPlayedMatchs(visitor.getPlayedMatchs() - 1);
         revertOldResultOnly(m);
     }
+
+    // Aux Method to calculate goals from match events for a specific team
+    public int calculateGoalsFromEventsPublic(Match match, Team team) {
+        if (match.getEvents() == null) {
+            return 0;
+        }
+        return (int) match.getEvents().stream()
+                .filter(event -> "GOAL".equalsIgnoreCase(event.getType()) 
+                        && event.getTeam() != null 
+                        && event.getTeam().getId().equals(team.getId()))
+                .count();
+    }
+
+    // Prepare match before saving: set stadium from local team if empty and link events
+    public void prepareMatchForSave(Match match) {
+        // 1. If stadium is not set, use the local team's stadium
+        if ((match.getStadium() == null || match.getStadium().trim().isEmpty())
+                && match.getLocalTeam() != null && match.getLocalTeam().getId() != null) {
+            teamRepository.findById(match.getLocalTeam().getId()).ifPresent(team -> {
+                match.setStadium(team.getStadiumName());
+            });
+        }
+
+        // 2. Set the match reference in each event to ensure the relationship is properly established
+        if (match.getEvents() != null) {
+            match.getEvents().forEach(event -> {
+                if (event != null) {
+                    event.setMatch(match);
+                }
+            });
+        }
+    }
 }

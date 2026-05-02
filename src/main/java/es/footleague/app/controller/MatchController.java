@@ -81,29 +81,13 @@ public class MatchController {
     @ResponseBody
     public ResponseEntity<?> saveMatch(@ModelAttribute Match match) {
         try {
-            // SOLUTION FOR COMMON ERRORS IN MATCH CREATION/EDITING:
-            if ((match.getStadium() == null || match.getStadium().trim().isEmpty())
-                    && match.getLocalTeam() != null && match.getLocalTeam().getId() != null) {
+            // Prepare the match (set stadium, link events, etc.)
+            matchService.prepareMatchForSave(match);
 
-                teamService.findById(match.getLocalTeam().getId()).ifPresent(t -> {
-                    match.setStadium(t.getStadiumName());
-                });
-            }
-
-            // 2. Set the match reference in each event to ensure the relationship is properly 
-            // established
-            if (match.getEvents() != null) {
-                match.getEvents().forEach(event -> {
-                    if (event != null) {
-                        event.setMatch(match);
-                    }
-                });
-            }
-
-            // 3. Save the match (which will also save the events due to cascade settings)
+            // Save the match (which will also save the events due to cascade settings)
             matchService.save(match);
 
-            // 4. Return a success response with a message
+            // Return a success response with a message
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
             response.put("message", "Partido guardado correctamente");

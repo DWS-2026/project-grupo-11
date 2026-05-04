@@ -62,26 +62,12 @@ public class UserRestController {
     // POST register
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@RequestBody UserRegistrationDTO userDTO) {
-        // Check if username already exists
-        if (userService.existsByUsername(userDTO.username())) {
-            return ResponseEntity.status(409).build(); // Conflict
+        try {
+            User newUser = userService.register(userDTO);
+            return ResponseEntity.status(201).body(userMapper.toDTO(newUser));
+        } catch (Exception e) {
+            return ResponseEntity.status(409).build(); // Conflict (username exists)
         }
-
-        User newUser = new User();
-        newUser.setUsername(userDTO.username());
-        newUser.setEmail(userDTO.email());
-        newUser.setPassword(userDTO.username()); // Se sobreescribe abajo
-        newUser.setRoles(List.of("USER"));
-
-        // Set favourite team if provided
-        if (userDTO.favouriteTeamId() != null) {
-            teamService.findById(userDTO.favouriteTeamId())
-                    .ifPresent(newUser::setFavouriteTeam);
-        }
-
-        userService.save(newUser);
-
-        return ResponseEntity.status(201).body(userMapper.toDTO(newUser));
     }
 
     // Get all users — ADMIN only

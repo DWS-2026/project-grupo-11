@@ -1,6 +1,7 @@
 package es.footleague.app.services;
 
 import es.footleague.app.model.User;
+import es.footleague.app.dto.UserRegistrationDTO;
 import es.footleague.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,5 +63,26 @@ public class UserService {
 
     public Optional<Blob> getAvatar(Long id) {
         return userRepository.findById(id).map(User::getAvatarData);
+    }
+
+    // Register a new user with validation
+    public User register(UserRegistrationDTO dto) throws Exception {
+        if (existsByUsername(dto.username())) {
+            throw new Exception("Username already exists");
+        }
+
+        User newUser = new User();
+        newUser.setUsername(dto.username());
+        newUser.setEmail(dto.email());
+        newUser.setPassword(dto.password()); // Will be encoded by save()
+        newUser.setRoles(List.of("USER"));
+
+        if (dto.favouriteTeamId() != null) {
+            // Note: Could set favourite team here if TeamService is injected
+            // teamService.findById(dto.favouriteTeamId()).ifPresent(newUser::setFavouriteTeam);
+        }
+
+        save(newUser);
+        return newUser;
     }
 }

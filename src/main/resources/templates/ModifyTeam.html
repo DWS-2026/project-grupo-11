@@ -34,9 +34,9 @@
                 {{#teams}}
                 <tr>
                     <td>
-                        <img src="{{#logoData}}/team/{{id}}/logo{{/logoData}}{{^logoData}}/images/default-logo.png{{/logoData}}" 
+                        <img src="/team/{{id}}/logo" 
                              alt="Logo" 
-                             style="width: 45px; height: 45px; object-fit: contain; border-radius: 4px;">
+                             style="width: 45px; height: 45px; object-fit: contain; border-radius: 4px;" onerror="this.src='/images/default-logo.svg'">
                     </td>
                     <td class="text-white fw-bold">{{name}}</td>
                     <td class="text-white-50">{{stadiumName}}</td>

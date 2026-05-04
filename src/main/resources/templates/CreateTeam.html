@@ -29,11 +29,11 @@
                 required>{{^team.id}}{{/team.id}}
 
             <div class="logo-preview mt-3" id="logoPreview">
-                {{#team.logoData}}
+                {{#team.hasLogo}}
                 <p class="text-white-50 small">Logo actual:</p>
-                <img src="/team/{{id}}/logo"
-                    style="max-width: 150px; border-radius: 8px; border: 2px solid #3b82f6;">
-                {{/team.logoData}}
+                <img src="/team/{{team.id}}/logo"
+                    style="max-width: 150px; border-radius: 8px; border: 2px solid #3b82f6;" onerror="this.style.display='none'">
+                {{/team.hasLogo}}
             </div>
         </div>
 

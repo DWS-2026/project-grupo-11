@@ -65,6 +65,7 @@ public class WebSecurityConfig {
 						.requestMatchers(HttpMethod.GET, "/api/v1/ratings/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.POST, "/api/v1/ratings/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/api/v1/ratings/**").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.POST, "/api/v1/events/*/ratings").hasAnyRole("USER", "ADMIN")
 						// ADMIN ENDPOINTS
 						.requestMatchers(HttpMethod.GET, "/api/v1/users/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/api/v1/users/**").hasRole("ADMIN")
@@ -139,9 +140,9 @@ public class WebSecurityConfig {
 						.permitAll())
 				.logout(logout -> logout
 						.logoutUrl("/logout")
-						.invalidateHttpSession(true)     // Crucial: Invalida la sesión en el servidor
-						.clearAuthentication(true)       // Limpia el contexto de seguridad
-						.deleteCookies("JSESSIONID")     // Borra la cookie en el navegador del usuario
+						.invalidateHttpSession(true) // Crucial: Invalida la sesión en el servidor
+						.clearAuthentication(true) // Limpia el contexto de seguridad
+						.deleteCookies("JSESSIONID") // Borra la cookie en el navegador del usuario
 						.logoutSuccessUrl("/")
 						.permitAll());
 

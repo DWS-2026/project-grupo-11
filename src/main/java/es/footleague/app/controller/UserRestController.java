@@ -8,6 +8,8 @@ import java.util.NoSuchElementException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
@@ -70,13 +72,11 @@ public class UserRestController {
         }
     }
 
-    // Get all users — ADMIN only
+    // Get all users — ADMIN only, paginated
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> users = userService.findAll()
-                .stream()
-                .map(userMapper::toDTO)
-                .toList();
+    public ResponseEntity<Page<UserDTO>> getAllUsers(Pageable pageable) {
+        Page<UserDTO> users = userService.findAll(pageable)
+                .map(userMapper::toDTO);
         return ResponseEntity.ok(users);
     }
 

@@ -35,6 +35,12 @@ public class Team {
     @Column(name = "logo_data", columnDefinition = "LONGBLOB")
     private Blob logoData;
 
+    @Column(name = "logo_file_name")
+    private String logoFileName;
+
+    @Column(name = "logo_file_path")
+    private String logoFilePath;
+
     public Team() {
     }
 
@@ -87,6 +93,22 @@ public class Team {
 
     public void setLogoData(Blob logoData) {
         this.logoData = logoData;
+    }
+
+    public String getLogoFileName() {
+        return logoFileName;
+    }
+
+    public void setLogoFileName(String logoFileName) {
+        this.logoFileName = logoFileName;
+    }
+
+    public String getLogoFilePath() {
+        return logoFilePath;
+    }
+
+    public void setLogoFilePath(String logoFilePath) {
+        this.logoFilePath = logoFilePath;
     }
 
     public int getPoints() {

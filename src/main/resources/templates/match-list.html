@@ -11,9 +11,9 @@
         <div class="card option-card p-4 bg-dark border-secondary">
             <div class="row align-items-center">
                 <div class="col-4 text-center text-white">
-                    <img src="{{#localTeam.logoData}}/team/{{localTeam.id}}/logo{{/localTeam.logoData}}{{^localTeam.logoData}}/images/default-logo.png{{/localTeam.logoData}}"
+                    <img src="/team/{{localTeam.id}}/logo"
                         alt="{{localTeam.name}}" class="mb-2 d-block mx-auto"
-                        style="width: 45px; height: 45px; object-fit: contain;">
+                        style="width: 45px; height: 45px; object-fit: contain;" onerror="this.src='/images/default-logo.svg'">
                     <h6 class="mb-0">{{localTeam.name}}</h6>
                 </div>
 
@@ -35,9 +35,9 @@
                 </div>
 
                 <div class="col-4 text-center text-white">
-                    <img src="{{#visitorTeam.logoData}}/team/{{visitorTeam.id}}/logo{{/visitorTeam.logoData}}{{^visitorTeam.logoData}}/images/default-logo.png{{/visitorTeam.logoData}}"
+                    <img src="/team/{{visitorTeam.id}}/logo"
                         alt="{{visitorTeam.name}}" class="mb-2 d-block mx-auto"
-                        style="width: 45px; height: 45px; object-fit: contain;">
+                        style="width: 45px; height: 45px; object-fit: contain;" onerror="this.src='/images/default-logo.svg'">
                     <h6 class="mb-0">{{visitorTeam.name}}</h6>
                 </div>
             </div>

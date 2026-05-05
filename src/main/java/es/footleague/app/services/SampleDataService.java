@@ -43,8 +43,13 @@ public class SampleDataService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
     @PostConstruct
     public void init() throws IOException {
+        // Clean uploads folder on startup
+        fileStorageService.cleanUploadsFolder();
         // 1. Create teams
         Team madridTeam = new Team("Real Madrid", "Santiago Bernabeu");
         setTeamLogo(madridTeam, "static/img/logo_realMadrid.png");
@@ -58,9 +63,11 @@ public class SampleDataService {
         teamRepository.save(madridTeam);
         teamRepository.save(barsaTeam);
         // 2. Create users
-        User user1 = new User("JuanPerez", passwordEncoder.encode("password123"), "juanperez@prensa.com", madridTeam, "USER");
+        User user1 = new User("JuanPerez", passwordEncoder.encode("password123"), "juanperez@prensa.com", madridTeam,
+                "USER");
         setUserAvatar(user1, "static/img/Juan_Perez_Avatar.PNG");
-        User user2 = new User("admin", passwordEncoder.encode("admin123"), "admin@footleague.es", barsaTeam, "USER", "ADMIN");
+        User user2 = new User("admin", passwordEncoder.encode("admin123"), "admin@footleague.es", barsaTeam, "USER",
+                "ADMIN");
         userRepository.save(user1);
         userRepository.save(user2);
         // 3. Create a match

@@ -24,12 +24,7 @@
                     <tr>
                         <td class="fw-bold text-info"></td> 
                         <td>
-                            {{#logoData}}
-                            <img src="/team/{{id}}/logo" width="30" height="30" class="me-2">
-                            {{/logoData}}
-                            {{^logoData}}
-                            <img src="/images/default-logo.png" width="30" height="30" class="me-2">
-                            {{/logoData}}
+                            <img src="/team/{{id}}/logo" width="30" height="30" class="me-2" alt="{{name}}" onerror="this.src='/images/default-logo.svg'">
                             <span class="align-middle">{{name}}</span>
                         </td>
                         <td class="text-center">{{playedMatches}}</td>

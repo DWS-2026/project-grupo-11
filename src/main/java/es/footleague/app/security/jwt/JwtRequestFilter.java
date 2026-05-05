@@ -41,8 +41,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
+			log.debug("JWT token validated successfully for user: {} at {} from IP {}", 
+				userDetails.getUsername(), request.getRequestURI(), request.getRemoteAddr());
 		} catch (Exception ex) {
-			log.info(ex.getMessage());
+			log.warn("JWT validation failed at {} from IP {}: {}", 
+				request.getRequestURI(), request.getRemoteAddr(), ex.getMessage());
 		}
 
 		filterChain.doFilter(request, response);

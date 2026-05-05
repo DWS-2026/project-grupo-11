@@ -11,8 +11,8 @@
     <div class="text-center mb-5 p-4 rounded" style="background: rgba(255,255,255,0.05)">
         <div class="row align-items-center">
             <div class="col text-white">
-                <img src="{{#match.localTeam.logoData}}/team/{{match.localTeam.id}}/logo{{/match.localTeam.logoData}}{{^match.localTeam.logoData}}/images/default-logo.png{{/match.localTeam.logoData}}"
-                    alt="{{match.localTeam.name}}" class="mb-3" style="width: 80px; height: 80px; object-fit: contain;">
+                <img src="/team/{{match.localTeam.id}}/logo"
+                    alt="{{match.localTeam.name}}" class="mb-3" style="width: 80px; height: 80px; object-fit: contain;" onerror="this.src='/images/default-logo.svg'">
                 <h5>{{match.localTeam.name}}</h5>
             </div>
             {{#match.played}}
@@ -40,9 +40,9 @@
             </div>
             {{/match.played}}
             <div class="col text-white">
-                <img src="{{#match.visitorTeam.logoData}}/team/{{match.visitorTeam.id}}/logo{{/match.visitorTeam.logoData}}{{^match.visitorTeam.logoData}}/images/default-logo.png{{/match.visitorTeam.logoData}}"
+                <img src="/team/{{match.visitorTeam.id}}/logo"
                     alt="{{match.visitorTeam.name}}" class="mb-3"
-                    style="width: 80px; height: 80px; object-fit: contain;">
+                    style="width: 80px; height: 80px; object-fit: contain;" onerror="this.src='/images/default-logo.svg'">
                 <h5>{{match.visitorTeam.name}}</h5>
             </div>
         </div>

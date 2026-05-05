@@ -2,8 +2,8 @@
 
 <div class="form-container container mt-4">
     <div class="text-center mb-4">
-        <img src="{{#team.logoData}}/team/{{id}}/logo{{/team.logoData}}{{^team.logoData}}/images/default-logo.png{{/team.logoData}}"
-             alt="Logo" style="width: 80px; height: 80px; object-fit: contain;" class="mb-3">
+        <img src="/team/{{team.id}}/logo"
+             alt="Logo" style="width: 80px; height: 80px; object-fit: contain;" class="mb-3" onerror="this.src='/images/default-logo.svg'">
         
         <h2 class="text-white">Modificar {{team.name}}</h2>
     </div>

@@ -1,0 +1,915 @@
+{
+  "info": {
+    "_postman_id": "f9fd08f8-b9db-4c7c-9838-3e7d0769648b",
+    "name": "FootLeague API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54280691",
+    "_collection_link": "https://go.postman.co/collection/54280691-f9fd08f8-b9db-4c7c-9838-3e7d0769648b?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Equipos",
+      "item": [
+        {
+          "name": "Listar Equipos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/teams",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "teams"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar 1 equipo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/teams/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "teams",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar logo",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "imageFile",
+                  "type": "file",
+                  "uuid": "6e246900-a5d6-4ea8-92ac-178c0ccadfef",
+                  "value": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/teams/1/logo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "teams",
+                "1",
+                "logo"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Equipo",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Atletico de Madrid\",\r\n    \"stadiumName\": \"Metropolitano\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/teams",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "teams"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Equipo",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Atletico de Madrid\",\r\n    \"stadiumName\": \"Metropolitano\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/teams/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "teams",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar Equipo",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/teams/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "teams",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Logo de Equipo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/teams/1/logo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "teams",
+                "1",
+                "logo"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Partidos",
+      "item": [
+        {
+          "name": "Listar Partidos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/matches",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "matches"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar 1 partido",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/matches/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "matches",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Partido",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"localTeam\": { \"id\": 1 },\r\n    \"visitorTeam\": { \"id\": 2 },\r\n    \"localGoals\": 0,\r\n    \"visitorGoals\": 0,\r\n    \"matchDate\": \"2026-05-01\",\r\n    \"matchTime\": \"20:00:00\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/matches",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "matches"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Partido",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"localTeam\": { \"id\": 1 },\r\n    \"visitorTeam\": { \"id\": 2 },\r\n    \"localGoals\": 0,\r\n    \"visitorGoals\": 0,\r\n    \"matchDate\": \"2026-05-01\",\r\n    \"matchTime\": \"20:00:00\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/matches/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "matches",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar Partido",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/matches/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "matches",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Eventos",
+      "item": [
+        {
+          "name": "Listar Eventos",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventId\": 5,\r\n    \"score\": 4,\r\n    \"comment\": \"¡Qué golazo de chilena!\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "events"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar 1 evento",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/events/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "events",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar eventos de un partido",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/matches/1/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "matches",
+                "1",
+                "events"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Evento de un partido",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"minute\": 43,\r\n    \"type\": \"GOAL\",\r\n    \"namePlayer\": \"Mbappe\",\r\n    \"matchId\": 1,\r\n    \"teamId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/matches/1/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "matches",
+                "1",
+                "events"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar evento de un partido",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"localTeam\": { \"id\": 1 },\r\n    \"visitorTeam\": { \"id\": 2 },\r\n    \"localGoals\": 0,\r\n    \"visitorGoals\": 0,\r\n    \"matchDate\": \"2026-05-01\",\r\n    \"matchTime\": \"20:00:00\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/matches/1/events/4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "matches",
+                "1",
+                "events",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Valoraciones",
+      "item": [
+        {
+          "name": "Crear Valoracion",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "password123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "JuanPerez",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventId\": 5,\r\n    \"score\": 4,\r\n    \"comment\": \"¡Qué golazo de chilena!\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/events/1/ratings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "events",
+                "1",
+                "ratings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Valoraciones",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventId\": 5,\r\n    \"score\": 4,\r\n    \"comment\": \"¡Qué golazo de chilena!\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/ratings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "ratings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar 1 valoracion",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/ratings/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "ratings",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Valoracion",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventId\": 5,\r\n    \"score\": 4,\r\n    \"comment\": \"¡Qué golazo de chilena!\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/ratings/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "ratings",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Listar usuario actual",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar usuarios",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar 1 usuario",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin123",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Registration",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"testuser\",\r\n    \"email\": \"test@test.com\",\r\n    \"password\": \"1234\",\r\n    \"favouriteTeamId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar avatar de usuario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/1/avatar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "1",
+                "avatar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar avatar",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "imageFile",
+                  "type": "file",
+                  "uuid": "c6345bbe-9372-44b5-a17d-c1c669bcd7dd",
+                  "value": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/1/avatar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "1",
+                "avatar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Usuario",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -88,6 +89,7 @@ public class MatchEventRestController {
     }
 
     // PUT /api/v1/events/{id}
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/events/{id}")
     public ResponseEntity<MatchEventDTO> updateMatchEvent(
             @PathVariable Long id,
@@ -123,6 +125,7 @@ public class MatchEventRestController {
     }
 
     // DELETE /api/v1/events/{id}
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/events/{id}")
     public ResponseEntity<Void> deleteMatchEvent(@PathVariable Long id) {
         Optional<MatchEvent> existing = matchEventService.findById(id);

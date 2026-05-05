@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -106,6 +109,7 @@ public class UserRestController {
     }
 
     // Delete user by id — ADMIN only
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         if (!userService.existsById(id)) {
@@ -128,13 +132,25 @@ public class UserRestController {
         return ResponseEntity.ok().contentType(mediaType).body(resource);
     }
 
-    // PUT update user avatar
+    // PUT update user avatar (only owner or ADMIN)
     @PutMapping("/{id}/avatar")
     public ResponseEntity<Void> updateUserAvatar(@PathVariable Long id,
-            @RequestParam MultipartFile imageFile) throws Exception {
+            @RequestParam MultipartFile imageFile,
+            @AuthenticationPrincipal UserDetails userDetails) throws Exception {
         if (!userService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        // Security: Only owner or ADMIN can update avatar
+        User currentUser = userService.findByUsernameIgnoreCase(userDetails.getUsername())
+                .orElseThrow();
+        boolean isOwner = currentUser.getId().equals(id);
+        boolean isAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        
+        if (!isOwner && !isAdmin) {
+            return ResponseEntity.status(403).build();
+        }
+        
         if (imageFile.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }

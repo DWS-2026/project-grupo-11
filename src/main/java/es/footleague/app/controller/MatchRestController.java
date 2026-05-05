@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -74,6 +75,7 @@ public class MatchRestController {
         }
         return ResponseEntity.notFound().build();
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<MatchDTO> updateMatch(@PathVariable Long id, @RequestBody Match updatedMatch) {
         return matchService.findById(id).map(existingMatch -> {

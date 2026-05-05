@@ -5,6 +5,7 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +18,12 @@ public class CSRFHandlerConfiguration implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new CSRFHandlerInterceptor());
 	}
+	@Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // Esto mapea la URL /team-logos/** a la carpeta física del disco
+        registry.addResourceHandler("/team-logos/**")
+                .addResourceLocations("file:team-logos/");
+    }
 }
 
 class CSRFHandlerInterceptor implements HandlerInterceptor {

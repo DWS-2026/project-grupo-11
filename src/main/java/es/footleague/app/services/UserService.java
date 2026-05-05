@@ -2,6 +2,9 @@ package es.footleague.app.services;
 
 import es.footleague.app.model.User;
 import es.footleague.app.dto.UserRegistrationDTO;
+import es.footleague.app.dto.UserUpdateDTO;
+import es.footleague.app.dto.PasswordChangeDTO;
+import es.footleague.app.repository.TeamRepository;
 import es.footleague.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +22,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TeamRepository teamRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -90,5 +95,47 @@ public class UserService {
 
         save(newUser);
         return newUser;
+    }
+
+    // Update user profile (email, favourite team) — NO PASSWORD
+    @Transactional
+    public User update(Long id, UserUpdateDTO dto) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+
+        if (dto.email() != null && !dto.email().trim().isEmpty()) {
+            existingUser.setEmail(dto.email());
+        }
+
+        if (dto.favouriteTeamId() != null) {
+            teamRepository.findById(dto.favouriteTeamId())
+                    .ifPresent(existingUser::setFavouriteTeam);
+        }
+
+        userRepository.save(existingUser);
+        return existingUser;
+    }
+
+    // Change password with validation of old password
+    @Transactional
+    public User changePassword(Long id, PasswordChangeDTO dto) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+
+        // Verify old password matches
+        if (!passwordEncoder.matches(dto.oldPassword(), existingUser.getPassword())) {
+            throw new IllegalArgumentException("Old password is incorrect");
+        }
+
+        // Verify new password is not empty
+        if (dto.newPassword() == null || dto.newPassword().isEmpty()) {
+            throw new IllegalArgumentException("New password cannot be empty");
+        }
+
+        // Update password (encode it)
+        existingUser.setPassword(passwordEncoder.encode(dto.newPassword()));
+        userRepository.save(existingUser);
+
+        return existingUser;
     }
 }

@@ -78,6 +78,8 @@ public class WebSecurityConfig {
 						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 						// USER ENDPOINTS
 						.requestMatchers(HttpMethod.GET, "/api/v1/users/me").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/api/v1/users/**").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.POST, "/api/v1/users/*/change-password").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/api/v1/users/*/avatar").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.GET, "/api/v1/ratings/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.POST, "/api/v1/ratings/**").hasAnyRole("USER", "ADMIN")

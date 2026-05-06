@@ -1,8 +1,16 @@
 package es.footleague.app.controller;
 
+import java.nio.file.Path;
+import java.nio.file.Files;
+import org.springframework.web.multipart.MultipartFile;
 import es.footleague.app.dto.MatchDTO;
 import es.footleague.app.model.Match;
 import es.footleague.app.model.MatchEvent;
+import org.springframework.core.io.Resource;
+import java.io.IOException; // Para solucionar el error de IOException
+import org.springframework.http.HttpHeaders; // Para solucionar el error de HttpHeaders
+import org.springframework.http.MediaType; // Por si te falla MediaType también
+import es.footleague.app.services.FileStorageService;
 import es.footleague.app.services.MatchService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +20,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.nio.file.Files;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/matches")
 public class MatchRestController {
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Autowired
     private MatchService matchService;
@@ -116,5 +128,46 @@ public class MatchRestController {
             return ResponseEntity.ok(new MatchDTO(existingMatch));
             
         }).orElse(ResponseEntity.notFound().build());
+    }
+    // Subtítulo: "Gestión de ficheros: Guardar acta del partido en disco"
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/{id}/report")
+    public ResponseEntity<MatchDTO> uploadReport(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
+        Match match = matchService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Match not found"));
+
+        // 1. Guardar usando tus métodos exactos: storeFile(archivo, subcarpeta, nombreOriginal)
+        String relativePath = fileStorageService.storeFile(file, "matches", file.getOriginalFilename()); 
+
+        // 2. Actualizar entidad
+        match.setReportFileName(file.getOriginalFilename());
+        match.setReportFilePath(relativePath);
+        
+        matchService.save(match);
+
+        return ResponseEntity.ok(new MatchDTO(match));
+    }
+
+    // Subtítulo: "Gestión de ficheros: Visualización del acta"
+    @GetMapping("/{id}/report")
+        public ResponseEntity<Resource> getMatchReport(@PathVariable Long id) throws IOException {
+        Match match = matchService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Match not found"));
+
+        if (match.getReportFilePath() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Usamos el nombre exacto de tu servicio
+        Resource resource = fileStorageService.loadFileAsResource(match.getReportFilePath());
+        
+        // Intentamos detectar el tipo de archivo (PDF, Imagen...)
+        String contentType = Files.probeContentType(Path.of(resource.getURI()));
+        if (contentType == null) contentType = "application/octet-stream";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, contentType)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + match.getReportFileName() + "\"")
+                .body(resource);
     }
 }

@@ -10,6 +10,9 @@ import java.util.List;
 @Entity
 @Table(name = "matches")
 public class Match {
+    // En Match.java
+    private String reportFileName; // Nombre original del acta
+    private String reportFilePath; // Ruta en disco
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -54,6 +57,22 @@ public class Match {
         this.matchDate = matchDate;
         this.matchTime = matchTime;
         this.stadium = localTeam.getStadiumName();
+    }
+    
+    public String getReportFileName() {
+        return reportFileName;
+    }
+
+    public void setReportFileName(String reportFileName) {
+        this.reportFileName = reportFileName;
+    }
+
+    public String getReportFilePath() {
+        return reportFilePath;
+    }
+
+    public void setReportFilePath(String reportFilePath) {
+        this.reportFilePath = reportFilePath;
     }
 
     public boolean getClimaDespejado() {

@@ -7,6 +7,7 @@ import java.sql.Blob;
 @Entity
 @Table(name = "teams")
 public class Team {
+    // En tu clase Team.java
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

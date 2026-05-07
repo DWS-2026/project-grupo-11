@@ -28,11 +28,11 @@ public class MatchDTO {
         this.events = match.getEvents().stream()
                 .map(event -> new MatchEventDTO(
                         event.getId(),
-                        event.getMinute(), // Verifica que este método exista en MatchEvent
-                        event.getType(), // O event.getType() según tu modelo
-                        event.getNamePlayer(), // Ajusta según los nombres en tu entidad
-                        event.getNamePlayerOut(), // Ajusta según los nombres en tu entidad
-                        event.getNamePlayerIn(), // Ajusta según los nombres en tu entidad
+                        event.getMinute(), // Verify that this method exists in MatchEvent
+                        event.getType(), 
+                        event.getNamePlayer(), 
+                        event.getNamePlayerOut(), 
+                        event.getNamePlayerIn(), 
                         event.getMatch().getId(),
                         event.getTeam().getId(),
                         event.getTeam().getName()))

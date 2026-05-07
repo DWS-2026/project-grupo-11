@@ -51,7 +51,7 @@ public class RatingService {
         }
 
         Rating rating = existing.get();
-        
+
         if (!rating.getAuthor().getUsername().equals(username)) {
             throw new AccessDeniedException("You can only edit your own ratings");
         }
@@ -59,8 +59,12 @@ public class RatingService {
         rating.setScore(dto.score());
         rating.setComment(dto.comment());
         save(rating);
-        
+
         return Optional.of(rating);
+    }
+
+    public Page<Rating> findByAuthorUsername(String username, Pageable pageable) {
+        return ratingRepository.findByAuthorUsernameIgnoreCase(username, pageable);
     }
 
 }

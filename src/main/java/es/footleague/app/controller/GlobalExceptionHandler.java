@@ -21,31 +21,31 @@ public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // 1. ERROR 404 - Recurso no encontrado
+    // 1. ERROR 404 - Resource not found
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(NoSuchElementException ex, HttpServletRequest request) {
         log.warn("Resource not found: {} from IP {}", request.getRequestURI(), request.getRemoteAddr());
-        return buildResponse(HttpStatus.NOT_FOUND, "El recurso solicitado no existe.");
+        return buildResponse(HttpStatus.NOT_FOUND, "The requested resource does not exist.");
     }
 
-    // 2. ERROR 403 - Acceso Denegado (Importante para tu seguridad)
+    // 2. ERROR 403 - Access Denied (Important for your security)
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
         String username = request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "ANONYMOUS";
         log.warn("SECURITY: Access denied to {} from IP {} - User: {}", request.getRequestURI(), request.getRemoteAddr(), username);
-        return buildResponse(HttpStatus.FORBIDDEN, "No tienes permisos para realizar esta acción.");
+        return buildResponse(HttpStatus.FORBIDDEN, "You do not have permission to perform this action.");
     }
 
-    // 3. ERROR 405 - Método no permitido (Ej: hacer POST donde solo hay GET)
+    // 3. ERROR 405 - Method not allowed (e.g. POST where only GET exists)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<Map<String, Object>> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
         log.warn("Method not allowed: {} {} from IP {}", ex.getMethod(), request.getRequestURI(), request.getRemoteAddr());
         return buildResponse(HttpStatus.METHOD_NOT_ALLOWED, 
-            "El método " + ex.getMethod() + " no está permitido para esta ruta.");
+            "The " + ex.getMethod() + " method is not allowed for this endpoint.");
     }
 
-    // 4. ERROR 400 - Fallo en validaciones (Bean Validation)
-    // Se activa cuando el @RequestBody falla las anotaciones @NotNull, @Min, etc.
+    // 4. ERROR 400 - Validation failure (Bean Validation)
+    // Triggered when @RequestBody fails @NotNull, @Min, etc. annotations
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationErrors(MethodArgumentNotValidException ex, HttpServletRequest request) {
         String details = ex.getBindingResult().getFieldErrors().stream()
@@ -53,25 +53,25 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining(", "));
         
         log.warn("Validation error at {} from IP {}: {}", request.getRequestURI(), request.getRemoteAddr(), details);
-        return buildResponse(HttpStatus.BAD_REQUEST, "Error de validación: " + details);
+        return buildResponse(HttpStatus.BAD_REQUEST, "Validation error: " + details);
     }
 
-    // 5. ERROR 400 - Argumentos ilegales o malformados
+    // 5. ERROR 400 - Illegal or malformed arguments
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleBadRequest(IllegalArgumentException ex, HttpServletRequest request) {
         log.warn("Illegal argument at {} from IP {}: {}", request.getRequestURI(), request.getRemoteAddr(), ex.getMessage());
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
-    // 6. ERROR 500 - Error genérico no controlado
+    // 6. ERROR 500 - Generic unhandled error
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGlobalError(Exception ex, HttpServletRequest request) {
         log.error("CRITICAL: Unexpected error at {} from IP {}: {}", request.getRequestURI(), request.getRemoteAddr(), ex.getMessage(), ex);
-        // En producción no es recomendable mostrar el mensaje real de la excepción por seguridad
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Ha ocurrido un error inesperado.");
+        // In production it is not recommended to show the real exception message for security reasons
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
     }
 
-    // Método auxiliar para no repetir código
+    // Helper method to avoid code repetition
     private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", java.time.LocalDateTime.now());

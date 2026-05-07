@@ -81,7 +81,7 @@ public class WebSecurityConfig {
 						.requestMatchers(HttpMethod.PUT, "/api/v1/users/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.POST, "/api/v1/users/*/change-password").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/api/v1/users/*/avatar").hasAnyRole("USER", "ADMIN")
-						.requestMatchers(HttpMethod.GET, "/api/v1/ratings/**").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.GET, "/api/v1/ratings/my-ratings/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.POST, "/api/v1/ratings/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/api/v1/ratings/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.POST, "/api/v1/events/*/ratings").hasAnyRole("USER", "ADMIN")
@@ -97,6 +97,7 @@ public class WebSecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/api/v1/events/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/api/v1/events/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/api/v1/events/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/api/v1/ratings/**").hasRole("ADMIN")
 						.anyRequest().denyAll());
 
 		// Disable Form login Authentication

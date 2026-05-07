@@ -2,6 +2,7 @@ package es.footleague.app.controller;
 
 import es.footleague.app.model.Team;
 import es.footleague.app.model.User;
+import es.footleague.app.services.FileStorageService;
 import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +33,9 @@ public class TeamController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -92,6 +96,7 @@ public class TeamController {
 
         if (file != null && !file.isEmpty()) {
             try {
+                fileStorageService.validateImageFile(file);
                 // Convertimos el MultipartFile a Blob para la columna logo_data[cite: 2]
                 byte[] bytes = file.getBytes();
                 Blob blob = new SerialBlob(bytes);

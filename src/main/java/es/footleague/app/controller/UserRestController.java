@@ -1,5 +1,6 @@
 package es.footleague.app.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
@@ -30,6 +31,7 @@ import es.footleague.app.model.User;
 import es.footleague.app.security.jwt.AuthResponse;
 import es.footleague.app.security.jwt.LoginRequest;
 import es.footleague.app.security.jwt.UserLoginService;
+import es.footleague.app.services.FileStorageService;
 import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
 
@@ -50,6 +52,9 @@ public class UserRestController {
 
     @Autowired
     private UserLoginService userLoginService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     // Get current logged-in user
     @GetMapping("/me")
@@ -89,7 +94,8 @@ public class UserRestController {
 
     // POST refresh
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(@CookieValue(name = "RefreshToken", required = false) String refreshToken, HttpServletResponse response) {
+    public ResponseEntity<AuthResponse> refresh(
+            @CookieValue(name = "RefreshToken", required = false) String refreshToken, HttpServletResponse response) {
         if (refreshToken == null || refreshToken.isEmpty()) {
             AuthResponse errorResponse = new AuthResponse(AuthResponse.Status.FAILURE, "Refresh token is missing");
             return ResponseEntity.status(401).body(errorResponse);
@@ -152,11 +158,17 @@ public class UserRestController {
         boolean isOwner = currentUser.getId().equals(id);
         boolean isAdmin = userDetails.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-        
+
         if (!isOwner && !isAdmin) {
             return ResponseEntity.status(403).build();
         }
-        
+        try {
+            fileStorageService.validateImageFile(imageFile);
+        } catch (IOException e) {
+            log.warn("Invalid file upload attempt for user {}: {}", id, e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
         if (imageFile.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
@@ -207,8 +219,9 @@ public class UserRestController {
             
             userService.changePassword(id, passwordChangeDTO);
             log.info("Password changed successfully for user ID: {}", id);
-            
-            AuthResponse successResponse = new AuthResponse(AuthResponse.Status.SUCCESS, "Password changed successfully");
+
+            AuthResponse successResponse = new AuthResponse(AuthResponse.Status.SUCCESS,
+                    "Password changed successfully");
             return ResponseEntity.ok(successResponse);
         } catch (IllegalArgumentException e) {
             log.warn("Password change failed for user ID {}: {}", id, e.getMessage());

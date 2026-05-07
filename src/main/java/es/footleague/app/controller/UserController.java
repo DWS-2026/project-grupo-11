@@ -125,6 +125,7 @@ public class UserController {
     public String processRegister(User user, @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
         if (!imageFile.isEmpty()) {
             try {
+                fileStorageService.validateImageFile(imageFile);
                 // We convert the uploaded file into a Blob to store in MySQL [cite: 73]
                 user.setAvatarData(new javax.sql.rowset.serial.SerialBlob(imageFile.getBytes()));
             } catch (Exception e) {
@@ -183,6 +184,7 @@ public class UserController {
 
             if (!imageFile.isEmpty()) {
                 try {
+                    fileStorageService.validateImageFile(imageFile);
                     existingUser.setAvatarData(new javax.sql.rowset.serial.SerialBlob(imageFile.getBytes()));
                 } catch (Exception e) {
                     throw new IOException("Error al actualizar el avatar", e);
@@ -235,7 +237,8 @@ public class UserController {
         Team team = teamOpt.get();
         if (team.getLogoFilePath() != null) {
             Resource resource = fileStorageService.loadFileAsResource(team.getLogoFilePath());
-            MediaType mediaType = MediaTypeFactory.getMediaType(team.getLogoFileName()).orElse(MediaType.APPLICATION_OCTET_STREAM);
+            MediaType mediaType = MediaTypeFactory.getMediaType(team.getLogoFileName())
+                    .orElse(MediaType.APPLICATION_OCTET_STREAM);
             return ResponseEntity.ok()
                     .contentType(mediaType)
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + team.getLogoFileName() + "\"")

@@ -412,17 +412,17 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 ### **Participación de Miembros en la Práctica 3**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - Jaime Tejero Fernández**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Las responsabilidades de Jaime se centraron en La gestion de errores, probar contramedidas para el Top 3 de la OWASP asi como de los endpoint de error, los de partidos y equipos y todo lo relacionado con estos (DTO's, Mapper etc)
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [adicion de endpoint de equipos](https://github.com/DWS-2026/project-grupo-11/commit/936014490809ea0a5bf39babcd15bc007ca5aa93)  | [TeamRestController.java](src/main/java/es/footleague/app/controller/TeamRestController.java), [TeamDTO.java](src/main/java/es/footleague/app/model/TeamDTO.java), [TeamRepository.java](src/main/java/es/footleague/app/repository/TeamRepository.java), [TeamService.java](src/main/java/es/footleague/app/services/TeamService.java)   |
+|2| [Correcciones de Compilacion en UserDTO y creacion de Api Rest de partidos y DTO de partidos y eventos de partido](https://github.com/DWS-2026/project-grupo-11/commit/93b23e254155abb8d28da54df4231fc826632a54)  | [MatchRestController](src/main/java/es/footleague/app/controller/MatchRestController),  [TeamRestController.java](src/main/java/es/footleague/app/controller/TeamRestController.java),  [MatchDTO.java](src/main/java/es/footleague/app/dto/MatchDTO.java),  [MatchEventDTO.java](src/main/java/es/footleague/app/dto/MatchEventDTO.java),  [TeamDTO.java](src/main/java/es/footleague/app/dto/TeamDTO.java),  [UserMapper.java](src/main/java/es/footleague/app/dto/UserMapper.java),  [WebSecurityConfig.java](src/main/java/es/footleague/app/security/WebSecurityConfig.java),    |
+|3| [Creado endpoint de error](https://github.com/DWS-2026/project-grupo-11/commit/1d38d852688150450c2acaa5336444a8593286a0)  | [GlobalExceptionHandler.java](src/main/java/es/footleague/app/controller/GlobalExceptionHandler.java)   |
+|4| [Creacion Borrado y edicion de equipo creados (falta autorizacion)](https://github.com/DWS-2026/project-grupo-11/commit/a15184b29088c51ec10534668a94cb20caccdc4a)  | [TeamRestController.java](src/main/java/es/footleague/app/controller/TeamRestController.java), [TeamDTO.java](src/main/java/es/footleague/app/model/TeamDTO.java),    |
+|5| [Añadidos cambios para evitar BROKEN ACCES CONTROL (Modificacion del logo de otro usuario) y actualizado .gitignore](https://github.com/DWS-2026/project-grupo-11/commit/d1dd3b97006a8594ef39864b8e8a0c9ca10831a7)  | [.gitignore](.gitignore),  [MatchEventRestController.java](src/main/java/es/footleague/app/controller/MatchEventRestController.java), [MatchRestController.java](src/main/java/es/footleague/app/controller/MatchRestController.java), [UserRestController.java](src/main/java/es/footleague/app/controller/UserRestController.java), [CSRFHandlerConfiguration.java](src/main/java/es/footleague/app/security/CSRFHandlerConfiguration.java),  |
 
 ---
 

@@ -426,17 +426,17 @@ Las responsabilidades de Jaime se centraron en La gestion de errores, probar con
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
+#### **Alumno 2 - [Rubén Sánchez López]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+[Implementación de la API REST y autenticación JWT, incluyendo endpoints de usuarios (registro, login, avatar), control de acceso IDOR y configuración de seguridad. Integración del editor de texto enriquecido Quill.js en las valoraciones y documentación de la API con especificación OpenAPI.]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [texto enriquecido, empezada estructura en postman y añadido apiFilterChain](https://github.com/DWS-2026/dws-2026-project-base/commit/9d32801dcc08056614194bc70f57de39569e785e)  | [resources.yaml](.postman/resources.yaml), [pom.xml](pom.xml), [workspace.globals.yaml](postman/globals/workspace.globals.yaml), [WebSecurityConfig.java](src/main/java/es/footleague/app/security/WebSecurityConfig.java), [header.html](src/main/resources/templates/fragments/header.html), [my-ratings.html](src/main/resources/templates/my-ratings.html), [player-ratings.html](src/main/resources/templates/player-ratings.html), [profile.html](src/main/resources/templates/profile.html)   |
+|2| [añadido UserRestController con login y registro y creada la carpeta dto](https://github.com/DWS-2026/dws-2026-project-base/commit/39f3ab4b2609734a24aaf5028133308b19ffeaf0)  | [pom.xml](pom.xml), [UserRestController.java](src/main/java/es/footleague/app/controller/UserRestController.java), [UserDTO.java](src/main/java/es/footleague/app/dto/UserDTO.java), [UserMapper.java](src/main/java/es/footleague/app/dto/UserMapper.java), [UserRegistrationDTO.java](src/main/java/es/footleague/app/dto/UserRegistrationDTO.java), [WebSecurityConfig.java](src/main/java/es/footleague/app/security/WebSecurityConfig.java), [UserService.java](src/main/java/es/footleague/app/services/UserService.java)   |
+|3| [borrado el mapstruct, control de propiedad IDOR e implementado endponts de imagenes para usuarios](https://github.com/DWS-2026/dws-2026-project-base/commit/721dd542c008557d0e402e538115187c447ef8e8)  | [pom.xml](pom.xml), [RatingController.java](src/main/java/es/footleague/app/controller/RatingController.java), [UserRestController.java](src/main/java/es/footleague/app/controller/UserRestController.java), [UserMapper.java](src/main/java/es/footleague/app/dto/UserMapper.java), [WebSecurityConfig.java](src/main/java/es/footleague/app/security/WebSecurityConfig.java), [RatingService.java](src/main/java/es/footleague/app/services/RatingService.java), [SampleDataService.java](src/main/java/es/footleague/app/services/SampleDataService.java), [UserService.java](src/main/java/es/footleague/app/services/UserService.java)   |
+|4| [añadido autenticación JWT con UserLoginService y mejoras de seguridad para OWASP A07/A09](https://github.com/DWS-2026/dws-2026-project-base/commit/5f27a2f83cffded081a4eb4018134df282a6a40b)  | [.gitignore](.gitignore), [GlobalExceptionHandler.java](src/main/java/es/footleague/app/controller/GlobalExceptionHandler.java), [UserRestController.java](src/main/java/es/footleague/app/controller/UserRestController.java), [WebSecurityConfig.java](src/main/java/es/footleague/app/security/WebSecurityConfig.java), [JwtRequestFilter.java](src/main/java/es/footleague/app/security/jwt/JwtRequestFilter.java), [UserLoginService.java](src/main/java/es/footleague/app/security/jwt/UserLoginService.java), [application.properties](src/main/resources/application.properties)   |
+|5| [añadido la especificación OpenAPI y la documentación HTML a la carpeta api-docs y corregido pequeños errores](https://github.com/DWS-2026/dws-2026-project-base/commit/a919239cfbbbf2c2f251eeecc64a0852651f39b1)  | [api-docs.html](api-docs/api-docs.html), [api-docs.yaml](api-docs/api-docs.yaml), [pom.xml](pom.xml), [MatchRestController.java](src/main/java/es/footleague/app/controller/MatchRestController.java), [TeamRestController.java](src/main/java/es/footleague/app/controller/TeamRestController.java), [MatchDTO.java](src/main/java/es/footleague/app/dto/MatchDTO.java), [WebSecurityConfig.java](src/main/java/es/footleague/app/security/WebSecurityConfig.java), [application.properties](src/main/resources/application.properties)   |
 
 ---
 

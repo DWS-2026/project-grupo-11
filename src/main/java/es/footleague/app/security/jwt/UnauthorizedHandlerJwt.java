@@ -1,4 +1,5 @@
 package es.footleague.app.security.jwt;
+
 import java.io.IOException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,8 +19,10 @@ public class UnauthorizedHandlerJwt implements AuthenticationEntryPoint {
   @Override
   public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
       throws IOException {
-    logger.info("Unauthorized error: {}", authException.getMessage());
-
-    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "message: %s, path: %s".formatted(authException.getMessage(), request.getServletPath()));
+    logger.warn("Unauthorized access attempt from IP: {} to path: {}",
+        request.getRemoteAddr(), request.getServletPath());
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    response.setContentType("application/json");
+    response.getWriter().write("{\"error\": \"Unauthorized\"}");
   }
 }

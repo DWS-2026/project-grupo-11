@@ -4,6 +4,9 @@ import es.footleague.app.model.Rating;
 import es.footleague.app.model.User;
 import es.footleague.app.dto.RatingDTO;
 import es.footleague.app.repository.RatingRepository;
+
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +17,10 @@ import java.util.Optional;
 
 @Service
 public class RatingService {
+
+    private static final PolicyFactory POLICY = Sanitizers.FORMATTING
+            .and(Sanitizers.BLOCKS)
+            .and(Sanitizers.LINKS);
 
     @Autowired
     private RatingRepository ratingRepository;
@@ -31,6 +38,10 @@ public class RatingService {
     }
 
     public void save(Rating rating) {
+        if (rating.getComment() != null) {
+            String sanitized = POLICY.sanitize(rating.getComment());
+            rating.setComment(sanitized);
+        }
         ratingRepository.save(rating);
     }
 
@@ -57,7 +68,10 @@ public class RatingService {
         }
 
         rating.setScore(dto.score());
-        rating.setComment(dto.comment());
+        String sanitized = dto.comment() != null
+                ? POLICY.sanitize(dto.comment())
+                : "";
+        rating.setComment(sanitized);
         save(rating);
 
         return Optional.of(rating);

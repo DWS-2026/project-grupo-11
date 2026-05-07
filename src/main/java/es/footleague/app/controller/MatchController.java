@@ -7,6 +7,8 @@ import es.footleague.app.services.TeamService;
 import es.footleague.app.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +19,6 @@ import java.util.Optional;
 import java.util.Map;
 import java.security.Principal;
 import java.util.HashMap;
-
 
 @Controller
 @PreAuthorize("hasRole('ADMIN')")
@@ -32,6 +33,8 @@ public class MatchController {
 
     @Autowired
     private UserService userService;
+
+    private static final Logger log = LoggerFactory.getLogger(MatchController.class);
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -67,7 +70,8 @@ public class MatchController {
             Match match = matchOpt.get();
             model.addAttribute("match", match);
             model.addAttribute("teams", teamService.findAll());
-            // Weather attribute for the HTML, e.g. climaSoleado, climaLluvioso, etc. depending 
+            // Weather attribute for the HTML, e.g. climaSoleado, climaLluvioso, etc.
+            // depending
             // on match.getWeather()
             // HTML
             model.addAttribute("clima" + match.getWeather(), true);
@@ -94,9 +98,10 @@ public class MatchController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error saving match", e); // Log con contexto
             return ResponseEntity.internalServerError()
-                    .body(Map.of("status", "error", "message", e.getMessage()));
+                    .body(Map.of("status", "error",
+                            "message", "An unexpected error occurred")); // Genérico
         }
     }
 

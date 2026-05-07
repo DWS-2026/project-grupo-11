@@ -6,6 +6,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +22,7 @@ import java.util.Comparator;
 public class FileStorageService {
 
     private final Path rootLocation;
+    private static final Logger log = LoggerFactory.getLogger(FileStorageService.class);
 
     public FileStorageService(@Value("${file.upload-dir:uploads}") String uploadDir) throws IOException {
         this.rootLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
@@ -61,7 +64,7 @@ public class FileStorageService {
                     .map(Path::toFile)
                     .forEach(File::delete);
             Files.createDirectories(rootLocation);
-            System.out.println("✅ [FileStorageService] Uploads folder cleaned.");
+            log.info("Uploads folder cleaned successfully");
         }
     }
 }

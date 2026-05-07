@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import es.footleague.app.model.Match;
 import es.footleague.app.model.MatchEvent;
@@ -46,15 +48,17 @@ public class SampleDataService {
     @Autowired
     private FileStorageService fileStorageService;
 
+    private static final Logger log = LoggerFactory.getLogger(SampleDataService.class);
+
     @PostConstruct
     public void init() throws IOException {
         // Clean uploads folder on startup
         fileStorageService.cleanUploadsFolder();
         // 1. Create teams
         Team madridTeam = new Team("Real Madrid", "Santiago Bernabeu");
-        setTeamLogo(madridTeam, "static/img/logo_realMadrid.png");
+        setTeamLogo(madridTeam, "static/images/default-logo.png");
         Team barsaTeam = new Team("FC Barcelona", "Camp Nou");
-        setTeamLogo(barsaTeam, "static/img/logo_barcelona.jpg");
+        setTeamLogo(barsaTeam, "static/images/default-logo.png");
         barsaTeam.setPlayedMatches(1);
         madridTeam.setPlayedMatches(1);
         madridTeam.setWins(1);
@@ -65,9 +69,10 @@ public class SampleDataService {
         // 2. Create users
         User user1 = new User("JuanPerez", passwordEncoder.encode("password123"), "juanperez@prensa.com", madridTeam,
                 "USER");
-        setUserAvatar(user1, "static/img/Juan_Perez_Avatar.PNG");
+        setUserAvatar(user1, "static/images/default-avatar.png");
         User user2 = new User("admin", passwordEncoder.encode("admin123"), "admin@footleague.es", barsaTeam, "USER",
                 "ADMIN");
+        setUserAvatar(user2, "static/images/default-avatar.png");
         userRepository.save(user1);
         userRepository.save(user2);
         // 3. Create a match
@@ -89,16 +94,16 @@ public class SampleDataService {
         ratingRepository.save(r1);
         ratingRepository.save(r2);
 
-        System.out.println("⚽ [SampleDataService] FootLeague data loaded successfully!");
+        log.info("FootLeague data loaded successfully");
     }
 
     private void setTeamLogo(Team team, String path) throws IOException {
         Resource image = new ClassPathResource(path);
         if (image.exists()) {
             team.setLogoData(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
-            System.out.println("✅ Logo cargado para: " + team.getName());
+            log.info("Logo loaded for: {}", team.getName());
         } else {
-            System.out.println("❌ ERROR: No se encontró el archivo en: " + path);
+            log.error("Logo file not found at: {}", path);
         }
     }
 

@@ -166,10 +166,19 @@ public class UserRestController {
 
     // PUT update user profile (email, favourite team) — NO PASSWORD
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUserProfile(@PathVariable Long id, @RequestBody UserUpdateDTO userUpdateDTO) {
+    public ResponseEntity<UserDTO> updateUserProfile(@PathVariable Long id, @RequestBody UserUpdateDTO userUpdateDTO, @AuthenticationPrincipal UserDetails userDetails) {
         if (!userService.existsById(id)) {
             log.warn("Update attempted on non-existent user ID: {}", id);
             return ResponseEntity.notFound().build();
+        }
+        User currentUser = userService.findByUsernameIgnoreCase(userDetails.getUsername())
+                .orElseThrow();
+        boolean isOwner = currentUser.getId().equals(id);
+        boolean isAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        if (!isOwner && !isAdmin) {
+            log.warn("Unauthorized update attempt on user ID: {} by user: {}", id, userDetails.getUsername());
+            return ResponseEntity.status(403).build();
         }
         User updatedUser = userService.update(id, userUpdateDTO);
         log.info("User profile updated for user ID: {}", id);
@@ -178,12 +187,22 @@ public class UserRestController {
 
     // POST change password (separate endpoint for security) — ADMIN or own account
     @PostMapping("/{id}/change-password")
-    public ResponseEntity<AuthResponse> changePassword(@PathVariable Long id, @RequestBody PasswordChangeDTO passwordChangeDTO) {
+    public ResponseEntity<AuthResponse> changePassword(@PathVariable Long id, @RequestBody PasswordChangeDTO passwordChangeDTO, @AuthenticationPrincipal UserDetails userDetails) {
         try {
             if (!userService.existsById(id)) {
                 log.warn("Password change attempted on non-existent user ID: {}", id);
                 AuthResponse errorResponse = new AuthResponse(AuthResponse.Status.FAILURE, "User not found");
                 return ResponseEntity.status(404).body(errorResponse);
+            }
+            User currentUser = userService.findByUsernameIgnoreCase(userDetails.getUsername())
+                    .orElseThrow();
+            boolean isOwner = currentUser.getId().equals(id);
+            boolean isAdmin = userDetails.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+            if (!isOwner && !isAdmin) {
+                log.warn("Unauthorized password change attempt on user ID: {} by user: {}", id, userDetails.getUsername());
+                AuthResponse errorResponse = new AuthResponse(AuthResponse.Status.FAILURE, "Unauthorized: You can only change your own password");
+                return ResponseEntity.status(403).body(errorResponse);
             }
             
             userService.changePassword(id, passwordChangeDTO);

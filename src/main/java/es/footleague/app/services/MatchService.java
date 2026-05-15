@@ -271,7 +271,10 @@ public class MatchService {
         Match match = matchRepository.findById(matchId)
                 .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
 
-        // 2. Store file using FileStorageService (validates path traversal)
+        // 2. Validate report file content and type
+        fileStorageService.validateReportFile(file);
+
+        // 3. Store file using FileStorageService (validates path traversal)
         String relativePath = fileStorageService.storeFile(file, "matches", file.getOriginalFilename());
 
         // 3. Update match entity with report metadata

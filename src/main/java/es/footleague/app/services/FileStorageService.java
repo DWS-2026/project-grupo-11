@@ -29,6 +29,11 @@ public class FileStorageService {
             "image/jpeg", "image/png", "image/gif", "image/webp");
     private static final List<String> ALLOWED_IMAGE_EXTENSIONS = List.of(
             ".jpg", ".jpeg", ".png", ".gif", ".webp");
+    private static final List<String> ALLOWED_REPORT_TYPES = List.of(
+            "application/pdf", "text/plain", "image/jpeg", "image/png", "image/gif", "image/webp");
+    private static final List<String> ALLOWED_REPORT_EXTENSIONS = List.of(
+            ".pdf", ".txt", ".jpg", ".jpeg", ".png", ".gif", ".webp");
+    private static final long MAX_REPORT_FILE_SIZE = 20 * 1024 * 1024; // 20 MB
 
     public FileStorageService(@Value("${file.upload-dir:uploads}") String uploadDir) throws IOException {
         this.rootLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
@@ -230,6 +235,70 @@ public class FileStorageService {
         byte[] fileContent = file.getBytes();
         if (!isValidImageMagicNumber(fileContent)) {
             throw new IOException("File content doesn't match image format");
+        }
+    }
+
+    /**
+     * Validates a report file (PDF, TXT, or image).
+     * 
+     * Checks: file size, MIME type, extension, and content magic numbers.
+     * 
+     * @param file The file to validate
+     * @throws IOException if the file is invalid
+     */
+    public void validateReportFile(MultipartFile file) throws IOException {
+        // 1. Check if file is empty
+        if (file == null || file.isEmpty()) {
+            throw new IOException("File is empty");
+        }
+
+        // 2. Validate file size
+        if (file.getSize() > MAX_REPORT_FILE_SIZE) {
+            throw new IOException("File too large. Maximum size is 20MB");
+        }
+
+        // 3. Validate MIME type
+        String contentType = file.getContentType();
+        if (contentType == null || !ALLOWED_REPORT_TYPES.contains(contentType)) {
+            throw new IOException("Invalid file type: " + contentType);
+        }
+
+        // 4. Validate extension
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null) {
+            throw new IOException("Filename is missing");
+        }
+
+        String ext = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
+        if (!ALLOWED_REPORT_EXTENSIONS.contains(ext)) {
+            throw new IOException("Invalid file extension: " + ext);
+        }
+
+        // 5. Validate content based on file type
+        byte[] fileContent = file.getBytes();
+
+        if (ext.equals(".pdf")) {
+            // PDF magic number: %PDF
+            if (fileContent.length < 4 || fileContent[0] != '%' || fileContent[1] != 'P' 
+                    || fileContent[2] != 'D' || fileContent[3] != 'F') {
+                throw new IOException("Invalid PDF file: missing PDF signature");
+            }
+        } else if (ext.equals(".txt")) {
+            // TXT: must have content and be valid ASCII
+            if (fileContent.length == 0) {
+                throw new IOException("Text file is empty");
+            }
+            // Check for null bytes (likely binary)
+            for (byte b : fileContent) {
+                if (b == 0) {
+                    throw new IOException("Text file contains binary data");
+                }
+            }
+        } else {
+            // Image file: validate magic number
+            if (!isValidImageMagicNumber(fileContent)) {
+                throw new IOException("Invalid image file: magic number validation failed");
+            }
         }
     }
 }

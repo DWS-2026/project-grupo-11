@@ -35,10 +35,75 @@ public class FileStorageService {
         Files.createDirectories(this.rootLocation);
     }
 
+    /**
+     * Validates a path to ensure it is safe from path traversal attacks.
+     * 
+     * Security checks performed:
+     * 1. Rejects absolute paths (starting with '/' or Windows-style paths)
+     * 2. Rejects parent directory references (..)
+     * 3. Rejects dangerous special characters (~, $, {}, etc.)
+     * 4. Rejects null or empty paths
+     * 
+     * Examples of BLOCKED paths:
+     * - "/tmp/example.txt" (Unix absolute path)
+     * - "C: Windows System32 file.txt" (Windows absolute path)
+     * - "D: uploads file.txt" (Windows absolute path)
+     * - "../../etc/passwd" (parent directory traversal)
+     * - "~/.ssh/id_rsa" (tilde expansion)
+     * - "${env_var}/file.txt" (environment variable injection)
+     * - "file{1..10}.txt" (brace expansion)
+     * 
+     * Examples of ALLOWED paths:
+     * - "report.pdf"
+     * - "matches/report.pdf"
+     * - "avatars/user_123.jpg"
+     * 
+     * @param path The path to validate
+     * @throws IllegalArgumentException if the path is unsafe
+     */
+    private void validatePathSafety(String path) {
+        if (path == null || path.trim().isEmpty()) {
+            throw new IllegalArgumentException("Path cannot be null or empty");
+        }
+
+        // Check for absolute paths (Unix style)
+        if (path.startsWith("/") || path.startsWith("\\")) {
+            throw new IllegalArgumentException("Absolute paths are not allowed: " + path);
+        }
+
+        // Check for Windows absolute paths (e.g., C:\, D:\, etc.)
+        if (path.matches("^[a-zA-Z]:[\\\\\\\\].*")) {
+            throw new IllegalArgumentException("Absolute paths are not allowed: " + path);
+        }
+
+        // Check for parent directory references
+        if (path.contains("..")) {
+            throw new IllegalArgumentException("Parent directory references (..) are not allowed: " + path);
+        }
+
+        // Check for dangerous special characters
+        // Blocked: ~ (tilde), $ (variable expansion), { } (brace expansion), 
+        // ; | & ` (command injection), < > (redirection)
+        if (path.matches(".*[~${}|&;<>`].*")) {
+            throw new IllegalArgumentException("Path contains forbidden special characters: " + path);
+        }
+    }
+
     public String storeFile(MultipartFile file, String subFolder, String originalFilename) throws IOException {
         String filename = StringUtils.cleanPath(originalFilename);
-        if (filename.contains("..")) {
-            throw new IOException("Invalid file name: " + filename);
+        
+        // 1. Validate path safety for filename
+        try {
+            validatePathSafety(filename);
+        } catch (IllegalArgumentException e) {
+            throw new IOException("Invalid file name: " + e.getMessage());
+        }
+
+        // 2. Validate path safety for subfolder
+        try {
+            validatePathSafety(subFolder);
+        } catch (IllegalArgumentException e) {
+            throw new IOException("Invalid subfolder: " + e.getMessage());
         }
 
         Path folder = rootLocation.resolve(subFolder).normalize();
@@ -54,6 +119,13 @@ public class FileStorageService {
     }
 
     public Resource loadFileAsResource(String relativePath) throws IOException {
+        // 1. Validate path safety first
+        try {
+            validatePathSafety(relativePath);
+        } catch (IllegalArgumentException e) {
+            throw new IOException("Invalid path: " + e.getMessage());
+        }
+
         Path filePath = rootLocation.resolve(relativePath).normalize();
         if (!filePath.toRealPath().startsWith(rootLocation.toRealPath())) {
             throw new IOException("Access denied: path traversal detected");

@@ -6,9 +6,9 @@ import es.footleague.app.dto.MatchDTO;
 import es.footleague.app.model.Match;
 import es.footleague.app.model.MatchEvent;
 import org.springframework.core.io.Resource;
-import java.io.IOException; 
-import org.springframework.http.HttpHeaders; 
-import org.springframework.http.MediaType; 
+import java.io.IOException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import es.footleague.app.services.FileStorageService;
 import es.footleague.app.services.MatchService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class MatchRestController {
         List<Match> allMatches = matchService.findAll();
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), allMatches.size());
-        
+
         List<MatchDTO> dtos = allMatches.subList(start, end).stream()
                 .map(MatchDTO::new)
                 .toList();
@@ -85,87 +85,40 @@ public class MatchRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<MatchDTO> updateMatch(@PathVariable Long id, @RequestBody Match updatedMatch) {
-        return matchService.findById(id).map(existingMatch -> {
-            
-            // 1. Update informational data
-            existingMatch.setMatchDate(updatedMatch.getMatchDate());
-            existingMatch.setMatchTime(updatedMatch.getMatchTime());
-            existingMatch.setWeather(updatedMatch.getWeather());
-            existingMatch.setStadium(updatedMatch.getStadium());
-            
-            // 2. Team sync (in case they changed)
-            existingMatch.setLocalTeam(updatedMatch.getLocalTeam());
-            existingMatch.setVisitorTeam(updatedMatch.getVisitorTeam());
-
-            // 3. Master Logic: Recalculate score based on events
-            if (updatedMatch.getEvents() != null) {
-                // Clear current events to reflect the new list from the client
-                existingMatch.getEvents().clear();
-
-                for (MatchEvent event : updatedMatch.getEvents()) {
-                    // Link the event to the current match
-                    event.setMatch(existingMatch);
-                    existingMatch.getEvents().add(event);
-                }
-                
-                 // Delegate goal calculation to the service
-                int goalsLocal = matchService.calculateGoalsFromEventsPublic(existingMatch, existingMatch.getLocalTeam());
-                int goalsVisitor = matchService.calculateGoalsFromEventsPublic(existingMatch, existingMatch.getVisitorTeam());
-                
-                // Set the calculated goals
-                existingMatch.setLocalGoals(goalsLocal);
-                existingMatch.setVisitorGoals(goalsVisitor);
-            }
-
-            // // 4. Save changes (the Service will update the corresponding tables)
-            matchService.save(existingMatch);
-            
-            return ResponseEntity.ok(new MatchDTO(existingMatch));
-            
-        }).orElse(ResponseEntity.notFound().build());
+        try {
+            // Delegate all business logic to the service: update match with events,
+            // recalculate goals, and persist changes
+            Match updatedMatchResult = matchService.updateMatchWithEvents(id, updatedMatch);
+            return ResponseEntity.ok(new MatchDTO(updatedMatchResult));
+        } catch (RuntimeException e) {
+            // Match not found
+            return ResponseEntity.notFound().build();
+        }
     }
+
     // Subtitle: "File management: Save match report to disk"
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/report")
-    public ResponseEntity<MatchDTO> uploadReport(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
-        Match match = matchService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Match not found"));
-
-        // 1. Save using exact methods: storeFile(file, subfolder, originalName)
-        String relativePath = fileStorageService.storeFile(file, "matches", file.getOriginalFilename()); 
-
-        // 2. Update entity
-        match.setReportFileName(file.getOriginalFilename());
-        match.setReportFilePath(relativePath);
-        
-        matchService.save(match);
-
-        return ResponseEntity.ok(new MatchDTO(match));
+    public ResponseEntity<MatchDTO> uploadReport(@PathVariable Long id, @RequestParam("file") MultipartFile file)
+            throws IOException {
+        // Delegate to service (centralizes business logic)
+        Match updatedMatch = matchService.uploadReport(id, file);
+        return ResponseEntity.ok(new MatchDTO(updatedMatch));
     }
 
     // Subtitle: "File management: Match report display"
     @GetMapping("/{id}/report")
-        public ResponseEntity<Resource> getMatchReport(@PathVariable Long id) throws IOException {
-        Match match = matchService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Match not found"));
-
-        if (match.getReportFilePath() == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        // Using the exact method name from the service
-        Resource resource = fileStorageService.loadFileAsResource(match.getReportFilePath());
-        
-        // Try to detect the file type (PDF, Image...)
-        String contentType = Files.probeContentType(Path.of(resource.getURI()));
-        if (contentType == null) contentType = "application/octet-stream";
+    public ResponseEntity<Resource> getMatchReport(@PathVariable Long id) throws IOException {
+        // Delegate to service (centralizes business logic)
+        MatchService.ReportResource reportResource = matchService.getMatchReport(id);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, contentType)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + match.getReportFileName() + "\"")
-                .body(resource);
+                .header(HttpHeaders.CONTENT_TYPE, reportResource.contentType())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + reportResource.fileName() + "\"")
+                .body(reportResource.resource());
     }
 }

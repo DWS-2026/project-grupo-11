@@ -47,10 +47,15 @@
                     {{/finalized}}
                     <td class="small text-white-50">{{stadium}}</td>
                     <td>
-                        <span class="badge bg-secondary border border-light">{{weather}}</span>
+                        {{#weather}}
+                        <span class="badge bg-secondary border border-light">{{.}}</span>
+                        {{/weather}}
+                        {{^weather}}
+                        <span class="badge bg-secondary border border-light">N/A</span>
+                        {{/weather}}
                     </td>
                     <td class="text-center">
-                        <div class="d-flex justify-content-center gap-2">
+                        <div class="d-flex justify-content-center gap-2 flex-wrap">
                             <button class="btn btn-sm btn-warning" onclick="editMatch('{{id}}')">
                                 <i class="bi bi-pencil-square"></i> Editar
                             </button>
@@ -58,6 +63,25 @@
                                 onclick="confirmDelete('{{id}}', '{{localTeam.name}} vs {{visitorTeam.name}}')">
                                 <i class="bi bi-trash"></i> Borrar
                             </button>
+
+                            {{#reportFilePath}}
+                            <button class="btn btn-sm btn-success" onclick="downloadAndViewMatchReport('{{id}}')">
+                                <i class="bi bi-download"></i> Descargar
+                            </button>
+                            {{/reportFilePath}}
+                            {{^reportFilePath}}
+                            <form action="/admin/matches/{{id}}/report/upload" method="post"
+                                enctype="multipart/form-data" class="d-inline-flex gap-1 align-items-center">
+                                <input type="hidden" name="_csrf" value="{{token}}" />
+
+                                <input type="file" name="file"
+                                    class="form-control form-control-sm text-white bg-dark border-secondary"
+                                    style="max-width: 150px;" required>
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-upload"></i> Subir
+                                </button>
+                            </form>
+                            {{/reportFilePath}}
 
                             <form id="delete-form-{{id}}" action="/admin/matches/match-delete/{{id}}" method="post"
                                 style="display:none;">
@@ -128,6 +152,37 @@
                 document.getElementById('delete-form-' + matchId).submit();
             }
         });
+    }
+
+    /**
+     * Descarga el reporte del partido Y abre una pestaña nueva mostrando el archivo descargado
+     * 
+     * Acciones:
+     * 1. Abre una nueva pestaña con la visualización del reporte (/report/view)
+     * 2. Simula la descarga del archivo en el ordenador usando un iframe oculto (/report/download)
+     */
+    function downloadAndViewMatchReport(matchId) {
+        // 1. Abre visualización en nueva pestaña
+        const viewUrl = `/admin/matches/${matchId}/report/view`;
+        window.open(viewUrl, '_blank');
+
+        // 2. Simula descarga creando un iframe oculto y trigger de descarga
+        setTimeout(() => {
+            const downloadUrl = `/admin/matches/${matchId}/report/download`;
+
+            // Crear iframe oculto para la descarga
+            const downloadFrame = document.createElement('iframe');
+            downloadFrame.style.display = 'none';
+            downloadFrame.src = downloadUrl;
+
+            // Añadir al DOM y luego remover después de un tiempo
+            document.body.appendChild(downloadFrame);
+
+            // Remover el iframe después de 5 segundos
+            setTimeout(() => {
+                document.body.removeChild(downloadFrame);
+            }, 5000);
+        }, 500);
     }
 </script>
 

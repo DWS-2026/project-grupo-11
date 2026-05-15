@@ -1,22 +1,35 @@
 package es.footleague.app.services;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import es.footleague.app.model.Match;
+import es.footleague.app.model.MatchEvent;
 import es.footleague.app.model.Team;
 import es.footleague.app.repository.MatchRepository;
 import es.footleague.app.repository.TeamRepository;
+
+
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class MatchService {
 
     @Autowired
     private MatchRepository matchRepository;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     // This method retrieves all matches from the database and returns them as a
     // list. It uses the findAll() method provided by the MatchRepository, which is
@@ -203,4 +216,104 @@ public class MatchService {
             });
         }
     }
+
+    @Transactional
+    public Match updateMatchWithEvents(Long id, Match updatedMatch) {
+        // 1. Retrieve the existing match from the database
+        Match existingMatch = matchRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+
+        // 2. Update informational data (basic fields that don't affect statistics)
+        existingMatch.setMatchDate(updatedMatch.getMatchDate());
+        existingMatch.setMatchTime(updatedMatch.getMatchTime());
+        existingMatch.setWeather(updatedMatch.getWeather());
+        existingMatch.setStadium(updatedMatch.getStadium());
+
+        // 3. Synchronize teams (in case they changed)
+        existingMatch.setLocalTeam(updatedMatch.getLocalTeam());
+        existingMatch.setVisitorTeam(updatedMatch.getVisitorTeam());
+
+        // 4. Master Logic: Manage events and recalculate score based on them
+        if (updatedMatch.getEvents() != null) {
+            // Clear current events to reflect the new list from the client
+            existingMatch.getEvents().clear();
+
+            // Add new events and link them to the match
+            for (MatchEvent event : updatedMatch.getEvents()) {
+                if (event != null) {
+                    // Link the event to the current match
+                    event.setMatch(existingMatch);
+                    existingMatch.getEvents().add(event);
+                }
+            }
+
+            // Calculate goals based on events for both teams
+            int goalsLocal = this.calculateGoalsFromEventsPublic(existingMatch, existingMatch.getLocalTeam());
+            int goalsVisitor = this.calculateGoalsFromEventsPublic(existingMatch, existingMatch.getVisitorTeam());
+
+            // Set the calculated goals
+            existingMatch.setLocalGoals(goalsLocal);
+            existingMatch.setVisitorGoals(goalsVisitor);
+        }
+
+        // 5. Save changes using the existing save() method (which handles statistics updates)
+        this.save(existingMatch);
+
+        return existingMatch;
+    }
+
+    /**
+     * Uploads a report file for a match and associates it with the match entity.
+     */
+    @Transactional
+    public Match uploadReport(Long matchId, MultipartFile file) throws IOException {
+        // 1. Validate match exists
+        Match match = matchRepository.findById(matchId)
+                .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+
+        // 2. Store file using FileStorageService (validates path traversal)
+        String relativePath = fileStorageService.storeFile(file, "matches", file.getOriginalFilename());
+
+        // 3. Update match entity with report metadata
+        match.setReportFileName(file.getOriginalFilename());
+        match.setReportFilePath(relativePath);
+
+        // 4. Persist changes
+        matchRepository.save(match);
+
+        return match;
+    }
+
+    /**
+     * Retrieves a match report file for display or download.
+     */
+    public ReportResource getMatchReport(Long matchId) throws IOException {
+        // 1. Validate match exists
+        Match match = matchRepository.findById(matchId)
+                .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+
+        // 2. Validate match has a report
+        if (match.getReportFilePath() == null) {
+            throw new RuntimeException("El partido no tiene un reporte asociado");
+        }
+
+        // 3. Load file using FileStorageService (validates path traversal)
+        Resource resource = fileStorageService.loadFileAsResource(match.getReportFilePath());
+
+        // 4. Detect file content type
+        String contentType = Files.probeContentType(Path.of(resource.getURI()));
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return new ReportResource(resource, contentType, match.getReportFileName());
+    }
+
+    /**
+     * Inner class to encapsulate report data (Resource + metadata)
+     */
+    public record ReportResource(Resource resource, String contentType, 
+        String fileName) {
+    } 
+   
 }

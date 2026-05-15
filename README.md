@@ -386,6 +386,47 @@ Las principales responsabilidades de Jaime fueron la creacion de pantallas de er
 ### **Vídeo de Demostración**
 📹 **[Enlace al vídeo en YouTube](https://youtu.be/KflYAw1xqFQ)**
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
+> Además, a continuación se explica el funcionamiento de nuestro sistema de subida de ficheros:
+
+## 🌐 Pruebas desde Web (Navegador)
+
+### Paso 1: Acceder al Panel de Administración
+1. Abre http://localhost:8080
+2. Login con usuario ADMIN:
+   - **Username:** (tu usuario admin)
+   - **Password:** (tu contraseña admin)
+
+### Paso 2: Ir a Gestión de Partidos
+1. Navega a: `/admin/matches` (o desde el menú: Admin → Gestión de Partidos)
+2. Verás una tabla con todos los partidos
+3. Cada fila tiene botones de acciones
+
+### Paso 3: Seleccionar Fichero
+1. Busca un partido en la tabla
+2. Haz clic en "Selecciona el archivo"
+3. Elige un fichero
+
+### Paso 5: Subir
+1. Haz clic en botón **"Subir"**
+2. Espera a que se muestre: ✅ "Reporte guardado correctamente"
+3. La página se recarga automáticamente
+
+### Paso 6: Ver Reporte (después de subir)
+1. El botón **"Subir Reporte"** desaparece
+2. Aparecen dos botones nuevos:
+   - **"Descargar Reporte"** (ícono: ⬇️) → Descarga + visualiza en nueva pestaña
+3. Haz clic en "Descargar Reporte"
+   - Se abre pestaña nueva con visualización
+   - Se descarga fichero en tu carpeta Downloads
+
+---
+
+## 📡 Pruebas desde API REST (Postman)
+
+### Configuración en Postman:
+
+#### 1️⃣ Subir Reporte (POST)
+**Endpoint:**
 
 ### **Documentación de la API REST**
 
